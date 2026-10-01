@@ -1,1 +1,251 @@
+<!DOCTYPE html>
 
+<html lang="fr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#101c36">
+
+  <meta name="description" content="RÉUSSITE ACADÉMIE : plateforme de révision et de préparation au BEPC et au BAC.">
+
+  <title>RÉUSSITE ACADÉMIE</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="game.js" defer></script>
+
+</head>
+
+<body>
+
+  <header class="topbar">
+
+    <a class="brand" href="#" aria-label="Accueil RÉUSSITE ACADÉMIE">
+
+      <span class="brand-icon">RA</span>
+
+      <span>RÉUSSITE <strong>ACADÉMIE</strong></span>
+
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">☰</button>
+
+  </header>
+
+  <main>
+
+    <section class="hero" id="home">
+
+      <div class="hero-content">
+
+        <span class="eyebrow">APPRENDRE · S'ENTRAÎNER · RÉUSSIR</span>
+
+        <h1>Prépare ton examen avec confiance.</h1>
+
+        <p>Révise tes cours, teste tes connaissances et progresse à ton rythme avec RÉUSSITE ACADÉMIE.</p>
+
+        <p class="creator">Une plateforme éducative créée par <strong>Belfort</strong></p>
+
+      </div>
+
+    </section>
+
+    <section class="selection-section" id="selection">
+
+      <h2>Choisis ton parcours</h2>
+
+      <p class="section-intro">Commence par sélectionner ton examen.</p>
+
+      <div class="exam-grid">
+
+        <button class="exam-card" id="bepcButton" type="button">
+
+          <span class="card-icon">📘</span>
+
+          <span class="card-title">BEPC</span>
+
+          <span class="card-description">Classe de troisième</span>
+
+          <span class="card-action">Commencer →</span>
+
+        </button>
+
+        <button class="exam-card" id="bacButton" type="button">
+
+          <span class="card-icon">🎓</span>
+
+          <span class="card-title">Baccalauréat</span>
+
+          <span class="card-description">Terminale · Séries A, B, C et D</span>
+
+          <span class="card-action">Choisir ma série →</span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+    <section class="selection-section hidden" id="seriesSection">
+
+      <button class="back-button" id="backToExams" type="button">← Retour aux examens</button>
+
+      <h2>Choisis ta série</h2>
+
+      <p class="section-intro">Sélectionne la série de ta classe de terminale.</p>
+
+      <div class="series-grid">
+
+        <button class="series-card" data-series="A" type="button">Série A</button>
+
+        <button class="series-card" data-series="B" type="button">Série B</button>
+
+        <button class="series-card" data-series="C" type="button">Série C</button>
+
+        <button class="series-card" data-series="D" type="button">Série D</button>
+
+      </div>
+
+    </section>
+
+    <section class="selection-section hidden" id="subjectsSection">
+
+      <button class="back-button" id="backToSeries" type="button">← Retour</button>
+
+      <h2 id="subjectsTitle">Les matières</h2>
+
+      <p class="section-intro">Choisis une matière pour découvrir les chapitres.</p>
+
+      <div class="subjects-grid" id="subjectsList"></div>
+
+    </section>
+
+    <section class="selection-section hidden" id="chaptersSection">
+
+      <button class="back-button" id="backToSubjects" type="button">← Retour aux matières</button>
+
+      <h2 id="chaptersTitle">Les chapitres</h2>
+
+      <p class="section-intro">Choisis un chapitre pour réviser ou faire un défi.</p>
+
+      <div class="chapters-list" id="chaptersList"></div>
+
+    </section>
+
+    <section class="selection-section hidden" id="chapterSection">
+
+      <button class="back-button" id="backToChapters" type="button">← Retour aux chapitres</button>
+
+      <h2 id="chapterTitle">Révision</h2>
+
+      <div id="lessonContent"></div>
+
+      <div class="mode-grid">
+
+        <button class="mode-card" id="revisionButton" type="button">
+
+          📖 Réviser le cours
+
+        </button>
+
+        <button class="mode-card" id="challengeButton" type="button">
+
+          ⏱️ Faire un défi
+
+        </button>
+
+      </div>
+
+    </section>
+
+    <section class="selection-section hidden" id="quizSection">
+
+      <div class="quiz-header">
+
+        <span id="quizProgress">Question 1</span>
+
+        <span id="quizScore">Points : 0</span>
+
+      </div>
+
+      <div class="progress-track">
+
+        <div id="progressBar"></div>
+
+      </div>
+
+      <h2 id="questionText">Question</h2>
+
+      <div id="answersList" class="answers-list"></div>
+
+      <div id="answerFeedback" aria-live="polite"></div>
+
+      <button id="nextQuestion" class="primary-button hidden" type="button">Question suivante</button>
+
+      <button id="finishQuiz" class="primary-button hidden" type="button">Voir mes résultats</button>
+
+    </section>
+
+    <section class="selection-section hidden" id="resultsSection">
+
+      <span class="result-icon">🏆</span>
+
+      <h2>Défi terminé !</h2>
+
+      <p id="resultSummary"></p>
+
+      <button class="primary-button" id="retryButton" type="button">Recommencer</button>
+
+      <button class="back-button" id="resultsHomeButton" type="button">Retour à l'accueil</button>
+
+    </section>
+
+    <section class="selection-section hidden" id="leaderboardSection">
+
+      <h2>Classement</h2>
+
+      <p class="section-intro">Découvre la progression des participants.</p>
+
+      <div id="leaderboardList"></div>
+
+      <button class="back-button" id="leaderboardHomeButton" type="button">← Accueil</button>
+
+    </section>
+
+    <section class="selection-section hidden" id="aboutSection">
+
+      <h2>À propos du créateur</h2>
+
+      <p>RÉUSSITE ACADÉMIE est un projet éducatif imaginé pour accompagner les élèves dans leurs révisions et leur préparation aux examens.</p>
+
+      <p><strong>Créé par Belfort.</strong></p>
+
+      <button class="back-button" id="aboutHomeButton" type="button">← Accueil</button>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+
+    <nav aria-label="Navigation principale">
+
+      <button id="homeButton" type="button">Accueil</button>
+
+      <button id="leaderboardButton" type="button">🏆 Classement</button>
+
+      <button id="aboutButton" type="button">À propos</button>
+
+    </nav>
+
+    <p>© 2026 RÉUSSITE ACADÉMIE · Créé par Belfort</p>
+
+  </footer>
+
+</body>
+
+</html>
