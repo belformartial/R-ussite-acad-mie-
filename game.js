@@ -447,7 +447,80 @@ function chooseSubject(subject) {
   showSection("chaptersSection");
 }
 
+
 function chooseChapter(chapter) {
+  state.chapter = chapter;
+  $("chapterTitle").textContent = chapter;
+
+  const content = $("lessonContent");
+  content.replaceChildren();
+
+  let lesson = null;
+
+  if (state.exam === "BEPC") {
+    lesson =
+      window.RA_COURS?.BEPC?.matieres
+        ?.[state.subject]?.[chapter] || null;
+  } else if (state.exam === "BAC") {
+    lesson =
+      window.RA_COURS?.BAC?.series
+        ?.[state.series]?.matieres
+        ?.[state.subject]?.[chapter] || null;
+  }
+
+  const box = document.createElement("div");
+  box.className = "lesson-box";
+
+  function addHeading(text) {
+    const h = document.createElement("h3");
+    h.textContent = text;
+    box.appendChild(h);
+  }
+
+  function addParagraph(text) {
+    const p = document.createElement("p");
+    p.textContent = text || "";
+    p.style.whiteSpace = "pre-line";
+    box.appendChild(p);
+  }
+
+  function addList(items) {
+    const ul = document.createElement("ul");
+    (items || []).forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  }
+
+  if (!lesson) {
+    addHeading("Cours en préparation");
+    addParagraph(
+      "La fiche détaillée de ce chapitre n'est pas encore disponible."
+    );
+  } else {
+    addHeading(lesson.titre || chapter);
+
+    addHeading("Objectifs de révision");
+    addList(lesson.objectifs);
+
+    addHeading("Notions essentielles");
+    addList(lesson.notions);
+
+    (lesson.lecon || []).forEach((partie) => {
+      addHeading(partie.titre);
+      addParagraph(partie.texte);
+    });
+
+    addHeading("Résumé à retenir");
+    addParagraph(lesson.resume);
+  }
+
+  content.appendChild(box);
+  showSection("chapterSection");
+}
+
   state.chapter = chapter;
   $("chapterTitle").textContent = chapter;
 
