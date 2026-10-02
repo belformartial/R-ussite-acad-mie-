@@ -1,10 +1,20 @@
 "use strict";
 
-/* =========================================================
-   RÉUSSITE ACADÉMIE
-   Gestion principale de l'application
-   Créé par Belfort
-========================================================= */
+/*
+ * =========================================================
+ * RÉUSSITE ACADÉMIE
+ * VERSION DÉFIS
+ * Créé par Belfort
+ *
+ * Fonctionnement :
+ *
+ * BEPC → Matière → Chapitre → DÉFI
+ * BAC  → Série → Matière → Chapitre → DÉFI
+ *
+ * Aucun cours affiché.
+ * Aucun bouton "Réviser le cours".
+ * =========================================================
+ */
 
 const APP_NAME = "RÉUSSITE ACADÉMIE";
 const CREATOR = "Belfort martial";
@@ -15,8 +25,9 @@ const PLAYER_KEY = "reussiteAcademiePlayer";
 const QUESTION_TIME = 20;
 const POINTS_PER_CORRECT = 1;
 
+
 /* =========================================================
-   1. PROGRAMMES
+   1. PROGRAMME
 ========================================================= */
 
 const curriculum = {
@@ -27,457 +38,517 @@ const curriculum = {
   },
 
   BAC: Object.fromEntries(
-    Object.entries(window.RA_PROGRAMME?.BAC?.series || {}).map(
-      ([series, programme]) => [
-        series,
-        {
-          label: `BAC — Terminale série ${series}`,
-          subjects: programme.matieres || {}
-        }
-      ]
-    )
+    Object.entries(
+      window.RA_PROGRAMME?.BAC?.series || {}
+    ).map(([series, programme]) => [
+      series,
+      {
+        label: `BAC — Terminale série ${series}`,
+        subjects: programme.matieres || {}
+      }
+    ])
   )
 };
 
+
 /* =========================================================
    2. BANQUE DE QUESTIONS
+   VERSION DE DÉMONSTRATION
+
+   Pour l'instant, les questions sont liées à la matière.
+   Nous améliorerons ensuite le système pour avoir une
+   banque différente pour CHAQUE chapitre.
 ========================================================= */
 
 const questionBank = {
+
   "Mathématiques": [
+
     {
       question: "Combien vaut 3² + 4 ?",
-      answers: ["10", "13", "14", "16"],
+      answers: [
+        "10",
+        "13",
+        "14",
+        "16"
+      ],
       correct: 1,
-      explanation: "3² = 9, puis 9 + 4 = 13."
+      explanation:
+        "3² = 9, puis 9 + 4 = 13."
     },
+
     {
       question: "Résous l'équation : x + 5 = 12.",
-      answers: ["5", "6", "7", "17"],
+      answers: [
+        "5",
+        "6",
+        "7",
+        "17"
+      ],
       correct: 2,
-      explanation: "On soustrait 5 des deux côtés : x = 12 − 5 = 7."
+      explanation:
+        "On soustrait 5 aux deux membres : x = 12 − 5 = 7."
     },
+
     {
-      question: "Quelle est la dérivée de f(x) = x² ?",
-      answers: ["x", "2x", "x²", "2"],
+      question: "Quel est le résultat de 5 × 6 ?",
+      answers: [
+        "11",
+        "25",
+        "30",
+        "35"
+      ],
+      correct: 2,
+      explanation:
+        "5 × 6 = 30."
+    },
+
+    {
+      question: "Quelle est la racine carrée de 25 ?",
+      answers: [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      correct: 2,
+      explanation:
+        "5² = 25, donc √25 = 5."
+    },
+
+    {
+      question: "Dans un triangle rectangle, comment s'appelle le côté opposé à l'angle droit ?",
+      answers: [
+        "Le côté adjacent",
+        "L'hypoténuse",
+        "La médiane",
+        "La hauteur"
+      ],
       correct: 1,
-      explanation: "La dérivée de x² est 2x."
+      explanation:
+        "Dans un triangle rectangle, le côté opposé à l'angle droit est l'hypoténuse."
     }
+
   ],
+
 
   "Français": [
+
     {
       question:
-        "Dans la phrase « Les élèves révisent leurs leçons », quel est le verbe ?",
-      answers: ["élèves", "leurs", "révisent", "leçons"],
+        "Dans la phrase « Les élèves travaillent », quel est le verbe ?",
+
+      answers: [
+        "Les",
+        "élèves",
+        "travaillent",
+        "aucun"
+      ],
+
       correct: 2,
-      explanation: "« Révisent » est le verbe conjugué de la phrase."
+
+      explanation:
+        "« travaillent » est le verbe conjugué de la phrase."
     },
+
     {
-      question: "Quel est le contraire du mot « courageux » ?",
-      answers: ["Brave", "Audacieux", "Lâche", "Vaillant"],
+      question:
+        "Quel est le contraire du mot « courageux » ?",
+
+      answers: [
+        "Brave",
+        "Audacieux",
+        "Lâche",
+        "Vaillant"
+      ],
+
       correct: 2,
-      explanation: "« Lâche » est un antonyme de « courageux »."
+
+      explanation:
+        "« Lâche » est un antonyme de « courageux »."
     }
+
   ],
 
-  "Physique-chimie": [
+
+  "Physique-Chimie": [
+
     {
-      question: "Quelle est l'unité SI de la vitesse ?",
+      question:
+        "Quelle est l'unité internationale de la vitesse ?",
+
       answers: [
         "Kilogramme",
         "Mètre par seconde",
         "Newton",
         "Joule"
       ],
+
       correct: 1,
+
       explanation:
-        "La vitesse s'exprime en mètre par seconde (m/s) dans le système international."
+        "Dans le système international, la vitesse s'exprime en mètre par seconde (m/s)."
     },
+
     {
       question:
-        "Quel instrument mesure l'intensité du courant électrique ?",
+        "Quel appareil mesure l'intensité du courant électrique ?",
+
       answers: [
         "Voltmètre",
         "Thermomètre",
         "Ampèremètre",
         "Balance"
       ],
+
       correct: 2,
+
       explanation:
         "L'ampèremètre mesure l'intensité du courant électrique."
     }
+
   ],
 
+
   "Physique": [
+
     {
-      question: "Quelle est l'unité SI de la force ?",
-      answers: ["Joule", "Newton", "Watt", "Pascal"],
+      question:
+        "Quelle est l'unité SI de la force ?",
+
+      answers: [
+        "Joule",
+        "Newton",
+        "Watt",
+        "Pascal"
+      ],
+
       correct: 1,
-      explanation: "La force se mesure en newtons (N)."
+
+      explanation:
+        "La force se mesure en newtons (N)."
     },
+
     {
       question:
         "Quelle relation donne le travail d'une force constante dans la direction du déplacement ?",
+
       answers: [
         "W = F × d",
         "W = m × V",
         "W = d / F",
         "W = F + d"
       ],
+
       correct: 0,
+
       explanation:
         "Lorsque la force est dans la direction du déplacement, le travail vaut W = F × d."
     }
+
   ],
 
+
   "Chimie": [
+
     {
-      question: "Quel est le symbole chimique de l'oxygène ?",
-      answers: ["Ox", "O", "Og", "Oy"],
+      question:
+        "Quel est le symbole chimique de l'oxygène ?",
+
+      answers: [
+        "Ox",
+        "O",
+        "Og",
+        "Oy"
+      ],
+
       correct: 1,
-      explanation: "Le symbole chimique de l'oxygène est O."
+
+      explanation:
+        "Le symbole chimique de l'oxygène est O."
     },
+
     {
       question:
         "Quelle particule porte une charge électrique négative ?",
-      answers: ["Proton", "Neutron", "Électron", "Noyau"],
+
+      answers: [
+        "Proton",
+        "Neutron",
+        "Électron",
+        "Noyau"
+      ],
+
       correct: 2,
+
       explanation:
         "L'électron porte une charge électrique négative."
     }
+
   ],
 
+
   "SVT": [
+
     {
       question:
-        "Quelle structure est considérée comme l'unité de base du vivant ?",
+        "Quelle est l'unité de base du vivant ?",
+
       answers: [
         "L'organe",
         "La cellule",
         "Le tissu",
         "L'organisme"
       ],
+
       correct: 1,
+
       explanation:
-        "La cellule est l'unité structurale et fonctionnelle fondamentale des êtres vivants."
+        "La cellule est l'unité structurale et fonctionnelle fondamentale du vivant."
     },
+
     {
       question:
         "Quel organe pompe le sang dans le corps humain ?",
+
       answers: [
         "Le foie",
         "Le poumon",
         "Le cœur",
         "L'estomac"
       ],
+
       correct: 2,
+
       explanation:
         "Le cœur propulse le sang dans le système circulatoire."
     }
+
   ],
 
-  "Histoire": [
+
+  "Histoire-Géographie": [
+
     {
       question:
-        "Quel est l'objectif général d'une chronologie en histoire ?",
+        "À quoi sert principalement une chronologie historique ?",
+
       answers: [
-        "Classer les événements dans le temps",
-        "Mesurer les distances",
-        "Calculer les surfaces",
-        "Décrire les climats"
+        "À classer les événements dans le temps",
+        "À mesurer les distances",
+        "À calculer les surfaces",
+        "À décrire les climats"
       ],
+
       correct: 0,
+
       explanation:
-        "Une chronologie permet de situer et d'ordonner les événements dans le temps."
+        "Une chronologie permet d'ordonner les événements dans le temps."
     },
-    {
-      question:
-        "Quel document historique peut être une source écrite ?",
-      answers: [
-        "Un journal d'époque",
-        "Une température",
-        "Une montagne",
-        "Un fleuve"
-      ],
-      correct: 0,
-      explanation:
-        "Un journal publié à l'époque étudiée peut être une source historique écrite."
-    }
-  ],
 
-  "Géographie": [
     {
       question:
-        "À quoi sert principalement une légende sur une carte ?",
+        "À quoi sert une légende sur une carte ?",
+
       answers: [
         "À expliquer les symboles utilisés",
         "À donner l'heure",
         "À mesurer la température",
         "À raconter une histoire"
       ],
+
       correct: 0,
+
       explanation:
-        "La légende explique la signification des couleurs, des lignes et des symboles de la carte."
-    },
-    {
-      question:
-        "Quel outil permet de représenter la répartition de la population ?",
-      answers: [
-        "Une carte thématique",
-        "Un thermomètre",
-        "Un calendrier",
-        "Une boussole seule"
-      ],
-      correct: 0,
-      explanation:
-        "Une carte thématique représente une information particulière, comme la répartition de la population."
+        "La légende explique les couleurs, lignes et symboles utilisés sur une carte."
     }
+
   ],
 
-  "Histoire-géographie": [
-    {
-      question:
-        "Quel outil permet de représenter la répartition de la population ?",
-      answers: [
-        "Une carte thématique",
-        "Un thermomètre",
-        "Un calendrier",
-        "Une boussole seule"
-      ],
-      correct: 0,
-      explanation:
-        "Une carte thématique permet de représenter la répartition de la population."
-    },
-    {
-      question:
-        "À quoi sert une chronologie historique ?",
-      answers: [
-        "À ordonner les événements dans le temps",
-        "À mesurer les distances",
-        "À calculer les revenus",
-        "À identifier les reliefs"
-      ],
-      correct: 0,
-      explanation:
-        "Elle permet de situer les événements et de comprendre leur succession."
-    }
-  ],
-
-  "Histoire-Géographie": [
-    {
-      question:
-        "Quel outil permet de représenter la répartition de la population ?",
-      answers: [
-        "Une carte thématique",
-        "Un thermomètre",
-        "Un calendrier",
-        "Une boussole seule"
-      ],
-      correct: 0,
-      explanation:
-        "Une carte thématique permet de représenter la répartition de la population."
-    },
-    {
-      question:
-        "À quoi sert une chronologie historique ?",
-      answers: [
-        "À ordonner les événements dans le temps",
-        "À mesurer les distances",
-        "À calculer les revenus",
-        "À identifier les reliefs"
-      ],
-      correct: 0,
-      explanation:
-        "Elle permet de situer les événements et de comprendre leur succession."
-    }
-  ],
 
   "Anglais": [
+
     {
-      question: "Choose the correct translation of « Bonjour ».",
+      question:
+        "Choose the correct translation of « Bonjour ».",
+
       answers: [
         "Goodbye",
         "Hello",
         "Thanks",
         "Please"
       ],
+
       correct: 1,
+
       explanation:
-        "« Hello » signifie « Bonjour » en anglais."
+        "« Hello » signifie « Bonjour »."
     },
+
     {
-      question: "Choose the correct sentence.",
+      question:
+        "Choose the correct sentence.",
+
       answers: [
         "She go to school.",
         "She goes to school.",
         "She going school.",
         "She gone to school."
       ],
+
       correct: 1,
+
       explanation:
-        "Au présent simple, à la troisième personne du singulier, on ajoute généralement -s au verbe."
+        "À la troisième personne du singulier au présent simple, le verbe prend généralement -s."
     }
+
   ],
 
-  "Éducation civique": [
+
+  "Éducation Civique et Morale": [
+
     {
       question:
-        "Quel comportement illustre le respect des biens publics ?",
+        "Quel comportement montre le respect des biens publics ?",
+
       answers: [
         "Dégrader les équipements",
         "Protéger les équipements collectifs",
         "Jeter les déchets dans la rue",
         "Ignorer les règles communes"
       ],
+
       correct: 1,
+
       explanation:
         "Les biens publics appartiennent à la collectivité et doivent être protégés."
-    },
-    {
-      question:
-        "Quel principe favorise la vie en société ?",
-      answers: [
-        "La violence",
-        "La discrimination",
-        "Le respect mutuel",
-        "L'intimidation"
-      ],
-      correct: 2,
-      explanation:
-        "Le respect mutuel contribue à une vie collective pacifique."
     }
+
   ],
 
-  "Économie": [
-    {
-      question: "Quel est le rôle général d'un marché ?",
-      answers: [
-        "Organiser les échanges entre offreurs et demandeurs",
-        "Supprimer tous les besoins",
-        "Remplacer toutes les entreprises",
-        "Fixer toutes les décisions personnelles"
-      ],
-      correct: 0,
-      explanation:
-        "Un marché met en relation les offreurs et les demandeurs d'un bien ou d'un service."
-    },
-    {
-      question: "Lequel est un facteur de production ?",
-      answers: [
-        "Le travail",
-        "La météo du jour uniquement",
-        "Une publicité seule",
-        "Un prix affiché"
-      ],
-      correct: 0,
-      explanation:
-        "Le travail est l'un des facteurs de production, avec notamment le capital."
-    }
-  ],
-
-  "Sciences Économiques et Sociales": [
-    {
-      question: "Quel est le rôle général d'un marché ?",
-      answers: [
-        "Organiser les échanges entre offreurs et demandeurs",
-        "Supprimer tous les besoins",
-        "Remplacer toutes les entreprises",
-        "Fixer toutes les décisions personnelles"
-      ],
-      correct: 0,
-      explanation:
-        "Un marché met en relation les offreurs et les demandeurs."
-    },
-    {
-      question: "Lequel est un facteur de production ?",
-      answers: [
-        "Le travail",
-        "La météo du jour uniquement",
-        "Une publicité seule",
-        "Un prix affiché"
-      ],
-      correct: 0,
-      explanation:
-        "Le travail constitue un facteur de production."
-    }
-  ],
 
   "Philosophie": [
+
     {
       question:
         "Quel est l'objectif principal d'une dissertation philosophique ?",
+
       answers: [
         "Développer une réflexion argumentée",
         "Recopier un dictionnaire",
-        "Donner uniquement son opinion sans argument",
-        "Énumérer des dates"
+        "Donner une opinion sans argument",
+        "Énumérer uniquement des dates"
       ],
+
       correct: 0,
+
       explanation:
-        "Une dissertation philosophique examine un problème en construisant un raisonnement argumenté."
+        "Une dissertation philosophique construit une réflexion organisée et argumentée."
     },
+
     {
-      question: "Que signifie argumenter ?",
+      question:
+        "Que signifie argumenter ?",
+
       answers: [
         "Soutenir une idée avec des raisons",
         "Répéter une phrase",
         "Changer de sujet",
         "Éviter toute explication"
       ],
+
       correct: 0,
+
       explanation:
-        "Argumenter consiste à justifier une thèse par des raisons et des exemples."
+        "Argumenter consiste à justifier une idée par des raisons et des exemples."
     }
+
   ]
+
 };
 
+
 /* =========================================================
-   3. ÉTAT DE L'APPLICATION
+   3. ÉTAT DU JEU
 ========================================================= */
 
 const state = {
+
   exam: null,
+
   series: null,
+
   subject: null,
+
   chapter: null,
 
   questions: [],
+
   questionIndex: 0,
+
   score: 0,
 
   answered: false,
+
   timer: null,
+
   timeLeft: QUESTION_TIME,
 
   player: "",
+
   lastResult: null
 };
 
-const $ = (id) => document.getElementById(id);
-
-const sections = [
-  "selection",
-  "seriesSection",
-  "subjectsSection",
-  "chaptersSection",
-  "chapterSection",
-  "quizSection",
-  "resultsSection",
-  "leaderboardSection",
-  "aboutSection"
-];
 
 /* =========================================================
-   4. NAVIGATION
+   4. OUTIL DOM
+========================================================= */
+
+const $ = (id) =>
+  document.getElementById(id);
+
+
+/* =========================================================
+   5. SECTIONS
+========================================================= */
+
+const sections = [
+
+  "selection",
+
+  "seriesSection",
+
+  "subjectsSection",
+
+  "chaptersSection",
+
+  "chapterSection",
+
+  "quizSection",
+
+  "resultsSection",
+
+  "leaderboardSection",
+
+  "aboutSection"
+
+];
+
+
+/* =========================================================
+   6. NAVIGATION
 ========================================================= */
 
 function showSection(sectionId) {
+
   sections.forEach((id) => {
+
     const element = $(id);
+
     if (element) {
       element.classList.add("hidden");
     }
+
   });
 
   const target = $(sectionId);
@@ -492,13 +563,20 @@ function showSection(sectionId) {
   });
 }
 
+
+/* =========================================================
+   7. RETOUR ACCUEIL
+========================================================= */
+
 function goHome() {
+
   stopTimer();
 
   state.exam = null;
   state.series = null;
   state.subject = null;
   state.chapter = null;
+
   state.questions = [];
   state.questionIndex = 0;
   state.score = 0;
@@ -507,24 +585,38 @@ function goHome() {
   showSection("selection");
 }
 
+
+/* =========================================================
+   8. PROGRAMME ACTUEL
+========================================================= */
+
 function getCurrentProgram() {
+
   if (state.exam === "BEPC") {
     return curriculum.BEPC;
   }
 
-  if (state.exam === "BAC" && state.series) {
+  if (
+    state.exam === "BAC" &&
+    state.series
+  ) {
     return curriculum.BAC[state.series];
   }
 
   return null;
 }
 
+
 /* =========================================================
-   5. CHOIX BEPC / BAC
+   9. CHOIX BEPC / BAC
 ========================================================= */
 
 function chooseExam(exam) {
-  if (!["BEPC", "BAC"].includes(exam)) {
+
+  if (
+    exam !== "BEPC" &&
+    exam !== "BAC"
+  ) {
     return;
   }
 
@@ -536,13 +628,23 @@ function chooseExam(exam) {
   state.chapter = null;
 
   if (exam === "BEPC") {
+
     renderSubjects();
+
   } else {
+
     showSection("seriesSection");
+
   }
 }
 
+
+/* =========================================================
+   10. CHOIX DE LA SÉRIE
+========================================================= */
+
 function chooseSeries(series) {
+
   if (!curriculum.BAC[series]) {
     return;
   }
@@ -554,589 +656,723 @@ function chooseSeries(series) {
   renderSubjects();
 }
 
+
 /* =========================================================
-   6. MATIÈRES
+   11. AFFICHAGE DES MATIÈRES
 ========================================================= */
 
 function renderSubjects() {
-  const program = getCurrentProgram();
+
+  const program =
+    getCurrentProgram();
 
   if (!program) {
     return;
   }
 
-  const title = $("subjectsTitle");
-  const list = $("subjectsList");
+  const title =
+    $("subjectsTitle");
+
+  const list =
+    $("subjectsList");
 
   if (!title || !list) {
     return;
   }
 
-  title.textContent = `${program.label} — Matières`;
+  title.textContent =
+    `${program.label} — Matières`;
 
   list.replaceChildren();
 
-  Object.keys(program.subjects).forEach((subject) => {
-    const button = document.createElement("button");
+  Object.keys(program.subjects)
+    .forEach((subject) => {
 
-    button.type = "button";
-    button.className = "subject-card";
+      const button =
+        document.createElement("button");
 
-    const info = document.createElement("span");
+      button.type = "button";
+      button.className =
+        "subject-card";
 
-    const subjectTitle = document.createElement("strong");
-    subjectTitle.textContent = subject;
+      const info =
+        document.createElement("span");
 
-    const description = document.createElement("small");
-    description.textContent =
-      `${program.subjects[subject].length} chapitres proposés`;
+      const subjectTitle =
+        document.createElement("strong");
 
-    info.append(subjectTitle, description);
+      subjectTitle.textContent =
+        subject;
 
-    const arrow = document.createElement("span");
-    arrow.textContent = "›";
-    arrow.setAttribute("aria-hidden", "true");
+      const description =
+        document.createElement("small");
 
-    button.append(info, arrow);
+      description.textContent =
+        `${program.subjects[subject].length} chapitres`;
 
-    button.addEventListener("click", () => {
-      chooseSubject(subject);
+      info.append(
+        subjectTitle,
+        description
+      );
+
+      const arrow =
+        document.createElement("span");
+
+      arrow.textContent = "›";
+
+      arrow.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      button.append(
+        info,
+        arrow
+      );
+
+      button.addEventListener(
+        "click",
+        () => chooseSubject(subject)
+      );
+
+      list.appendChild(button);
+
     });
 
-    list.appendChild(button);
-  });
-
-  showSection("subjectsSection");
+  showSection(
+    "subjectsSection"
+  );
 }
 
+
 /* =========================================================
-   7. CHAPITRES
+   12. CHOIX DE LA MATIÈRE
 ========================================================= */
 
 function chooseSubject(subject) {
-  const program = getCurrentProgram();
 
-  if (!program || !program.subjects[subject]) {
+  const program =
+    getCurrentProgram();
+
+  if (
+    !program ||
+    !program.subjects[subject]
+  ) {
     return;
   }
 
   state.subject = subject;
   state.chapter = null;
 
-  const title = $("chaptersTitle");
-  const list = $("chaptersList");
+  const title =
+    $("chaptersTitle");
+
+  const list =
+    $("chaptersList");
 
   if (!title || !list) {
     return;
   }
 
-  title.textContent = `${subject} — Chapitres`;
+  title.textContent =
+    `${subject} — Défis`;
 
   list.replaceChildren();
 
-  program.subjects[subject].forEach((chapter, index) => {
-    const button = document.createElement("button");
+  program.subjects[subject]
+    .forEach((chapter, index) => {
 
-    button.type = "button";
-    button.className = "chapter-card";
+      const button =
+        document.createElement("button");
 
-    const info = document.createElement("span");
+      button.type = "button";
 
-    const chapterTitle = document.createElement("strong");
-    chapterTitle.textContent =
-      `Chapitre ${index + 1} : ${chapter}`;
+      button.className =
+        "chapter-card";
 
-    const description = document.createElement("small");
+      const info =
+        document.createElement("span");
 
-    const available =
-      getLessonForChapter(chapter) !== null;
+      const chapterTitle =
+        document.createElement("strong");
 
-    description.textContent = available
-      ? "Cours disponible • Réviser ou faire le défi"
-      : "Cours en préparation";
+      chapterTitle.textContent =
+        `Défi ${index + 1} : ${chapter}`;
 
-    info.append(chapterTitle, description);
+      const description =
+        document.createElement("small");
 
-    const arrow = document.createElement("span");
-    arrow.textContent = "›";
-    arrow.setAttribute("aria-hidden", "true");
+      description.textContent =
+        "🚀 Commencer le défi";
 
-    button.append(info, arrow);
+      info.append(
+        chapterTitle,
+        description
+      );
 
-    button.addEventListener("click", () => {
-      chooseChapter(chapter);
+      const arrow =
+        document.createElement("span");
+
+      arrow.textContent = "›";
+
+      arrow.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      button.append(
+        info,
+        arrow
+      );
+
+      button.addEventListener(
+        "click",
+        () => chooseChapter(chapter)
+      );
+
+      list.appendChild(button);
+
     });
 
-    list.appendChild(button);
-  });
-
-  showSection("chaptersSection");
+  showSection(
+    "chaptersSection"
+  );
 }
 
-/* =========================================================
-   8. RÉCUPÉRATION DU COURS
-========================================================= */
-
-function getLessonForChapter(chapter) {
-  if (!chapter || !state.subject) {
-    return null;
-  }
-
-  if (state.exam === "BEPC") {
-    return (
-      window.RA_COURS?.BEPC?.matieres?.[state.subject]?.[chapter] ||
-      null
-    );
-  }
-
-  if (state.exam === "BAC") {
-    return (
-      window.RA_COURS?.BAC?.series?.[state.series]?.matieres?.[
-        state.subject
-      ]?.[chapter] || null
-    );
-  }
-
-  return null;
-}
 
 /* =========================================================
-   9. AFFICHAGE DU COURS
+   13. CHOIX DU CHAPITRE
+   DIRECTEMENT → DÉFI
 ========================================================= */
 
 function chooseChapter(chapter) {
+
   if (!chapter) {
     return;
   }
 
   state.chapter = chapter;
 
-  const title = $("chapterTitle");
-  const content = $("lessonContent");
+  /*
+   * IMPORTANT :
+   * Aucun cours n'est affiché.
+   * Aucun RA_COURS n'est utilisé.
+   *
+   * Le chapitre ouvre directement le défi.
+   */
 
-  if (!title || !content) {
-    return;
-  }
-
-  title.textContent = chapter;
-
-  content.replaceChildren();
-
-  const lesson = getLessonForChapter(chapter);
-
-  const box = document.createElement("div");
-  box.className = "lesson-box";
-
-  function addHeading(text) {
-    if (!text) return;
-
-    const heading = document.createElement("h3");
-    heading.textContent = text;
-
-    box.appendChild(heading);
-  }
-
-  function addParagraph(text) {
-    if (!text) return;
-
-    const paragraph = document.createElement("p");
-
-    paragraph.textContent = text;
-    paragraph.style.whiteSpace = "pre-line";
-
-    box.appendChild(paragraph);
-  }
-
-  function addList(items) {
-    if (!Array.isArray(items) || !items.length) {
-      return;
-    }
-
-    const ul = document.createElement("ul");
-
-    items.forEach((item) => {
-      const li = document.createElement("li");
-
-      if (typeof item === "string") {
-        li.textContent = item;
-      } else if (item && typeof item === "object") {
-        li.textContent =
-          item.texte ||
-          item.text ||
-          item.nom ||
-          item.titre ||
-          JSON.stringify(item);
-      }
-
-      ul.appendChild(li);
-    });
-
-    box.appendChild(ul);
-  }
-
-  if (!lesson) {
-    addHeading("Cours en préparation");
-
-    addParagraph(
-      `La fiche détaillée du chapitre « ${chapter} » n'est pas encore disponible.`
-    );
-
-    addParagraph(
-      "Tu peux néanmoins utiliser le défi de démonstration pour t'entraîner."
-    );
-  } else {
-    addHeading(lesson.titre || chapter);
-
-    if (lesson.objectifs?.length) {
-      addHeading("Objectifs de révision");
-      addList(lesson.objectifs);
-    }
-
-    if (lesson.notions?.length) {
-      addHeading("Notions essentielles");
-      addList(lesson.notions);
-    }
-
-    if (Array.isArray(lesson.lecon)) {
-      lesson.lecon.forEach((partie) => {
-        if (!partie) return;
-
-        addHeading(
-          partie.titre ||
-          partie.nom ||
-          "Leçon"
-        );
-
-        addParagraph(
-          partie.texte ||
-          partie.text ||
-          partie.contenu ||
-          ""
-        );
-
-        if (Array.isArray(partie.points)) {
-          addList(partie.points);
-        }
-      });
-    }
-
-    if (lesson.resume) {
-      addHeading("Résumé à retenir");
-      addParagraph(lesson.resume);
-    }
-
-    if (lesson.formules?.length) {
-      addHeading("Formules essentielles");
-      addList(lesson.formules);
-    }
-
-    if (lesson.exemples?.length) {
-      addHeading("Exemples");
-
-      lesson.exemples.forEach((exemple) => {
-        if (typeof exemple === "string") {
-          addParagraph(exemple);
-        } else if (exemple) {
-          addHeading(exemple.titre || "Exemple");
-          addParagraph(
-            exemple.texte ||
-            exemple.solution ||
-            exemple.contenu ||
-            ""
-          );
-        }
-      });
-    }
-  }
-
-  content.appendChild(box);
-
-  showSection("chapterSection");
+  startQuiz();
 }
 
+
 /* =========================================================
-   10. JOUEUR
+   14. JOUEUR
 ========================================================= */
 
 function getPlayerName() {
+
   if (state.player) {
     return state.player;
   }
 
   try {
-    const saved = localStorage.getItem(PLAYER_KEY);
+
+    const saved =
+      localStorage.getItem(
+        PLAYER_KEY
+      );
 
     if (saved) {
+
       state.player = saved;
+
       return saved;
+
     }
+
   } catch (error) {
+
     console.warn(
       "Stockage local indisponible.",
       error
     );
+
   }
 
-  const input = window.prompt(
-    "Choisis un prénom ou un pseudo (18 caractères maximum) :"
-  );
+  const input =
+    window.prompt(
+      "Entre ton prénom ou ton pseudo (18 caractères maximum) :"
+    );
 
   if (input === null) {
     return "";
   }
 
-  const name = input
-    .trim()
-    .replace(/\s+/g, " ")
-    .slice(0, 18);
+  const name =
+    input
+      .trim()
+      .replace(/\s+/g, " ")
+      .slice(0, 18);
 
   if (!name) {
+
     window.alert(
       "Entre un prénom ou un pseudo pour commencer."
     );
 
     return "";
+
   }
 
   state.player = name;
 
   try {
+
     localStorage.setItem(
       PLAYER_KEY,
       name
     );
+
   } catch (error) {
+
     console.warn(
       "Impossible de sauvegarder le pseudo.",
       error
     );
+
   }
 
   return name;
 }
 
+
 /* =========================================================
-   11. PROGRESSION LOCALE
+   15. PROGRESSION LOCALE
 ========================================================= */
 
 function readProgress() {
-  try {
-    const data = localStorage.getItem(
-      STORAGE_KEY
-    );
 
-    const parsed = JSON.parse(data || "[]");
+  try {
+
+    const data =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
+    const parsed =
+      JSON.parse(
+        data || "[]"
+      );
 
     return Array.isArray(parsed)
       ? parsed
       : [];
+
   } catch (error) {
+
     return [];
+
   }
 }
 
+
+/* =========================================================
+   16. SAUVEGARDE DU RÉSULTAT
+========================================================= */
+
 function saveResult() {
-  const records = readProgress();
+
+  const records =
+    readProgress();
+
+  /*
+   * Une même personne peut avoir
+   * plusieurs défis différents.
+   *
+   * La clé contient donc :
+   * examen + série + pseudo + matière + chapitre
+   */
 
   const key =
-    `${state.exam}-${state.series || "commun"}-${state.player}`;
-
-  const previous = records.find(
-    (record) => record.key === key
-  );
+    [
+      state.exam,
+      state.series || "commun",
+      state.player,
+      state.subject,
+      state.chapter
+    ].join("|");
 
   const result = {
+
     key,
-    player: state.player,
-    exam: state.exam,
-    series: state.series || "",
-    score: state.score,
-    subject: state.subject,
-    chapter: state.chapter,
-    date: new Date().toISOString()
+
+    player:
+      state.player,
+
+    exam:
+      state.exam,
+
+    series:
+      state.series || "",
+
+    subject:
+      state.subject,
+
+    chapter:
+      state.chapter,
+
+    score:
+      state.score,
+
+    total:
+      state.questions.length,
+
+    date:
+      new Date().toISOString()
+
   };
 
-  if (previous) {
-    previous.score = Math.max(
-      previous.score,
-      result.score
+  const previous =
+    records.find(
+      (record) =>
+        record.key === key
     );
 
-    previous.subject = result.subject;
-    previous.chapter = result.chapter;
-    previous.date = result.date;
+  if (previous) {
+
+    /*
+     * On conserve le meilleur score.
+     */
+
+    if (
+      Number(result.score) >
+      Number(previous.score)
+    ) {
+
+      previous.score =
+        result.score;
+
+      previous.total =
+        result.total;
+
+      previous.date =
+        result.date;
+
+    }
+
   } else {
+
     records.push(result);
+
   }
 
   try {
+
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify(records)
     );
+
   } catch (error) {
+
     console.warn(
-      "Impossible de sauvegarder les résultats.",
+      "Impossible de sauvegarder le résultat.",
       error
     );
+
   }
 
-  state.lastResult = result;
+  state.lastResult =
+    result;
 }
 
+
 /* =========================================================
-   12. QUESTIONS
+   17. NORMALISATION DES MATIÈRES
 ========================================================= */
 
-function normalizeSubjectForQuestions(subject) {
+function normalizeSubjectForQuestions(
+  subject
+) {
+
   if (!subject) {
     return null;
   }
 
   const aliases = {
-    "Histoire-Géographie": "Histoire-géographie",
-    "Histoire – Géographie": "Histoire-géographie",
-    "Histoire / Géographie": "Histoire-géographie",
-    "Éducation Civique et Morale": "Éducation civique",
-    "Sciences Économiques et Sociales": "Sciences Économiques et Sociales",
-    "Physique-Chimie": "Physique-chimie"
+
+    "Physique-Chimie":
+      "Physique-Chimie",
+
+    "Physique-chimie":
+      "Physique-Chimie",
+
+    "Histoire-Géographie":
+      "Histoire-Géographie",
+
+    "Histoire-géographie":
+      "Histoire-Géographie",
+
+    "Éducation Civique et Morale":
+      "Éducation Civique et Morale"
+
   };
 
-  return aliases[subject] || subject;
+  return (
+    aliases[subject] ||
+    subject
+  );
 }
 
-function getQuestionsForSubject(subject) {
-  const normalized =
-    normalizeSubjectForQuestions(subject);
+
+/* =========================================================
+   18. QUESTIONS DU DÉFI
+========================================================= */
+
+function getQuestionsForChapter() {
+
+  const subject =
+    normalizeSubjectForQuestions(
+      state.subject
+    );
 
   const bank =
-    questionBank[normalized] ||
     questionBank[subject];
 
-  if (Array.isArray(bank) && bank.length) {
-    return bank.map((item) => ({
-      ...item,
-      answers: [...item.answers]
-    }));
+  if (
+    Array.isArray(bank) &&
+    bank.length
+  ) {
+
+    /*
+     * Copie indépendante des questions.
+     */
+
+    return bank.map(
+      (item) => ({
+        ...item,
+        answers: [
+          ...item.answers
+        ]
+      })
+    );
+
   }
 
+  /*
+   * Si aucune banque n'existe
+   * encore pour la matière,
+   * on utilise un défi générique.
+   */
+
   return [
+
     {
       question:
-        `Quel est l'objectif principal d'une bonne révision en ${subject} ?`,
+        `Le chapitre « ${state.chapter} » appartient à quelle matière ?`,
+
       answers: [
-        "Comprendre les notions et savoir les appliquer",
-        "Mémoriser sans comprendre",
-        "Éviter les exercices",
-        "Ignorer les corrections"
+
+        state.subject,
+        "Sport",
+        "Musique",
+        "Informatique"
+
       ],
+
       correct: 0,
+
       explanation:
-        "Une bonne révision associe compréhension, entraînement et correction."
+        `Ce défi appartient à la matière ${state.subject}.`
+
     },
+
     {
       question:
-        `Que faut-il faire après avoir étudié un chapitre de ${subject} ?`,
+        "Quelle est la meilleure manière de progresser ?",
+
       answers: [
-        "Vérifier sa compréhension avec des exercices",
-        "Ne plus jamais revoir le chapitre",
-        "Ignorer ses erreurs",
-        "Apprendre uniquement le titre"
+
+        "S'entraîner et comprendre ses erreurs",
+        "Répondre au hasard",
+        "Ne jamais vérifier ses réponses",
+        "Abandonner après une erreur"
+
       ],
+
       correct: 0,
+
       explanation:
-        "Les exercices permettent de vérifier si les notions étudiées sont réellement comprises."
+        "L'entraînement et l'analyse des erreurs permettent de progresser."
+
     }
+
   ];
 }
 
+
 /* =========================================================
-   13. DÉMARRER LE DÉFI
+   19. DÉMARRER LE DÉFI
 ========================================================= */
 
 function startQuiz() {
-  const player = getPlayerName();
+
+  const player =
+    getPlayerName();
 
   if (!player) {
     return;
   }
 
-  if (!state.subject || !state.chapter) {
+  if (
+    !state.exam ||
+    !state.subject ||
+    !state.chapter
+  ) {
+
     window.alert(
-      "Choisis d'abord une matière et un chapitre."
+      "Choisis d'abord un examen, une matière et un chapitre."
     );
 
     return;
+
   }
 
   stopTimer();
 
-  state.player = player;
-  state.questions =
-    getQuestionsForSubject(state.subject);
+  state.player =
+    player;
 
-  state.questionIndex = 0;
-  state.score = 0;
-  state.answered = false;
-  state.timeLeft = QUESTION_TIME;
+  state.questions =
+    getQuestionsForChapter();
+
+  state.questionIndex =
+    0;
+
+  state.score =
+    0;
+
+  state.answered =
+    false;
+
+  state.timeLeft =
+    QUESTION_TIME;
 
   if ($("quizScore")) {
-    $("quizScore").textContent = "Points : 0";
+
+    $("quizScore").textContent =
+      "Points : 0";
+
   }
 
   if ($("answerFeedback")) {
-    $("answerFeedback").textContent = "";
+
+    $("answerFeedback")
+      .textContent = "";
+
   }
 
   if ($("nextQuestion")) {
-    $("nextQuestion").classList.add("hidden");
+
+    $("nextQuestion")
+      .classList
+      .add("hidden");
+
   }
 
   if ($("finishQuiz")) {
-    $("finishQuiz").classList.add("hidden");
+
+    $("finishQuiz")
+      .classList
+      .add("hidden");
+
   }
 
-  showSection("quizSection");
+  /*
+   * On met directement le titre
+   * du chapitre dans l'écran du défi
+   * si l'élément existe.
+   */
+
+  if ($("quizTitle")) {
+
+    $("quizTitle").textContent =
+      `Défi — ${state.chapter}`;
+
+  }
+
+  showSection(
+    "quizSection"
+  );
 
   displayQuestion();
 }
 
+
 /* =========================================================
-   14. CHRONOMÈTRE
+   20. CHRONOMÈTRE
 ========================================================= */
 
 function stopTimer() {
-  if (state.timer !== null) {
-    clearInterval(state.timer);
-    state.timer = null;
+
+  if (
+    state.timer !== null
+  ) {
+
+    clearInterval(
+      state.timer
+    );
+
+    state.timer =
+      null;
+
   }
 }
 
+
 function startTimer() {
+
   stopTimer();
 
-  state.timeLeft = QUESTION_TIME;
+  state.timeLeft =
+    QUESTION_TIME;
 
   updateTimerLabel();
 
-  state.timer = setInterval(() => {
-    state.timeLeft -= 1;
+  state.timer =
+    setInterval(() => {
 
-    updateTimerLabel();
+      state.timeLeft -= 1;
 
-    if (state.timeLeft <= 0) {
-      stopTimer();
+      updateTimerLabel();
 
-      if (!state.answered) {
-        selectAnswer(-1, true);
+      if (
+        state.timeLeft <= 0
+      ) {
+
+        stopTimer();
+
+        if (
+          !state.answered
+        ) {
+
+          selectAnswer(
+            -1,
+            true
+          );
+
+        }
+
       }
-    }
-  }, 1000);
+
+    }, 1000);
 }
 
+
 function updateTimerLabel() {
+
   const total =
-    state.questions.length || 0;
+    state.questions.length;
 
   const progress =
     $("quizProgress");
@@ -1149,158 +1385,288 @@ function updateTimerLabel() {
     `Question ${state.questionIndex + 1} / ${total} · ${state.timeLeft}s`;
 }
 
+
 /* =========================================================
-   15. AFFICHAGE D'UNE QUESTION
+   21. AFFICHAGE QUESTION
 ========================================================= */
 
 function displayQuestion() {
+
   const question =
-    state.questions[state.questionIndex];
+    state.questions[
+      state.questionIndex
+    ];
 
   if (!question) {
+
     finishQuiz();
+
     return;
+
   }
 
-  state.answered = false;
+  state.answered =
+    false;
 
-  $("questionText").textContent =
-    question.question;
+  if ($("questionText")) {
 
-  $("answerFeedback").textContent = "";
+    $("questionText")
+      .textContent =
+      question.question;
 
-  $("nextQuestion").classList.add("hidden");
-  $("finishQuiz").classList.add("hidden");
+  }
 
-  const list = $("answersList");
+  if ($("answerFeedback")) {
+
+    $("answerFeedback")
+      .textContent = "";
+
+  }
+
+  if ($("nextQuestion")) {
+
+    $("nextQuestion")
+      .classList
+      .add("hidden");
+
+  }
+
+  if ($("finishQuiz")) {
+
+    $("finishQuiz")
+      .classList
+      .add("hidden");
+
+  }
+
+  const list =
+    $("answersList");
+
+  if (!list) {
+    return;
+  }
 
   list.replaceChildren();
 
   question.answers.forEach(
     (answer, index) => {
-      const button =
-        document.createElement("button");
 
-      button.type = "button";
-      button.className = "answer-option";
+      const button =
+        document.createElement(
+          "button"
+        );
+
+      button.type =
+        "button";
+
+      button.className =
+        "answer-option";
 
       button.textContent =
         `${String.fromCharCode(65 + index)}. ${answer}`;
 
       button.addEventListener(
         "click",
-        () => selectAnswer(index, false)
+        () =>
+          selectAnswer(
+            index,
+            false
+          )
       );
 
-      list.appendChild(button);
+      list.appendChild(
+        button
+      );
+
     }
   );
 
-  $("quizScore").textContent =
-    `Points : ${state.score}`;
+  if ($("quizScore")) {
 
-  $("progressBar").style.width =
-    `${(state.questionIndex / state.questions.length) * 100}%`;
+    $("quizScore")
+      .textContent =
+      `Points : ${state.score}`;
+
+  }
+
+  if ($("progressBar")) {
+
+    $("progressBar")
+      .style.width =
+      `${(state.questionIndex / state.questions.length) * 100}%`;
+
+  }
 
   startTimer();
 }
 
+
 /* =========================================================
-   16. RÉPONSE
+   22. RÉPONSE
 ========================================================= */
 
 function selectAnswer(
   selectedIndex,
   timedOut
 ) {
+
   if (state.answered) {
     return;
   }
 
-  state.answered = true;
+  state.answered =
+    true;
 
   stopTimer();
 
   const question =
-    state.questions[state.questionIndex];
+    state.questions[
+      state.questionIndex
+    ];
 
   const correct =
-    selectedIndex === question.correct;
+    selectedIndex ===
+    question.correct;
 
   const buttons =
-    $("answersList").querySelectorAll(
-      "button"
-    );
+    $("answersList")
+      ?.querySelectorAll(
+        "button"
+      ) || [];
 
   buttons.forEach(
     (button, index) => {
-      button.disabled = true;
 
-      if (index === question.correct) {
-        button.classList.add("correct");
-      } else if (
+      button.disabled =
+        true;
+
+      if (
+        index ===
+        question.correct
+      ) {
+
+        button.classList
+          .add("correct");
+
+      }
+
+      else if (
         index === selectedIndex &&
         !correct
       ) {
-        button.classList.add("incorrect");
+
+        button.classList
+          .add("incorrect");
+
       }
+
     }
   );
 
+
   if (correct) {
+
     state.score +=
       POINTS_PER_CORRECT;
 
-    $("answerFeedback").textContent =
-      `Bonne réponse ! +${POINTS_PER_CORRECT} point${POINTS_PER_CORRECT > 1 ? "s" : ""}. ${question.explanation}`;
+    if ($("answerFeedback")) {
+
+      $("answerFeedback")
+        .textContent =
+        `Bonne réponse ! +${POINTS_PER_CORRECT} point. ${question.explanation}`;
+
+    }
+
   } else {
-    $("answerFeedback").textContent =
-      `${timedOut ? "Temps écoulé." : "Pas tout à fait."} ${question.explanation}`;
+
+    if ($("answerFeedback")) {
+
+      $("answerFeedback")
+        .textContent =
+        `${timedOut ? "Temps écoulé." : "Mauvaise réponse."} ${question.explanation}`;
+
+    }
+
   }
 
-  $("quizScore").textContent =
-    `Points : ${state.score}`;
 
-  $("progressBar").style.width =
-    `${((state.questionIndex + 1) / state.questions.length) * 100}%`;
+  if ($("quizScore")) {
+
+    $("quizScore")
+      .textContent =
+      `Points : ${state.score}`;
+
+  }
+
+
+  if ($("progressBar")) {
+
+    $("progressBar")
+      .style.width =
+      `${((state.questionIndex + 1) / state.questions.length) * 100}%`;
+
+  }
+
 
   if (
     state.questionIndex ===
     state.questions.length - 1
   ) {
-    $("finishQuiz").classList.remove(
-      "hidden"
-    );
+
+    if ($("finishQuiz")) {
+
+      $("finishQuiz")
+        .classList
+        .remove("hidden");
+
+    }
+
   } else {
-    $("nextQuestion").classList.remove(
-      "hidden"
-    );
+
+    if ($("nextQuestion")) {
+
+      $("nextQuestion")
+        .classList
+        .remove("hidden");
+
+    }
+
   }
+
 }
 
+
 /* =========================================================
-   17. QUESTION SUIVANTE
+   23. QUESTION SUIVANTE
 ========================================================= */
 
 function nextQuestion() {
+
   if (!state.answered) {
     return;
   }
 
-  state.questionIndex += 1;
+  state.questionIndex +=
+    1;
 
   displayQuestion();
 }
 
+
 /* =========================================================
-   18. FIN DU DÉFI
+   24. FIN DU DÉFI
 ========================================================= */
 
 function finishQuiz() {
+
   stopTimer();
 
-  if (!state.questions.length) {
+  if (
+    !state.questions.length
+  ) {
+
     return;
+
   }
 
   saveResult();
@@ -1309,20 +1675,31 @@ function finishQuiz() {
     state.questions.length;
 
   const correctAnswers =
-    state.score / POINTS_PER_CORRECT;
+    state.score /
+    POINTS_PER_CORRECT;
 
-  $("resultSummary").textContent =
-    `${state.player}, tu as obtenu ${state.score} point${state.score > 1 ? "s" : ""} sur ${total * POINTS_PER_CORRECT}. ` +
-    `Réponses correctes : ${correctAnswers} sur ${total}.`;
+  if ($("resultSummary")) {
 
-  showSection("resultsSection");
+    $("resultSummary")
+      .textContent =
+      `${state.player}, tu as obtenu ${state.score} point${state.score > 1 ? "s" : ""} sur ${total}. ` +
+      `Réponses correctes : ${correctAnswers} sur ${total}.`;
+
+  }
+
+  showSection(
+    "resultsSection"
+  );
 }
 
+
 /* =========================================================
-   19. CLASSEMENT LOCAL
+   25. CLASSEMENT LOCAL
+   TEMPORAIRE
 ========================================================= */
 
 function renderLeaderboard() {
+
   const list =
     $("leaderboardList");
 
@@ -1334,16 +1711,6 @@ function renderLeaderboard() {
 
   const records =
     readProgress()
-      .filter(
-        (record) =>
-          record.exam === state.exam ||
-          !state.exam
-      )
-      .filter(
-        (record) =>
-          !state.series ||
-          record.series === state.series
-      )
       .sort(
         (a, b) =>
           Number(b.score || 0) -
@@ -1352,47 +1719,70 @@ function renderLeaderboard() {
       .slice(0, 20);
 
   if (!records.length) {
+
     const empty =
-      document.createElement("p");
+      document.createElement(
+        "p"
+      );
 
     empty.textContent =
-      "Aucun résultat enregistré sur cet appareil pour le moment. Fais un défi pour commencer !";
+      "Aucun défi réalisé pour le moment.";
 
-    list.appendChild(empty);
+    list.appendChild(
+      empty
+    );
 
     return;
+
   }
 
   records.forEach(
     (record, index) => {
+
       const row =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       row.className =
         "chapter-card";
 
       const info =
-        document.createElement("span");
+        document.createElement(
+          "span"
+        );
 
       const name =
-        document.createElement("strong");
+        document.createElement(
+          "strong"
+        );
 
       const detail =
-        document.createElement("small");
+        document.createElement(
+          "small"
+        );
 
       name.textContent =
         `${index + 1}. ${record.player}`;
 
       detail.textContent =
         `${record.exam}` +
-        `${record.series ? " — Série " + record.series : ""}` +
-        ` · ${record.subject}`;
+        `${
+          record.series
+            ? " — Série " +
+              record.series
+            : ""
+        }` +
+        ` · ${record.subject}` +
+        ` · ${record.chapter}`;
 
       const score =
-        document.createElement("strong");
+        document.createElement(
+          "strong"
+        );
 
       score.textContent =
-        `${record.score} pts`;
+        `${record.score}/${record.total}`;
 
       info.append(
         name,
@@ -1404,16 +1794,18 @@ function renderLeaderboard() {
         score
       );
 
-      list.appendChild(row);
+      list.appendChild(
+        row
+      );
+
     }
   );
 }
 
-function openLeaderboard() {
-  stopTimer();
 
-  state.exam = null;
-  state.series = null;
+function openLeaderboard() {
+
+  stopTimer();
 
   renderLeaderboard();
 
@@ -1422,305 +1814,374 @@ function openLeaderboard() {
   );
 }
 
+
 /* =========================================================
-   20. ÉVÉNEMENTS
+   26. ÉVÉNEMENTS
 ========================================================= */
 
 function setupEvents() {
+
   const bepcButton =
     $("bepcButton");
 
   if (bepcButton) {
+
     bepcButton.addEventListener(
       "click",
-      () => chooseExam("BEPC")
+      () =>
+        chooseExam("BEPC")
     );
+
   }
+
 
   const bacButton =
     $("bacButton");
 
   if (bacButton) {
+
     bacButton.addEventListener(
       "click",
-      () => chooseExam("BAC")
+      () =>
+        chooseExam("BAC")
     );
+
   }
 
+
   document
-    .querySelectorAll(".series-card")
-    .forEach((button) => {
-      button.addEventListener(
-        "click",
-        () => {
-          chooseSeries(
-            button.dataset.series
-          );
-        }
-      );
-    });
+    .querySelectorAll(
+      ".series-card"
+    )
+    .forEach(
+      (button) => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            chooseSeries(
+              button.dataset.series
+            )
+        );
+
+      }
+    );
+
 
   const backToExams =
     $("backToExams");
 
   if (backToExams) {
+
     backToExams.addEventListener(
       "click",
       goHome
     );
+
   }
+
 
   const backToSeries =
     $("backToSeries");
 
   if (backToSeries) {
+
     backToSeries.addEventListener(
       "click",
       () => {
-        if (state.exam === "BAC") {
+
+        if (
+          state.exam === "BAC"
+        ) {
+
           showSection(
             "seriesSection"
           );
+
         } else {
+
           goHome();
+
         }
+
       }
     );
+
   }
+
 
   const backToSubjects =
     $("backToSubjects");
 
   if (backToSubjects) {
+
     backToSubjects.addEventListener(
       "click",
       renderSubjects
     );
+
   }
+
 
   const backToChapters =
     $("backToChapters");
 
   if (backToChapters) {
+
     backToChapters.addEventListener(
       "click",
       () => {
+
         if (state.subject) {
+
           chooseSubject(
             state.subject
           );
+
         }
+
       }
     );
+
   }
 
-  /* -----------------------------------------
-     BOUTON RÉVISER LE COURS
-  ----------------------------------------- */
+
+  /*
+   * L'ancien bouton "Réviser le cours"
+   * n'a volontairement plus aucune action.
+   *
+   * Si index.html le contient encore,
+   * il ne sera simplement pas utilisé.
+   */
 
   const revisionButton =
     $("revisionButton");
 
   if (revisionButton) {
-    revisionButton.addEventListener(
-      "click",
-      () => {
-        const lesson =
-          getLessonForChapter(
-            state.chapter
-          );
 
-        if (!lesson) {
-          window.alert(
-            "Le cours détaillé de ce chapitre est encore en préparation."
-          );
+    revisionButton.classList
+      .add("hidden");
 
-          return;
-        }
-
-        showSection(
-          "chapterSection"
-        );
-
-        const chapterSection =
-          $("chapterSection");
-
-        if (chapterSection) {
-          chapterSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-        }
-      }
-    );
   }
 
-  /* -----------------------------------------
-     BOUTON DÉFI
-  ----------------------------------------- */
+
+  /*
+   * Bouton DÉFI
+   */
 
   const challengeButton =
     $("challengeButton");
 
   if (challengeButton) {
+
     challengeButton.addEventListener(
       "click",
       startQuiz
     );
+
   }
 
-  /* -----------------------------------------
-     QCM
-  ----------------------------------------- */
+
+  /*
+   * Question suivante
+   */
 
   const nextQuestionButton =
     $("nextQuestion");
 
   if (nextQuestionButton) {
+
     nextQuestionButton.addEventListener(
       "click",
       nextQuestion
     );
+
   }
+
+
+  /*
+   * Terminer
+   */
 
   const finishQuizButton =
     $("finishQuiz");
 
   if (finishQuizButton) {
+
     finishQuizButton.addEventListener(
       "click",
       finishQuiz
     );
+
   }
 
-  /* -----------------------------------------
-     RÉSULTATS
-  ----------------------------------------- */
+
+  /*
+   * Rejouer
+   */
 
   const retryButton =
     $("retryButton");
 
   if (retryButton) {
+
     retryButton.addEventListener(
       "click",
       startQuiz
     );
+
   }
+
+
+  /*
+   * Accueil depuis résultats
+   */
 
   const resultsHomeButton =
     $("resultsHomeButton");
 
   if (resultsHomeButton) {
+
     resultsHomeButton.addEventListener(
       "click",
       goHome
     );
+
   }
 
-  /* -----------------------------------------
-     ACCUEIL
-  ----------------------------------------- */
+
+  /*
+   * Accueil
+   */
 
   const homeButton =
     $("homeButton");
 
   if (homeButton) {
+
     homeButton.addEventListener(
       "click",
       goHome
     );
+
   }
 
-  /* -----------------------------------------
-     CLASSEMENT
-  ----------------------------------------- */
+
+  /*
+   * Classement
+   */
 
   const leaderboardButton =
     $("leaderboardButton");
 
   if (leaderboardButton) {
+
     leaderboardButton.addEventListener(
       "click",
       openLeaderboard
     );
+
   }
+
 
   const leaderboardHomeButton =
     $("leaderboardHomeButton");
 
   if (leaderboardHomeButton) {
+
     leaderboardHomeButton.addEventListener(
       "click",
       goHome
     );
+
   }
 
-  /* -----------------------------------------
-     À PROPOS
-  ----------------------------------------- */
+
+  /*
+   * À propos
+   */
 
   const aboutButton =
     $("aboutButton");
 
   if (aboutButton) {
+
     aboutButton.addEventListener(
       "click",
-      () => {
+      () =>
         showSection(
           "aboutSection"
-        );
-      }
+        )
     );
+
   }
+
 
   const aboutHomeButton =
     $("aboutHomeButton");
 
   if (aboutHomeButton) {
+
     aboutHomeButton.addEventListener(
       "click",
       goHome
     );
+
   }
 
-  /* -----------------------------------------
-     MENU
-  ----------------------------------------- */
+
+  /*
+   * Menu
+   */
 
   const menuToggle =
     $("menuToggle");
 
   if (menuToggle) {
+
     menuToggle.addEventListener(
       "click",
       () => {
+
         const selection =
           $("selection");
 
         if (selection) {
+
           selection.scrollIntoView({
             behavior: "smooth"
           });
+
         }
+
       }
     );
+
   }
+
 }
 
+
 /* =========================================================
-   21. INITIALISATION
+   27. INITIALISATION
 ========================================================= */
 
 function initializeApp() {
-  document.title = APP_NAME;
+
+  document.title =
+    APP_NAME;
 
   setupEvents();
 
-  showSection("selection");
+  showSection(
+    "selection"
+  );
 
   console.info(
     `${APP_NAME} initialisé — Créé par ${CREATOR}`
   );
+
 }
+
 
 initializeApp();
