@@ -168,120 +168,118 @@ window.RA_QUESTIONS = {
             "Qui habite ici",
             "Pour que tu réussisses"
           ],
-          correct: 2,
-          explanation:
-            "« Qui habite ici » est une proposition subordonnée relative car elle est introduite par le pronom relatif « qui »."
-        }
-      ],
-       "Le conditionnel et l’hypothèse": [
+          /* ===================================================
+   GRAMMAIRE ET ANALYSE DE LA PHRASE
+   =================================================== */
+"Grammaire et analyse de la phrase": [
   {
-    question: "Dans « Si j'avais le temps, je voyagerais », quel temps est employé dans « je voyagerais » ?",
+    question: "Dans la phrase « Le professeur explique la leçon aux élèves », quel est le sujet du verbe « explique » ?",
     answers: [
-      "Le futur simple",
-      "Le conditionnel présent",
-      "L'imparfait",
-      "Le conditionnel passé"
+      "La leçon",
+      "Aux élèves",
+      "Le professeur",
+      "Explique"
+    ],
+    correct: 2,
+    explanation: "« Le professeur » est celui qui fait l'action d'expliquer : c'est donc le sujet du verbe « explique »."
+  },
+  {
+    question: "Dans « Marie lit un livre », quelle est la fonction de « un livre » ?",
+    answers: [
+      "Sujet",
+      "Complément d'objet direct",
+      "Complément d'objet indirect",
+      "Attribut du sujet"
     ],
     correct: 1,
-    explanation: "« Je voyagerais » est au conditionnel présent. Il exprime ici une conséquence soumise à une condition."
+    explanation: "« Un livre » répond à la question « Marie lit quoi ? ». C'est donc un complément d'objet direct (COD)."
   },
   {
-    question: "Dans « Si tu travaillais davantage, tu réussirais », quel temps est employé après « si » ?",
+    question: "Dans « Paul parle à son frère », quelle est la fonction de « à son frère » ?",
     answers: [
-      "L'imparfait",
-      "Le futur simple",
-      "Le présent",
-      "Le conditionnel"
+      "COD",
+      "Sujet",
+      "COI",
+      "Attribut"
     ],
-    correct: 0,
-    explanation: "Dans cette construction d'hypothèse, « si » est suivi de l'imparfait."
+    correct: 2,
+    explanation: "« À son frère » complète le verbe « parle » avec la préposition « à ». C'est un complément d'objet indirect (COI)."
   },
   {
-    question: "Quelle phrase respecte correctement la construction de l'hypothèse ?",
+    question: "Quelle est la nature du mot « rapidement » dans « Il court rapidement » ?",
     answers: [
-      "Si tu viendras, je partirai.",
-      "Si tu viens, je partirai.",
-      "Si tu viendrais, je partirai.",
-      "Si tu viendras, je partirais."
+      "Nom",
+      "Adjectif",
+      "Adverbe",
+      "Pronom"
+    ],
+    correct: 2,
+    explanation: "« Rapidement » précise la manière dont il court. C'est un adverbe."
+  },
+  {
+    question: "Dans « La petite fille porte une robe rouge », quelle est la fonction de « rouge » ?",
+    answers: [
+      "Sujet",
+      "COD",
+      "Épithète",
+      "COI"
+    ],
+    correct: 2,
+    explanation: "« Rouge » donne une précision sur le nom « robe ». Il est employé comme adjectif épithète."
+  },
+  {
+    question: "Dans « Mon frère est médecin », quelle est la fonction de « médecin » ?",
+    answers: [
+      "COD",
+      "Attribut du sujet",
+      "COI",
+      "Complément circonstanciel"
     ],
     correct: 1,
-    explanation: "Avec une condition possible, on emploie le présent après « si » et le futur dans la proposition principale."
+    explanation: "« Médecin » donne une information sur le sujet « mon frère » après le verbe d'état « est ». C'est un attribut du sujet."
   },
   {
-    question: "Dans « Si j'avais étudié, j'aurais réussi », quel temps est « j'aurais réussi » ?",
+    question: "Quelle phrase est une phrase interrogative ?",
     answers: [
-      "Le conditionnel présent",
-      "Le futur antérieur",
-      "Le conditionnel passé",
-      "Le plus-que-parfait"
+      "Les élèves travaillent sérieusement.",
+      "Comme ce paysage est magnifique !",
+      "Est-ce que tu as terminé ton exercice ?",
+      "Fermez vos livres."
     ],
     correct: 2,
-    explanation: "« J'aurais réussi » est au conditionnel passé."
+    explanation: "La phrase « Est-ce que tu as terminé ton exercice ? » pose une question : c'est une phrase interrogative."
   },
   {
-    question: "Quelle phrase exprime une hypothèse imaginaire dans le présent ?",
+    question: "Dans « Lorsque la pluie tombe, les enfants restent à la maison », quelle est la proposition principale ?",
     answers: [
-      "Si tu viens, nous mangerons.",
-      "Si tu étais riche, tu voyagerais beaucoup.",
-      "Quand tu viendras, nous sortirons.",
-      "Tu viens et nous partons."
+      "Lorsque la pluie tombe",
+      "La pluie tombe",
+      "Les enfants restent à la maison",
+      "Lorsque les enfants restent"
     ],
-    correct: 1,
-    explanation: "L'imparfait après « si » et le conditionnel présent dans la principale expriment une hypothèse."
+    correct: 2,
+    explanation: "« Les enfants restent à la maison » peut fonctionner seule : c'est la proposition principale."
   },
   {
-    question: "Dans « Je voudrais réussir mon examen », le conditionnel exprime principalement :",
+    question: "Dans « Le garçon qui porte une chemise bleue est mon cousin », quelle est la nature de « qui porte une chemise bleue » ?",
     answers: [
-      "Un souhait",
-      "Un ordre",
-      "Une certitude",
-      "Une action passée"
+      "Une proposition subordonnée relative",
+      "Une proposition principale",
+      "Une proposition indépendante",
+      "Un groupe nominal"
     ],
     correct: 0,
-    explanation: "« Je voudrais » exprime ici un souhait ou un désir."
+    explanation: "La proposition « qui porte une chemise bleue » est introduite par le pronom relatif « qui » et complète le nom « garçon ». C'est une subordonnée relative."
   },
   {
-    question: "Quelle phrase contient un conditionnel présent ?",
+    question: "Dans « Nous partirons demain matin », quelle est la fonction de « demain matin » ?",
     answers: [
-      "Il travaille beaucoup.",
-      "Il travaillera demain.",
-      "Il travaillerait davantage avec plus de temps.",
-      "Il a travaillé hier."
+      "COD",
+      "COI",
+      "Complément circonstanciel de temps",
+      "Attribut du sujet"
     ],
     correct: 2,
-    explanation: "« Travaillerait » est une forme du conditionnel présent."
-  },
-  {
-    question: "Dans « Si nous avions su, nous serions venus », que marque cette phrase ?",
-    answers: [
-      "Une hypothèse passée non réalisée",
-      "Une certitude passée",
-      "Une action habituelle",
-      "Un ordre"
-    ],
-    correct: 0,
-    explanation: "Le plus-que-parfait après « si » et le conditionnel passé dans la principale expriment une hypothèse passée non réalisée."
-  },
-  {
-    question: "Complète correctement : « Si j'avais plus de temps, je ___ davantage. »",
-    answers: [
-      "travaille",
-      "travaillerai",
-      "travaillerais",
-      "travaillais"
-    ],
-    correct: 2,
-    explanation: "Avec « si j'avais », on emploie ici le conditionnel présent : « je travaillerais »."
-  },
-  {
-    question: "Quelle phrase exprime une demande polie ?",
-    answers: [
-      "Donne-moi ton livre !",
-      "Tu me donnes ton livre.",
-      "Pourrais-tu me prêter ton livre ?",
-      "Tu donneras ton livre."
-    ],
-    correct: 2,
-    explanation: "« Pourrais-tu... ? » utilise le conditionnel pour formuler une demande polie."
+    explanation: "« Demain matin » indique le moment où l'action se déroule. C'est un complément circonstanciel de temps."
   }
 ],
