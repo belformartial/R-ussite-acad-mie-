@@ -56,141 +56,214 @@ function showSection(id) {
 ====================================================== */
 function getProgramme() {
   if (!window.RA_PROGRAMME) {
-    console.error("RA_PROGRAMME est introuvable.");
+    console.error(
+      "❌ RA_PROGRAMME est introuvable."
+    );
     return null;
   }
   return window.RA_PROGRAMME;
 }
 /* ======================================================
+   BANQUE DE QUESTIONS
+====================================================== */
+function getQuestionBank() {
+  if (!window.RA_QUESTIONS) {
+    console.error(
+      "❌ RA_QUESTIONS est introuvable."
+    );
+    console.error(
+      "Vérifie que questions.js est chargé AVANT game.js."
+    );
+    return null;
+  }
+  return window.RA_QUESTIONS;
+}
+/* ======================================================
    INITIALISATION
 ====================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  $("bepcButton")?.addEventListener(
-    "click",
-    () => startExam("BEPC")
-  );
-  $("bacButton")?.addEventListener(
-    "click",
-    () => startExam("BAC")
-  );
-  $("backToExams")?.addEventListener(
-    "click",
-    () => showSection("selection")
-  );
-  $("backToSeries")?.addEventListener(
-    "click",
-    () => showSection("seriesSection")
-  );
-  $("backToSubjects")?.addEventListener(
-    "click",
-    () => {
-      if (state.exam === "BAC") {
-        showSubjects(state.series);
-      } else {
-        showSubjects();
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    console.log(
+      "✅ RÉUSSITE ACADÉMIE — game.js chargé."
+    );
+    console.log(
+      "RA_PROGRAMME :",
+      !!window.RA_PROGRAMME
+    );
+    console.log(
+      "RA_QUESTIONS :",
+      !!window.RA_QUESTIONS
+    );
+    /* ----------------------------------------------
+       EXAMENS
+    ---------------------------------------------- */
+    $("bepcButton")?.addEventListener(
+      "click",
+      () => startExam("BEPC")
+    );
+    $("bacButton")?.addEventListener(
+      "click",
+      () => startExam("BAC")
+    );
+    /* ----------------------------------------------
+       RETOURS
+    ---------------------------------------------- */
+    $("backToExams")?.addEventListener(
+      "click",
+      () => showSection("selection")
+    );
+    $("backToSeries")?.addEventListener(
+      "click",
+      () => showSection("seriesSection")
+    );
+    $("backToSubjects")?.addEventListener(
+      "click",
+      () => {
+        if (state.exam === "BAC") {
+          showSubjects(state.series);
+        } else {
+          showSubjects();
+        }
       }
-    }
-  );
-  $("backToChapters")?.addEventListener(
-    "click",
-    () => showChapters()
-  );
-  /* Séries BAC */
-  document
-    .querySelectorAll(".series-card")
-    .forEach((button) => {
-      button.addEventListener("click", () => {
-        const series = button.dataset.series;
-        if (!series) return;
-        state.series = series;
-        showSubjects(series);
+    );
+    $("backToChapters")?.addEventListener(
+      "click",
+      () => showChapters()
+    );
+    /* ----------------------------------------------
+       SÉRIES BAC
+    ---------------------------------------------- */
+    document
+      .querySelectorAll(".series-card")
+      .forEach((button) => {
+        button.addEventListener(
+          "click",
+          () => {
+            const series =
+              button.dataset.series;
+            if (!series) {
+              return;
+            }
+            state.series = series;
+            showSubjects(series);
+          }
+        );
       });
-    });
-  /* Ancienne interface de cours */
-  disableOldRevisionInterface();
-  /* Résultats */
-  $("retryButton")?.addEventListener(
-    "click",
-    () => {
-      if (!state.chapter) return;
-      startQuiz();
-    }
-  );
-  $("resultsHomeButton")?.addEventListener(
-    "click",
-    () => {
-      resetState();
-      showSection("selection");
-    }
-  );
-  /* Navigation */
-  $("homeButton")?.addEventListener(
-    "click",
-    () => {
-      resetState();
-      showSection("selection");
-    }
-  );
-  $("leaderboardButton")?.addEventListener(
-    "click",
-    () => showLeaderboard()
-  );
-  $("leaderboardHomeButton")?.addEventListener(
-    "click",
-    () => showSection("selection")
-  );
-  $("aboutButton")?.addEventListener(
-    "click",
-    () => showSection("aboutSection")
-  );
-  $("aboutHomeButton")?.addEventListener(
-    "click",
-    () => showSection("selection")
-  );
-  /* Questions */
-  $("nextQuestion")?.addEventListener(
-    "click",
-    () => nextQuestion()
-  );
-  $("finishQuiz")?.addEventListener(
-    "click",
-    () => finishQuiz()
-  );
-  /* Écran initial */
-  showSection("selection");
-});
+    /* ----------------------------------------------
+       ANCIEN SYSTÈME DE COURS
+    ---------------------------------------------- */
+    disableOldRevisionInterface();
+    /* ----------------------------------------------
+       RÉSULTATS
+    ---------------------------------------------- */
+    $("retryButton")?.addEventListener(
+      "click",
+      () => {
+        if (!state.chapter) {
+          return;
+        }
+        startQuiz();
+      }
+    );
+    $("resultsHomeButton")?.addEventListener(
+      "click",
+      () => {
+        resetState();
+        showSection("selection");
+      }
+    );
+    /* ----------------------------------------------
+       NAVIGATION
+    ---------------------------------------------- */
+    $("homeButton")?.addEventListener(
+      "click",
+      () => {
+        resetState();
+        showSection("selection");
+      }
+    );
+    $("leaderboardButton")?.addEventListener(
+      "click",
+      () => showLeaderboard()
+    );
+    $("leaderboardHomeButton")?.addEventListener(
+      "click",
+      () => showSection("selection")
+    );
+    $("aboutButton")?.addEventListener(
+      "click",
+      () => showSection("aboutSection")
+    );
+    $("aboutHomeButton")?.addEventListener(
+      "click",
+      () => showSection("selection")
+    );
+    /* ----------------------------------------------
+       QUIZ
+    ---------------------------------------------- */
+    $("nextQuestion")?.addEventListener(
+      "click",
+      () => nextQuestion()
+    );
+    $("finishQuiz")?.addEventListener(
+      "click",
+      () => finishQuiz()
+    );
+    /* ----------------------------------------------
+       ÉCRAN INITIAL
+    ---------------------------------------------- */
+    showSection("selection");
+  }
+);
 /* ======================================================
-   DÉSACTIVER L'ANCIEN MODE RÉVISION
+   ANCIEN MODE RÉVISION
 ====================================================== */
 function disableOldRevisionInterface() {
-  const revisionButton = $("revisionButton");
-  const challengeButton = $("challengeButton");
-  const lessonContent = $("lessonContent");
+  const revisionButton =
+    $("revisionButton");
+  const challengeButton =
+    $("challengeButton");
+  const lessonContent =
+    $("lessonContent");
   if (lessonContent) {
     lessonContent.innerHTML = "";
-    lessonContent.style.display = "none";
+    lessonContent.style.display =
+      "none";
   }
   if (revisionButton) {
-    revisionButton.style.display = "none";
+    revisionButton.style.display =
+      "none";
   }
   if (challengeButton) {
-    challengeButton.style.display = "none";
+    challengeButton.style.display =
+      "none";
   }
-  const modeGrid = document.querySelector(".mode-grid");
+  const modeGrid =
+    document.querySelector(
+      ".mode-grid"
+    );
   if (modeGrid) {
-    modeGrid.style.display = "none";
+    modeGrid.style.display =
+      "none";
   }
 }
 /* ======================================================
    CHOIX DE L'EXAMEN
 ====================================================== */
 function startExam(exam) {
+  console.log(
+    "🎓 Examen sélectionné :",
+    exam
+  );
   state.exam = exam;
   state.series = null;
   state.subject = null;
   state.chapter = null;
   if (exam === "BAC") {
-    showSection("seriesSection");
+    showSection(
+      "seriesSection"
+    );
     return;
   }
   if (exam === "BEPC") {
@@ -202,128 +275,243 @@ function startExam(exam) {
    MATIÈRES
 ====================================================== */
 function showSubjects(series = null) {
-  const programme = getProgramme();
-  if (!programme) return;
-  const subjectsList = $("subjectsList");
-  if (!subjectsList) return;
+  const programme =
+    getProgramme();
+  if (!programme) {
+    return;
+  }
+  const subjectsList =
+    $("subjectsList");
+  if (!subjectsList) {
+    console.error(
+      "❌ subjectsList introuvable."
+    );
+    return;
+  }
   subjectsList.innerHTML = "";
   let subjects = [];
-  /* BEPC */
+  /* ----------------------------------------------
+     BEPC
+  ---------------------------------------------- */
   if (state.exam === "BEPC") {
-    subjects =
-      window.RA_PROGRAMME_UTILS
-        ? window.RA_PROGRAMME_UTILS.getBEPCSubjects()
-        : Object.keys(
-            programme.BEPC?.matieres || {}
-          );
+    if (
+      window.RA_PROGRAMME_UTILS &&
+      typeof window
+        .RA_PROGRAMME_UTILS
+        .getBEPCSubjects ===
+        "function"
+    ) {
+      subjects =
+        window
+          .RA_PROGRAMME_UTILS
+          .getBEPCSubjects();
+    } else {
+      subjects =
+        Object.keys(
+          programme.BEPC?.matieres || {}
+        );
+    }
   }
-  /* BAC */
+  /* ----------------------------------------------
+     BAC
+  ---------------------------------------------- */
   if (state.exam === "BAC") {
     const selectedSeries =
       series || state.series;
     if (!selectedSeries) {
-      showSection("seriesSection");
+      showSection(
+        "seriesSection"
+      );
       return;
     }
-    state.series = selectedSeries;
-    subjects =
-      window.RA_PROGRAMME_UTILS
-        ? window.RA_PROGRAMME_UTILS.getBACSubjects(
+    state.series =
+      selectedSeries;
+    if (
+      window.RA_PROGRAMME_UTILS &&
+      typeof window
+        .RA_PROGRAMME_UTILS
+        .getBACSubjects ===
+        "function"
+    ) {
+      subjects =
+        window
+          .RA_PROGRAMME_UTILS
+          .getBACSubjects(
             selectedSeries
-          )
-        : Object.keys(
-            programme.BAC?.series?.[
-              selectedSeries
-            ]?.matieres || {}
           );
+    } else {
+      subjects =
+        Object.keys(
+          programme.BAC
+            ?.series
+            ?.[
+              selectedSeries
+            ]
+            ?.matieres || {}
+        );
+    }
   }
+  console.log(
+    "📚 Matières :",
+    subjects
+  );
   $("subjectsTitle").textContent =
     state.exam === "BAC"
       ? `Matières — Série ${state.series}`
       : "Matières — BEPC";
-  subjects.forEach((subject) => {
-    const button =
-      document.createElement("button");
-    button.type = "button";
-    button.className =
-      "subject-card";
-    button.innerHTML = `
-      <span class="card-icon">📚</span>
-      <span class="card-title">
-        ${escapeHTML(subject)}
-      </span>
-      <span class="card-action">
-        Voir les chapitres →
-      </span>
-    `;
-    button.addEventListener(
-      "click",
-      () => {
-        state.subject = subject;
-        showChapters();
-      }
-    );
-    subjectsList.appendChild(button);
-  });
-  showSection("subjectsSection");
+  subjects.forEach(
+    (subject) => {
+      const button =
+        document.createElement(
+          "button"
+        );
+      button.type = "button";
+      button.className =
+        "subject-card";
+      button.innerHTML = `
+        <span class="card-icon">📚</span>
+        <span class="card-title">
+          ${escapeHTML(subject)}
+        </span>
+        <span class="card-action">
+          Voir les chapitres →
+        </span>
+      `;
+      button.addEventListener(
+        "click",
+        () => {
+          state.subject =
+            subject;
+          console.log(
+            "📖 Matière sélectionnée :",
+            subject
+          );
+          showChapters();
+        }
+      );
+      subjectsList.appendChild(
+        button
+      );
+    }
+  );
+  showSection(
+    "subjectsSection"
+  );
 }
 /* ======================================================
    CHAPITRES
 ====================================================== */
 function showChapters() {
-  const programme = getProgramme();
-  if (!programme || !state.subject) return;
+  const programme =
+    getProgramme();
+  if (
+    !programme ||
+    !state.subject
+  ) {
+    console.error(
+      "❌ Impossible d'afficher les chapitres.",
+      {
+        programme: !!programme,
+        subject: state.subject
+      }
+    );
+    return;
+  }
   const chaptersList =
     $("chaptersList");
-  if (!chaptersList) return;
+  if (!chaptersList) {
+    console.error(
+      "❌ chaptersList introuvable."
+    );
+    return;
+  }
   chaptersList.innerHTML = "";
   let chapters = [];
-  /* BEPC */
+  /* ----------------------------------------------
+     BEPC
+  ---------------------------------------------- */
   if (state.exam === "BEPC") {
-    chapters =
-      window.RA_PROGRAMME_UTILS
-        ? window.RA_PROGRAMME_UTILS.getBEPCChapters(
+    if (
+      window.RA_PROGRAMME_UTILS &&
+      typeof window
+        .RA_PROGRAMME_UTILS
+        .getBEPCChapters ===
+        "function"
+    ) {
+      chapters =
+        window
+          .RA_PROGRAMME_UTILS
+          .getBEPCChapters(
             state.subject
-          )
-        : programme.BEPC?.matieres?.[
-            state.subject
-          ] || [];
+          );
+    } else {
+      chapters =
+        programme
+          .BEPC
+          ?.matieres
+          ?.[state.subject] || [];
+    }
   }
-  /* BAC */
+  /* ----------------------------------------------
+     BAC
+  ---------------------------------------------- */
   if (state.exam === "BAC") {
-    chapters =
-      window.RA_PROGRAMME_UTILS
-        ? window.RA_PROGRAMME_UTILS.getBACChapters(
+    if (
+      window.RA_PROGRAMME_UTILS &&
+      typeof window
+        .RA_PROGRAMME_UTILS
+        .getBACChapters ===
+        "function"
+    ) {
+      chapters =
+        window
+          .RA_PROGRAMME_UTILS
+          .getBACChapters(
             state.series,
             state.subject
-          )
-        : programme.BAC?.series?.[
-            state.series
-          ]?.matieres?.[
-            state.subject
-          ] || [];
+          );
+    } else {
+      chapters =
+        programme
+          .BAC
+          ?.series
+          ?.[state.series]
+          ?.matieres
+          ?.[state.subject] || [];
+    }
   }
+  console.log(
+    "📖 Chapitres trouvés :",
+    chapters
+  );
   $("chaptersTitle").textContent =
     `${state.subject} — Chapitres`;
   if (!chapters.length) {
     chaptersList.innerHTML = `
       <div class="empty-message">
-        Aucun chapitre disponible pour cette matière.
+        Aucun chapitre disponible
+        pour cette matière.
       </div>
     `;
-    showSection("chaptersSection");
+    showSection(
+      "chaptersSection"
+    );
     return;
   }
   chapters.forEach(
     (chapter, index) => {
       const button =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
       button.type = "button";
       button.className =
         "chapter-card";
       button.innerHTML = `
         <span class="chapter-number">
-          ${String(index + 1).padStart(2, "0")}
+          ${String(
+            index + 1
+          ).padStart(2, "0")}
         </span>
         <span class="chapter-info">
           <strong>
@@ -339,117 +527,188 @@ function showChapters() {
       `;
       button.addEventListener(
         "click",
-        () => chooseChapter(chapter)
+        () => {
+          console.log(
+            "🟢 Chapitre sélectionné :",
+            chapter
+          );
+          chooseChapter(
+            chapter
+          );
+        }
       );
-      chaptersList.appendChild(button);
+      chaptersList.appendChild(
+        button
+      );
     }
   );
-  showSection("chaptersSection");
+  showSection(
+    "chaptersSection"
+  );
 }
 /* ======================================================
    CHOIX DU CHAPITRE
 ====================================================== */
-function chooseChapter(chapter) {
-  state.chapter = chapter;
+function chooseChapter(
+  chapter
+) {
+  state.chapter =
+    chapter;
+  console.log(
+    "🎯 Défi demandé :",
+    {
+      exam: state.exam,
+      series: state.series,
+      subject: state.subject,
+      chapter: state.chapter
+    }
+  );
   startQuiz();
 }
 /* ======================================================
-   BANQUE DE QUESTIONS
+   RÉCUPÉRER LES QUESTIONS
 ====================================================== */
-/*
-   IMPORTANT :
-   Toutes les questions viennent maintenant
-   de questions.js.
-   questions.js doit créer :
-   window.RA_QUESTIONS
-*/
 function getQuestionsForChapter() {
   const questionBank =
-    window.RA_QUESTIONS;
+    getQuestionBank();
   if (!questionBank) {
-    console.error(
-      "RA_QUESTIONS est introuvable. Vérifie que questions.js est chargé avant game.js."
-    );
     return [];
   }
   let questions = [];
-  /* ==============================
+  /* ----------------------------------------------
      BEPC
-  ============================== */
+  ---------------------------------------------- */
   if (state.exam === "BEPC") {
     questions =
       questionBank
         ?.BEPC
-        ?. [state.subject]
-        ?. [state.chapter]
-      || [];
+        ?.["Français"]
+        ?.[state.chapter]
+        || [];
+    /*
+      Pour les autres matières BEPC,
+      on utilise la matière sélectionnée.
+    */
+    if (
+      state.subject !==
+      "Français"
+    ) {
+      questions =
+        questionBank
+          ?.BEPC
+          ?.[state.subject]
+          ?.[state.chapter]
+          || [];
+    }
   }
-  /* ==============================
+  /* ----------------------------------------------
      BAC
-  ============================== */
+  ---------------------------------------------- */
   if (state.exam === "BAC") {
     questions =
       questionBank
         ?.BAC
-        ?. [state.series]
-        ?. [state.subject]
-        ?. [state.chapter]
-      || [];
+        ?.[state.series]
+        ?.[state.subject]
+        ?.[state.chapter]
+        || [];
   }
-  /* ==============================
-     VÉRIFICATION
-  ============================== */
-  if (!questions.length) {
-    console.warn(
-      "Aucune question trouvée pour :",
-      state.exam,
-      state.series,
-      state.subject,
-      state.chapter
-    );
-    return [];
-  }
+  console.log(
+    "🔎 Recherche des questions :",
+    {
+      exam: state.exam,
+      series: state.series,
+      subject: state.subject,
+      chapter: state.chapter
+    }
+  );
+  console.log(
+    "📝 Questions trouvées :",
+    questions.length
+  );
   /*
-     RÈGLE :
-     maximum 10 questions par défi.
+     Maximum 10 questions
   */
-  return questions.slice(0, 10);
+  return questions.slice(
+    0,
+    10
+  );
 }
 /* ======================================================
-   DÉMARRER UN DÉFI
+   DÉMARRER LE DÉFI
 ====================================================== */
 function startQuiz() {
+  console.log(
+    "🚀 Démarrage du défi..."
+  );
   state.questions =
     getQuestionsForChapter();
-  state.currentQuestion = 0;
-  state.score = 0;
-  state.answered = false;
-  /* Aucune question disponible */
-  if (!state.questions.length) {
-    $("resultSummary").innerHTML = `
-      <strong>
-        Défi bientôt disponible
-      </strong>
-      <br><br>
-      Les questions de ce chapitre
-      seront ajoutées prochainement.
-    `;
-    showSection("resultsSection");
+  state.currentQuestion =
+    0;
+  state.score =
+    0;
+  state.answered =
+    false;
+  /* ----------------------------------------------
+     AUCUNE QUESTION
+  ---------------------------------------------- */
+  if (
+    !state.questions.length
+  ) {
+    console.error(
+      "❌ Aucune question trouvée.",
+      {
+        exam: state.exam,
+        series: state.series,
+        subject: state.subject,
+        chapter: state.chapter
+      }
+    );
+    if ($("resultSummary")) {
+      $("resultSummary").innerHTML = `
+        <strong>
+          Défi bientôt disponible
+        </strong>
+        <br><br>
+        Aucune question n'a été trouvée
+        pour :
+        <br><br>
+        <strong>
+          ${escapeHTML(
+            state.chapter || ""
+          )}
+        </strong>
+      `;
+    }
+    showSection(
+      "resultsSection"
+    );
     return;
   }
+  /* ----------------------------------------------
+     TITRE
+  ---------------------------------------------- */
   if ($("quizTitle")) {
     $("quizTitle").textContent =
-      state.chapter
-        ? `DÉFI — ${state.chapter}`
-        : "DÉFI";
+      `DÉFI — ${state.chapter}`;
   }
-  $("quizScore").textContent =
-    "Points : 0";
-  showSection("quizSection");
+  /* ----------------------------------------------
+     SCORE
+  ---------------------------------------------- */
+  if ($("quizScore")) {
+    $("quizScore").textContent =
+      "Points : 0";
+  }
+  /* ----------------------------------------------
+     AFFICHAGE QUIZ
+  ---------------------------------------------- */
+  showSection(
+    "quizSection"
+  );
   renderQuestion();
 }
 /* ======================================================
-   AFFICHER UNE QUESTION
+   AFFICHER LA QUESTION
 ====================================================== */
 function renderQuestion() {
   const questions =
@@ -462,37 +721,95 @@ function renderQuestion() {
     questions[
       state.currentQuestion
     ];
-  state.answered = false;
-  $("quizProgress").textContent =
-    `Question ${
-      state.currentQuestion + 1
-    } / ${questions.length}`;
-  $("questionText").textContent =
-    question.question;
-  $("quizScore").textContent =
-    `Points : ${state.score}`;
-  $("progressBar").style.width =
-    `${
-      (state.currentQuestion /
-        questions.length) *
-      100
-    }%`;
-  $("answerFeedback").textContent =
-    "";
-  $("nextQuestion")
-    .classList
-    .add("hidden");
-  $("finishQuiz")
-    .classList
-    .add("hidden");
+  if (!question) {
+    finishQuiz();
+    return;
+  }
+  state.answered =
+    false;
+  /* ----------------------------------------------
+     PROGRESSION
+  ---------------------------------------------- */
+  if ($("quizProgress")) {
+    $("quizProgress").textContent =
+      `Question ${
+        state.currentQuestion + 1
+      } / ${questions.length}`;
+  }
+  /* ----------------------------------------------
+     QUESTION
+  ---------------------------------------------- */
+  if ($("questionText")) {
+    $("questionText").textContent =
+      question.question;
+  }
+  /* ----------------------------------------------
+     SCORE
+  ---------------------------------------------- */
+  if ($("quizScore")) {
+    $("quizScore").textContent =
+      `Points : ${state.score}`;
+  }
+  /* ----------------------------------------------
+     BARRE DE PROGRESSION
+  ---------------------------------------------- */
+  if ($("progressBar")) {
+    $("progressBar").style.width =
+      `${
+        (
+          state.currentQuestion /
+          questions.length
+        ) * 100
+      }%`;
+  }
+  /* ----------------------------------------------
+     FEEDBACK
+  ---------------------------------------------- */
+  if ($("answerFeedback")) {
+    $("answerFeedback").textContent =
+      "";
+  }
+  if ($("nextQuestion")) {
+    $("nextQuestion")
+      .classList
+      .add("hidden");
+  }
+  if ($("finishQuiz")) {
+    $("finishQuiz")
+      .classList
+      .add("hidden");
+  }
+  /* ----------------------------------------------
+     RÉPONSES
+  ---------------------------------------------- */
   const answersList =
     $("answersList");
+  if (!answersList) {
+    console.error(
+      "❌ answersList introuvable."
+    );
+    return;
+  }
   answersList.innerHTML = "";
+  if (
+    !Array.isArray(
+      question.answers
+    )
+  ) {
+    console.error(
+      "❌ Les réponses de la question sont invalides.",
+      question
+    );
+    return;
+  }
   question.answers.forEach(
     (answer, index) => {
       const button =
-        document.createElement("button");
-      button.type = "button";
+        document.createElement(
+          "button"
+        );
+      button.type =
+        "button";
       button.className =
         "answer-button";
       button.textContent =
@@ -501,7 +818,9 @@ function renderQuestion() {
         )}. ${answer}`;
       button.addEventListener(
         "click",
-        () => selectAnswer(index)
+        () => selectAnswer(
+          index
+        )
       );
       answersList.appendChild(
         button
@@ -512,24 +831,44 @@ function renderQuestion() {
 /* ======================================================
    RÉPONSE
 ====================================================== */
-function selectAnswer(answerIndex) {
-  if (state.answered) return;
-  state.answered = true;
+function selectAnswer(
+  answerIndex
+) {
+  if (
+    state.answered
+  ) {
+    return;
+  }
+  state.answered =
+    true;
   const question =
     state.questions[
       state.currentQuestion
     ];
+  if (!question) {
+    return;
+  }
+  const answersList =
+    $("answersList");
+  if (!answersList) {
+    return;
+  }
   const buttons =
     [
-      ...$("answersList")
-        .querySelectorAll("button")
+      ...answersList
+        .querySelectorAll(
+          "button"
+        )
     ];
   buttons.forEach(
     (button) => {
-      button.disabled = true;
+      button.disabled =
+        true;
     }
   );
-  /* Bonne réponse */
+  /* ----------------------------------------------
+     BONNE RÉPONSE
+  ---------------------------------------------- */
   if (
     answerIndex ===
     question.correct
@@ -537,38 +876,63 @@ function selectAnswer(answerIndex) {
     state.score++;
     buttons[
       answerIndex
-    ].classList.add("correct");
-    $("answerFeedback").textContent =
-      "✅ Bonne réponse !";
+    ]?.classList.add(
+      "correct"
+    );
+    if ($("answerFeedback")) {
+      $("answerFeedback").textContent =
+        "✅ Bonne réponse !";
+    }
   }
-  /* Mauvaise réponse */
+  /* ----------------------------------------------
+     MAUVAISE RÉPONSE
+  ---------------------------------------------- */
   else {
     buttons[
       answerIndex
-    ].classList.add("wrong");
+    ]?.classList.add(
+      "wrong"
+    );
     buttons[
       question.correct
-    ].classList.add("correct");
-    $("answerFeedback").textContent =
-      "❌ Mauvaise réponse.";
+    ]?.classList.add(
+      "correct"
+    );
+    if ($("answerFeedback")) {
+      $("answerFeedback").textContent =
+        "❌ Mauvaise réponse.";
+    }
   }
-  $("quizScore").textContent =
-    `Points : ${state.score}`;
-  /* Explication */
-  if (question.explanation) {
+  /* ----------------------------------------------
+     EXPLICATION
+  ---------------------------------------------- */
+  if (
+    question.explanation &&
+    $("answerFeedback")
+  ) {
     $("answerFeedback").textContent +=
       ` ${question.explanation}`;
   }
+  /* ----------------------------------------------
+     SCORE
+  ---------------------------------------------- */
+  if ($("quizScore")) {
+    $("quizScore").textContent =
+      `Points : ${state.score}`;
+  }
+  /* ----------------------------------------------
+     FIN OU QUESTION SUIVANTE
+  ---------------------------------------------- */
   const lastQuestion =
     state.currentQuestion >=
     state.questions.length - 1;
   if (lastQuestion) {
     $("finishQuiz")
-      .classList
+      ?.classList
       .remove("hidden");
   } else {
     $("nextQuestion")
-      .classList
+      ?.classList
       .remove("hidden");
   }
 }
@@ -576,7 +940,11 @@ function selectAnswer(answerIndex) {
    QUESTION SUIVANTE
 ====================================================== */
 function nextQuestion() {
-  if (!state.answered) return;
+  if (
+    !state.answered
+  ) {
+    return;
+  }
   state.currentQuestion++;
   renderQuestion();
 }
@@ -589,31 +957,39 @@ function finishQuiz() {
   const percentage =
     total > 0
       ? Math.round(
-          (state.score / total) * 100
+          (
+            state.score /
+            total
+          ) * 100
         )
       : 0;
-  $("resultSummary").innerHTML = `
-    <strong>
+  if ($("resultSummary")) {
+    $("resultSummary").innerHTML = `
+      <strong>
+        ${escapeHTML(
+          state.subject || ""
+        )}
+      </strong>
+      <br>
       ${escapeHTML(
-        state.subject || ""
+        state.chapter || ""
       )}
-    </strong>
-    <br>
-    ${escapeHTML(
-      state.chapter || ""
-    )}
-    <br><br>
-    🎯 Score :
-    <strong>
-      ${state.score} / ${total}
-    </strong>
-    <br>
-    📊 Résultat :
-    <strong>
-      ${percentage}%
-    </strong>
-  `;
-  showSection("resultsSection");
+      <br><br>
+      🎯 Score :
+      <strong>
+        ${state.score} / ${total}
+      </strong>
+      <br>
+      📊 Résultat :
+      <strong>
+        ${percentage}%
+      </strong>
+    `;
+  }
+  saveLocalScore();
+  showSection(
+    "resultsSection"
+  );
 }
 /* ======================================================
    CLASSEMENT LOCAL
@@ -621,7 +997,9 @@ function finishQuiz() {
 function showLeaderboard() {
   const list =
     $("leaderboardList");
-  if (!list) return;
+  if (!list) {
+    return;
+  }
   let scores = [];
   try {
     scores =
@@ -678,15 +1056,27 @@ function showLeaderboard() {
    ENREGISTRER UN SCORE LOCAL
 ====================================================== */
 function saveLocalScore() {
-  const name =
-    prompt(
-      "Entre ton prénom ou ton pseudo :"
+  let name =
+    localStorage.getItem(
+      "raPlayerName"
     );
-  if (
-    !name ||
-    !name.trim()
-  ) {
-    return;
+  if (!name) {
+    name =
+      prompt(
+        "Entre ton prénom ou ton pseudo :"
+      );
+    if (
+      !name ||
+      !name.trim()
+    ) {
+      return;
+    }
+    name =
+      name.trim();
+    localStorage.setItem(
+      "raPlayerName",
+      name
+    );
   }
   let scores = [];
   try {
@@ -699,38 +1089,55 @@ function saveLocalScore() {
   } catch (error) {
     scores = [];
   }
-  scores.push({
-    name: name.trim(),
+  const newScore = {
+    name,
     score: state.score,
     exam: state.exam,
     series: state.series,
     subject: state.subject,
     chapter: state.chapter,
     date: Date.now()
-  });
+  };
+  scores.push(
+    newScore
+  );
   localStorage.setItem(
     "raLeaderboard",
-    JSON.stringify(scores)
+    JSON.stringify(
+      scores
+    )
   );
 }
 /* ======================================================
    RÉINITIALISATION
 ====================================================== */
 function resetState() {
-  state.exam = null;
-  state.series = null;
-  state.subject = null;
-  state.chapter = null;
-  state.questions = [];
-  state.currentQuestion = 0;
-  state.score = 0;
-  state.answered = false;
+  state.exam =
+    null;
+  state.series =
+    null;
+  state.subject =
+    null;
+  state.chapter =
+    null;
+  state.questions =
+    [];
+  state.currentQuestion =
+    0;
+  state.score =
+    0;
+  state.answered =
+    false;
 }
 /* ======================================================
    SÉCURITÉ HTML
 ====================================================== */
-function escapeHTML(value) {
-  return String(value)
+function escapeHTML(
+  value
+) {
+  return String(
+    value
+  )
     .replaceAll(
       "&",
       "&amp;"
@@ -752,3 +1159,6 @@ function escapeHTML(value) {
       "&#039;"
     );
 }
+/* ======================================================
+   FIN
+====================================================== */
