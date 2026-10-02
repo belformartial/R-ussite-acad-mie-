@@ -1,17 +1,45 @@
-/*
- * RÉUSSITE ACADÉMIE
- * Programme pédagogique — Centrafrique
- * BEPC : Troisième
- * BAC : Séries A, B, C et D
- * Créé par Belfort
- *
- * Base pédagogique à valider par un enseignant.
- */
+/* =========================================================
+   RÉUSSITE ACADÉMIE — Programme pédagogique
+   Centrafrique — BEPC (Troisième) + BAC (Terminale A, B, C, D)
+
+   Ce fichier contient la STRUCTURE des matières et chapitres.
+   Base pédagogique à faire relire/valider par un enseignant
+   centrafricain avant de la présenter comme programme officiel.
+
+   Créé par Belfort
+========================================================= */
+
 window.RA_PROGRAMME = {
-  pays: "Centrafrique",
-  BEPC: {
-    niveau: "Troisième",
-    matieres: {
+
+  "meta": {
+    "nom": "RÉUSSITE ACADÉMIE",
+    "pays": "Centrafrique",
+    "version": "1.0",
+    "auteur": "Belfort",
+    "note": "Structure pédagogique proposée à valider avec un enseignant avant diffusion comme programme officiel.",
+    "bac_series": {
+      "A": "Terminale A4",
+      "B": "Terminale B",
+      "C": "Terminale C",
+      "D": "Terminale D"
+    }
+  },
+
+  /* ===================================================
+     BEPC
+  =================================================== */
+
+  "BEPC": {
+
+    "niveau": "Troisième",
+    "series": null,
+
+    "matieres": {
+
+      /* =================================================
+         FRANÇAIS — 7 CHAPITRES
+      ================================================= */
+
       "Français": [
         "Grammaire et analyse de la phrase",
         "Les propositions subordonnées",
@@ -21,346 +49,518 @@ window.RA_PROGRAMME = {
         "L'argumentation",
         "La rédaction"
       ],
+
+      /* =================================================
+         MATHÉMATIQUES
+      ================================================= */
+
       "Mathématiques": [
-        "Calcul numérique",
-        "Calcul littéral",
-        "Développement et factorisation",
-        "Équations et inéquations",
-        "Systèmes d'équations",
+        "Le théorème de Thalès",
+        "La trigonométrie dans le triangle rectangle",
+        "Les racines carrées",
         "Fonctions linéaires et affines",
-        "Théorème de Pythagore",
-        "Théorème de Thalès",
-        "Trigonométrie",
-        "Racines carrées",
+        "Les statistiques",
+        "Calcul littéral : développement et factorisation",
+        "Équations, inéquations et systèmes",
+        "Théorème de Pythagore et réciproque",
         "Vecteurs et translations",
-        "Statistiques et probabilités",
-        "Géométrie dans l'espace"
+        "Repérage dans le plan : coordonnées",
+        "Géométrie dans l’espace : solides et volumes",
+        "Angles inscrits et polygones réguliers"
       ],
+
+      /* =================================================
+         PHYSIQUE-CHIMIE
+      ================================================= */
+
       "Physique-Chimie": [
-        "Masse et poids",
-        "Vitesse et mouvement",
-        "Électricité et circuits",
-        "Intensité et tension",
-        "Loi d'Ohm",
-        "Puissance et énergie électrique",
-        "Atomes et ions",
-        "Solutions aqueuses",
-        "Acides et bases",
-        "Réactions chimiques",
-        "Oxydation et combustion",
-        "Lumière et lentilles"
+        "La loi d’Ohm",
+        "La puissance et l’énergie électrique",
+        "Les ions et les solutions",
+        "Les réactions chimiques",
+        "La vitesse",
+        "Oxydation et combustions",
+        "Acides, bases, sels et pH",
+        "Courant électrique : intensité et tension",
+        "Lentilles minces et l’œil",
+        "Le poids et la masse",
+        "Circuits en série et en dérivation",
+        "Les changements d’état de la matière"
       ],
+
+      /* =================================================
+         SVT
+      ================================================= */
+
       "SVT": [
-        "Reproduction humaine",
-        "Grossesse et développement",
-        "Système nerveux",
-        "Organes des sens",
-        "Hérédité et caractères",
-        "Immunité et santé",
-        "Groupes sanguins",
-        "Géologie et tectonique",
-        "Fossiles et histoire de la Terre",
-        "Environnement et biodiversité"
+        "La grossesse et le développement de l’enfant",
+        "Le système nerveux",
+        "L’hérédité",
+        "La tectonique des plaques",
+        "L’immunité",
+        "La contraception et la planification familiale",
+        "Les groupes sanguins et la transfusion sanguine",
+        "Les fossiles et l’histoire de la Terre",
+        "La biodiversité et sa protection"
       ],
+
+      /* =================================================
+         HISTOIRE-GÉOGRAPHIE
+      ================================================= */
+
       "Histoire-Géographie": [
         "Les deux guerres mondiales",
-        "La décolonisation",
-        "L'indépendance de la RCA",
-        "La RCA depuis 1960",
-        "Les organisations internationales",
-        "La population africaine",
-        "Le milieu naturel centrafricain",
-        "Les ressources naturelles",
-        "Les activités économiques",
-        "Le développement en Afrique"
+        "La décolonisation et l’indépendance de la RCA",
+        "Les grandes organisations internationales",
+        "La mondialisation",
+        "Les défis du développement en Afrique",
+        "Le milieu naturel de la République centrafricaine",
+        "Le fleuve Oubangui et les voies de communication",
+        "Barthélemy Boganda et la naissance de la RCA",
+        "La République centrafricaine indépendante : de 1960 à nos jours",
+        "Population et peuplement de la République centrafricaine"
       ],
+
+      /* =================================================
+         ANGLAIS
+      ================================================= */
+
       "Anglais": [
-        "Present simple and continuous",
-        "Past simple and continuous",
-        "Present perfect",
-        "Future forms",
-        "Conditionals",
-        "Passive voice",
-        "Reported speech",
-        "Reading comprehension",
-        "Writing and dialogue"
+        "Le present perfect",
+        "Le futur (will) et le first conditional",
+        "Les propositions relatives",
+        "La voix passive",
+        "Le discours indirect"
       ],
+
+      /* =================================================
+         ÉDUCATION CIVIQUE ET MORALE
+      ================================================= */
+
       "Éducation Civique et Morale": [
-        "Citoyenneté et civisme",
-        "Droits et devoirs",
-        "Symboles de la République",
-        "Institutions de la RCA",
-        "Démocratie et élections",
-        "Paix et unité nationale",
-        "Respect des biens publics"
+        "Les symboles de la République centrafricaine",
+        "La citoyenneté : droits et devoirs",
+        "Les institutions de la République centrafricaine",
+        "Démocratie, élections et décentralisation",
+        "La RCA dans le monde et le civisme au quotidien"
       ]
     }
   },
-  BAC: {
-    niveau: "Terminale",
-    series: {
-      A: {
-        matieres: {
+
+
+  /* ===================================================
+     BAC
+  =================================================== */
+
+  "BAC": {
+
+    "niveau": "Terminale",
+
+    "series": {
+
+      /* =================================================
+         SÉRIE A
+      ================================================= */
+
+      "A": {
+
+        "label": "Série A (Terminale A4)",
+
+        "matieres": {
+
+          "Anglais": [
+            "Reported speech (le discours rapporté)",
+            "Conditionals (les conditionnelles)",
+            "The passive voice (la voix passive)",
+            "Expressing opinion (l’essai argumentatif)",
+            "The world of work (CV et entretien)",
+            "Exprimer la cause et la conséquence",
+            "Exprimer le contraste et la concession",
+            "Exprimer le but",
+            "La tournure causative : have / get something done",
+            "Formation des mots et phrasal verbs",
+            "Le Royaume-Uni et le Commonwealth"
+          ],
+
+          "Éducation Civique et Morale": [
+            "L’État de droit et la hiérarchie des normes",
+            "Les droits de l’Homme et leur protection",
+            "La démocratie pluraliste et la citoyenneté active",
+            "La culture de la paix et l’unité nationale",
+            "Développement durable et bonne gouvernance"
+          ],
+
           "Français": [
             "La dissertation littéraire",
             "Le commentaire composé",
-            "La poésie",
-            "Le théâtre",
-            "Le roman",
-            "L'argumentation",
-            "Les mouvements littéraires"
+            "La poésie de la Négritude",
+            "Le théâtre : texte et représentation",
+            "L’argumentation : convaincre et persuader"
           ],
+
+          "Histoire-Géographie": [
+            "La Guerre froide (1947-1991)",
+            "L’Afrique depuis les indépendances",
+            "Les États-Unis, une superpuissance",
+            "La Chine, une puissance émergente",
+            "L’Afrique dans la mondialisation"
+          ],
+
+          "Mathématiques": [
+            "Suites numériques et applications financières",
+            "Étude de fonctions et dérivation",
+            "Fonctions logarithme népérien et exponentielle",
+            "Statistiques et ajustement linéaire",
+            "Dénombrement et probabilités",
+            "Systèmes linéaires et programmation linéaire"
+          ],
+
           "Philosophie": [
-            "La conscience",
-            "L'inconscient",
-            "La liberté",
+            "Qu’est-ce que la philosophie ?",
+            "La conscience et l’inconscient",
+            "La liberté et le déterminisme",
             "La vérité",
-            "La raison et la croyance",
             "La morale et le devoir",
+            "Méthodologie : la dissertation et l’explication de texte",
             "Le travail et la technique",
-            "L'État et la justice",
-            "La culture",
-            "L'art et le beau",
+            "L’État, la justice et le droit",
+            "La culture et la philosophie africaine",
+            "Autrui et le rapport à autrui",
+            "Le désir",
             "Le bonheur",
-            "Méthodologie de dissertation"
-          ],
-          "Histoire-Géographie": [
-            "La Guerre froide",
-            "La décolonisation",
-            "L'Afrique indépendante",
-            "Les grandes puissances",
-            "La mondialisation",
-            "Les défis du développement"
-          ],
-          "Anglais": [
-            "Reported speech",
-            "Conditionals",
-            "Passive voice",
-            "Argumentative essay",
-            "Reading comprehension",
-            "Professional communication"
-          ],
-          "Mathématiques": [
-            "Suites numériques",
-            "Dérivation et étude de fonctions",
-            "Fonctions exponentielles",
-            "Fonctions logarithmiques",
-            "Statistiques",
-            "Probabilités"
+            "La raison et la croyance",
+            "L’art et le beau"
           ]
         }
       },
-      B: {
-        matieres: {
-          "Philosophie": [
-            "La conscience",
-            "La liberté",
-            "La vérité",
-            "La morale",
-            "Le travail",
-            "L'État et la justice",
-            "La culture",
-            "L'art",
-            "Méthodologie de dissertation"
-          ],
-          "Histoire-Géographie": [
-            "La Guerre froide",
-            "L'Afrique depuis les indépendances",
-            "Les grandes puissances",
-            "La mondialisation",
-            "Le développement"
-          ],
+
+
+      /* =================================================
+         SÉRIE B
+      ================================================= */
+
+      "B": {
+
+        "label": "Série B (Terminale B)",
+
+        "matieres": {
+
           "Anglais": [
-            "Reported speech",
-            "Conditionals",
-            "Passive voice",
-            "Argumentative writing",
-            "Reading comprehension"
+            "Reported speech (le discours rapporté)",
+            "Conditionals (les conditionnelles)",
+            "The passive voice (la voix passive)",
+            "Expressing opinion (l’essai argumentatif)",
+            "The world of work (CV et entretien)",
+            "Exprimer la cause et la conséquence",
+            "Exprimer le contraste et la concession",
+            "Exprimer le but",
+            "La tournure causative : have / get something done",
+            "Formation des mots et phrasal verbs",
+            "Le Royaume-Uni et le Commonwealth"
           ],
+
+          "Éducation Civique et Morale": [
+            "L’État de droit et la hiérarchie des normes",
+            "Les droits de l’Homme et leur protection",
+            "La démocratie pluraliste et la citoyenneté active",
+            "La culture de la paix et l’unité nationale",
+            "Développement durable et bonne gouvernance"
+          ],
+
+          "Histoire-Géographie": [
+            "La Guerre froide (1947-1991)",
+            "L’Afrique depuis les indépendances",
+            "Les États-Unis, une superpuissance",
+            "La Chine, une puissance émergente",
+            "L’Afrique dans la mondialisation"
+          ],
+
           "Mathématiques": [
-            "Suites numériques",
-            "Fonctions et dérivation",
-            "Logarithmes et exponentielles",
-            "Statistiques",
-            "Probabilités"
+            "Suites numériques et applications financières",
+            "Étude de fonctions et dérivation",
+            "Fonctions logarithme népérien et exponentielle",
+            "Statistiques et ajustement linéaire",
+            "Dénombrement et probabilités",
+            "Systèmes linéaires et programmation linéaire"
           ],
+
+          "Philosophie": [
+            "Qu’est-ce que la philosophie ?",
+            "La conscience et l’inconscient",
+            "La liberté et le déterminisme",
+            "La vérité",
+            "La morale et le devoir",
+            "Méthodologie : la dissertation et l’explication de texte",
+            "Le travail et la technique",
+            "L’État, la justice et le droit",
+            "La culture et la philosophie africaine",
+            "Autrui et le rapport à autrui",
+            "Le désir",
+            "Le bonheur",
+            "La raison et la croyance",
+            "L’art et le beau"
+          ],
+
           "Sciences Économiques et Sociales": [
-            "Les besoins et les biens",
-            "La production",
-            "La consommation",
-            "La monnaie",
-            "L'inflation",
             "La croissance économique",
-            "Le développement",
-            "Le commerce international",
-            "Le rôle de l'État"
+            "Le développement économique",
+            "La mondialisation et le commerce international",
+            "La monnaie et l’inflation",
+            "Le rôle de l’État dans l’économie"
           ]
         }
       },
-      C: {
-        matieres: {
+
+
+      /* =================================================
+         SÉRIE C
+      ================================================= */
+
+      "C": {
+
+        "label": "Série C (Terminale C)",
+
+        "matieres": {
+
+          "Anglais": [
+            "Reported speech (le discours rapporté)",
+            "Conditionals (les conditionnelles)",
+            "The passive voice (la voix passive)",
+            "Expressing opinion (l’essai argumentatif)",
+            "The world of work (CV et entretien)",
+            "Exprimer la cause et la conséquence",
+            "Exprimer le contraste et la concession",
+            "Exprimer le but",
+            "La tournure causative : have / get something done",
+            "Formation des mots et phrasal verbs",
+            "Le Royaume-Uni et le Commonwealth"
+          ],
+
+          "Éducation Civique et Morale": [
+            "L’État de droit et la hiérarchie des normes",
+            "Les droits de l’Homme et leur protection",
+            "La démocratie pluraliste et la citoyenneté active",
+            "La culture de la paix et l’unité nationale",
+            "Développement durable et bonne gouvernance"
+          ],
+
+          "Histoire-Géographie": [
+            "La Guerre froide (1947-1991)",
+            "L’Afrique depuis les indépendances",
+            "Les États-Unis, une superpuissance",
+            "La Chine, une puissance émergente",
+            "L’Afrique dans la mondialisation"
+          ],
+
           "Mathématiques": [
             "Limites et continuité",
-            "Dérivation",
-            "Étude de fonctions",
-            "Fonction exponentielle",
-            "Fonction logarithme",
+            "La fonction exponentielle",
+            "La fonction logarithme népérien",
+            "Le calcul intégral",
+            "Les nombres complexes",
+            "Dérivation et étude de fonctions",
             "Suites numériques",
-            "Nombres complexes",
-            "Calcul intégral",
+            "Probabilités",
             "Équations différentielles",
-            "Dénombrement",
-            "Probabilités",
-            "Produit scalaire",
-            "Géométrie dans l'espace",
-            "Statistiques"
+            "Dénombrement et analyse combinatoire",
+            "Produit scalaire et géométrie dans l’espace",
+            "Barycentre",
+            "Statistiques à deux variables",
+            "Arithmétique : divisibilité et congruences"
           ],
-          "Physique-Chimie": [
-            "Cinématique",
-            "Lois de Newton",
-            "Travail et énergie",
-            "Mouvement dans un champ",
-            "Champ magnétique",
-            "Force de Laplace",
-            "Induction électromagnétique",
-            "Oscillations électriques",
-            "Radioactivité",
-            "Acides et bases",
-            "Oxydoréduction",
-            "Cinétique chimique",
-            "Chimie organique"
-          ],
-          "SVT": [
-            "ADN et information génétique",
-            "Expression du patrimoine génétique",
-            "Méiose et brassage génétique",
-            "Hérédité humaine",
-            "Communication nerveuse",
-            "Régulation hormonale",
-            "Régulation de la glycémie",
-            "Immunité",
-            "Évolution",
-            "Écologie et écosystèmes"
-          ],
+
           "Philosophie": [
-            "La conscience",
-            "La liberté",
+            "Qu’est-ce que la philosophie ?",
+            "La conscience et l’inconscient",
+            "La liberté et le déterminisme",
             "La vérité",
-            "La raison",
-            "La morale",
-            "Le travail",
-            "L'État et la justice",
-            "La culture",
-            "L'art",
-            "Méthodologie de dissertation"
+            "La morale et le devoir",
+            "Méthodologie : la dissertation et l’explication de texte",
+            "Le travail et la technique",
+            "L’État, la justice et le droit",
+            "La culture et la philosophie africaine",
+            "Autrui et le rapport à autrui",
+            "Le désir",
+            "Le bonheur",
+            "La raison et la croyance",
+            "L’art et le beau"
           ],
-          "Anglais": [
-            "Reported speech",
-            "Conditionals",
-            "Passive voice",
-            "Reading comprehension",
-            "Essay writing"
+
+          "Physique-Chimie": [
+            "Les lois de Newton et le mouvement",
+            "La radioactivité",
+            "Les acides et les bases : le pH",
+            "L’oxydoréduction et les piles",
+            "La chimie organique",
+            "Cinématique du point matériel",
+            "Énergie cinétique et énergie mécanique",
+            "Champ magnétique et force de Laplace",
+            "Induction électromagnétique",
+            "Oscillations électriques dans un circuit RLC",
+            "Cinétique chimique",
+            "Mouvements dans les champs de force"
           ],
-          "Histoire-Géographie": [
-            "La Guerre froide",
-            "L'Afrique indépendante",
-            "Les grandes puissances",
-            "La mondialisation",
-            "Les enjeux du développement"
+
+          "SVT": [
+            "L’ADN, support de l’information génétique",
+            "La méiose et le brassage génétique",
+            "La transmission des caractères héréditaires",
+            "La communication nerveuse",
+            "La régulation de la glycémie",
+            "De l’ADN à la protéine : l’expression du gène",
+            "Génétique humaine et maladies héréditaires",
+            "Les échanges membranaires et l’osmorégulation",
+            "Évolution et origine de l’Homme",
+            "Écologie : dynamique des populations et équilibres"
           ]
         }
       },
-      D: {
-        matieres: {
+
+
+      /* =================================================
+         SÉRIE D
+      ================================================= */
+
+      "D": {
+
+        "label": "Série D (Terminale D)",
+
+        "matieres": {
+
+          "Anglais": [
+            "Reported speech (le discours rapporté)",
+            "Conditionals (les conditionnelles)",
+            "The passive voice (la voix passive)",
+            "Expressing opinion (l’essai argumentatif)",
+            "The world of work (CV et entretien)",
+            "Exprimer la cause et la conséquence",
+            "Exprimer le contraste et la concession",
+            "Exprimer le but",
+            "La tournure causative : have / get something done",
+            "Formation des mots et phrasal verbs",
+            "Le Royaume-Uni et le Commonwealth"
+          ],
+
+          "Éducation Civique et Morale": [
+            "L’État de droit et la hiérarchie des normes",
+            "Les droits de l’Homme et leur protection",
+            "La démocratie pluraliste et la citoyenneté active",
+            "La culture de la paix et l’unité nationale",
+            "Développement durable et bonne gouvernance"
+          ],
+
+          "Histoire-Géographie": [
+            "La Guerre froide (1947-1991)",
+            "L’Afrique depuis les indépendances",
+            "Les États-Unis, une superpuissance",
+            "La Chine, une puissance émergente",
+            "L’Afrique dans la mondialisation"
+          ],
+
           "Mathématiques": [
             "Limites et continuité",
-            "Dérivation",
-            "Étude de fonctions",
-            "Fonction exponentielle",
-            "Fonction logarithme",
+            "La fonction exponentielle",
+            "La fonction logarithme népérien",
+            "Le calcul intégral",
+            "Les nombres complexes",
+            "Dérivation et étude de fonctions",
             "Suites numériques",
-            "Nombres complexes",
-            "Calcul intégral",
             "Probabilités",
-            "Géométrie dans l'espace",
-            "Statistiques"
+            "Équations différentielles",
+            "Dénombrement et analyse combinatoire",
+            "Produit scalaire et géométrie dans l’espace",
+            "Barycentre",
+            "Statistiques à deux variables",
+            "Arithmétique : divisibilité et congruences"
           ],
-          "Physique-Chimie": [
-            "Cinématique",
-            "Lois de Newton",
-            "Travail et énergie",
-            "Mouvement dans un champ",
-            "Champ magnétique",
-            "Force de Laplace",
-            "Induction électromagnétique",
-            "Oscillations électriques",
-            "Radioactivité",
-            "Acides et bases",
-            "Oxydoréduction",
-            "Cinétique chimique",
-            "Chimie organique"
-          ],
-          "SVT": [
-            "ADN et information génétique",
-            "Expression du patrimoine génétique",
-            "Méiose et brassage génétique",
-            "Hérédité humaine",
-            "Communication nerveuse",
-            "Régulation hormonale",
-            "Régulation de la glycémie",
-            "Immunité",
-            "Évolution",
-            "Écologie et écosystèmes"
-          ],
+
           "Philosophie": [
-            "La conscience",
-            "La liberté",
+            "Qu’est-ce que la philosophie ?",
+            "La conscience et l’inconscient",
+            "La liberté et le déterminisme",
             "La vérité",
-            "La raison",
-            "La morale",
-            "Le travail",
-            "L'État et la justice",
-            "La culture",
-            "L'art",
-            "Méthodologie de dissertation"
+            "La morale et le devoir",
+            "Méthodologie : la dissertation et l’explication de texte",
+            "Le travail et la technique",
+            "L’État, la justice et le droit",
+            "La culture et la philosophie africaine",
+            "Autrui et le rapport à autrui",
+            "Le désir",
+            "Le bonheur",
+            "La raison et la croyance",
+            "L’art et le beau"
           ],
-          "Anglais": [
-            "Reported speech",
-            "Conditionals",
-            "Passive voice",
-            "Reading comprehension",
-            "Essay writing"
+
+          "Physique-Chimie": [
+            "Les lois de Newton et le mouvement",
+            "La radioactivité",
+            "Les acides et les bases : le pH",
+            "L’oxydoréduction et les piles",
+            "La chimie organique",
+            "Cinématique du point matériel",
+            "Énergie cinétique et énergie mécanique",
+            "Champ magnétique et force de Laplace",
+            "Induction électromagnétique",
+            "Oscillations électriques dans un circuit RLC",
+            "Cinétique chimique",
+            "Mouvements dans les champs de force"
           ],
-          "Histoire-Géographie": [
-            "La Guerre froide",
-            "L'Afrique indépendante",
-            "Les grandes puissances",
-            "La mondialisation",
-            "Les enjeux du développement"
+
+          "SVT": [
+            "L’ADN, support de l’information génétique",
+            "La méiose et le brassage génétique",
+            "La transmission des caractères héréditaires",
+            "La communication nerveuse",
+            "La régulation de la glycémie",
+            "De l’ADN à la protéine : l’expression du gène",
+            "Génétique humaine et maladies héréditaires",
+            "Les échanges membranaires et l’osmorégulation",
+            "Évolution et origine de l’Homme",
+            "Écologie : dynamique des populations et équilibres"
           ]
         }
       }
+
     }
   }
+
 };
-/* Fonctions pour accéder aux données du programme */
+
+
+/* =========================================================
+   OUTILS DU PROGRAMME
+========================================================= */
+
 window.RA_PROGRAMME_UTILS = {
+
   getBEPCSubjects() {
     return Object.keys(window.RA_PROGRAMME.BEPC.matieres);
   },
+
   getBEPCChapters(subject) {
     return window.RA_PROGRAMME.BEPC.matieres[subject] || [];
   },
+
   getBACSeries() {
     return Object.keys(window.RA_PROGRAMME.BAC.series);
   },
+
   getBACSubjects(series) {
     return Object.keys(
       window.RA_PROGRAMME.BAC.series[series]?.matieres || {}
     );
   },
+
   getBACChapters(series, subject) {
-    return window.RA_PROGRAMME.BAC.series[series]
-      ?.matieres?.[subject] || [];
+    return (
+      window.RA_PROGRAMME.BAC.series[series]?.matieres?.[subject] || []
+    );
+  },
+
+  getAllChapters(level, series, subject) {
+    return level === "BEPC"
+      ? this.getBEPCChapters(subject)
+      : this.getBACChapters(series, subject);
   }
+
 };
