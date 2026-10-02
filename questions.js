@@ -172,16 +172,8 @@ window.RA_QUESTIONS = {
           explanation:
             "« Qui habite ici » est une proposition subordonnée relative car elle est introduite par le pronom relatif « qui »."
         }
-      ]
-    }
-  }
-};
-/* =====================================================
-   BEPC — FRANÇAIS
-   40 questions supplémentaires
-   Créé par Belfort
-===================================================== */
-"Le conditionnel et l’hypothèse": [
+      ],
+       "Le conditionnel et l’hypothèse": [
   {
     question: "Dans « Si j'avais le temps, je voyagerais », quel temps est employé dans « je voyagerais » ?",
     answers: [
@@ -202,10 +194,10 @@ window.RA_QUESTIONS = {
       "Le conditionnel"
     ],
     correct: 0,
-    explanation: "Dans une hypothèse portant sur le présent ou le futur, « si » est suivi ici de l'imparfait."
+    explanation: "Dans cette construction d'hypothèse, « si » est suivi de l'imparfait."
   },
   {
-    question: "Quelle phrase respecte la construction correcte de l'hypothèse ?",
+    question: "Quelle phrase respecte correctement la construction de l'hypothèse ?",
     answers: [
       "Si tu viendras, je partirai.",
       "Si tu viens, je partirai.",
@@ -213,7 +205,7 @@ window.RA_QUESTIONS = {
       "Si tu viendras, je partirais."
     ],
     correct: 1,
-    explanation: "Avec une condition réelle ou possible, on emploie le présent après « si » et généralement le futur dans la principale."
+    explanation: "Avec une condition possible, on emploie le présent après « si » et le futur dans la proposition principale."
   },
   {
     question: "Dans « Si j'avais étudié, j'aurais réussi », quel temps est « j'aurais réussi » ?",
@@ -227,7 +219,7 @@ window.RA_QUESTIONS = {
     explanation: "« J'aurais réussi » est au conditionnel passé."
   },
   {
-    question: "Quelle phrase exprime une hypothèse peu probable ou imaginaire dans le présent ?",
+    question: "Quelle phrase exprime une hypothèse imaginaire dans le présent ?",
     answers: [
       "Si tu viens, nous mangerons.",
       "Si tu étais riche, tu voyagerais beaucoup.",
@@ -271,7 +263,7 @@ window.RA_QUESTIONS = {
     explanation: "Le plus-que-parfait après « si » et le conditionnel passé dans la principale expriment une hypothèse passée non réalisée."
   },
   {
-    question: "Quelle forme complète correctement : « Si j'avais plus de temps, je ___ davantage. »",
+    question: "Complète correctement : « Si j'avais plus de temps, je ___ davantage. »",
     answers: [
       "travaille",
       "travaillerai",
@@ -279,7 +271,7 @@ window.RA_QUESTIONS = {
       "travaillais"
     ],
     correct: 2,
-    explanation: "Après l'imparfait « avais » dans la proposition introduite par « si », on emploie ici le conditionnel présent : « travaillerais »."
+    explanation: "Avec « si j'avais », on emploie ici le conditionnel présent : « je travaillerais »."
   },
   {
     question: "Quelle phrase exprime une demande polie ?",
@@ -290,342 +282,6 @@ window.RA_QUESTIONS = {
       "Tu donneras ton livre."
     ],
     correct: 2,
-    explanation: "« Pourrais-tu... ? » utilise le conditionnel pour formuler une demande de manière polie."
+    explanation: "« Pourrais-tu... ? » utilise le conditionnel pour formuler une demande polie."
   }
 ],
-"L’argumentation": [
-  {
-    question: "Quel est le but principal d'un texte argumentatif ?",
-    answers: [
-      "Raconter uniquement une histoire",
-      "Décrire un paysage",
-      "Défendre une idée et convaincre ou persuader",
-      "Présenter uniquement des personnages"
-    ],
-    correct: 2,
-    explanation: "Un texte argumentatif cherche notamment à défendre une thèse et à agir sur l'opinion du lecteur."
-  },
-  {
-    question: "Comment appelle-t-on l'idée principale défendue dans un texte argumentatif ?",
-    answers: [
-      "La thèse",
-      "Le décor",
-      "La péripétie",
-      "La description"
-    ],
-    correct: 0,
-    explanation: "La thèse est l'idée ou la position que l'auteur cherche à défendre."
-  },
-  {
-    question: "Qu'est-ce qu'un argument ?",
-    answers: [
-      "Un personnage",
-      "Une raison utilisée pour défendre une thèse",
-      "Un lieu",
-      "Un titre"
-    ],
-    correct: 1,
-    explanation: "Un argument est une raison avancée pour soutenir une idée ou une thèse."
-  },
-  {
-    question: "Qu'est-ce qu'un exemple dans un texte argumentatif ?",
-    answers: [
-      "Une illustration concrète d'une idée",
-      "Une conclusion obligatoire",
-      "Une question sans réponse",
-      "Une erreur grammaticale"
-    ],
-    correct: 0,
-    explanation: "L'exemple permet d'illustrer ou de rendre plus concret un argument."
-  },
-  {
-    question: "Quel connecteur exprime la cause ?",
-    answers: [
-      "Donc",
-      "Cependant",
-      "Parce que",
-      "Enfin"
-    ],
-    correct: 2,
-    explanation: "« Parce que » introduit une cause."
-  },
-  {
-    question: "Quel connecteur exprime la conséquence ?",
-    answers: [
-      "Car",
-      "Donc",
-      "Bien que",
-      "Afin que"
-    ],
-    correct: 1,
-    explanation: "« Donc » introduit ou marque généralement une conséquence."
-  },
-  {
-    question: "Quel mot exprime l'opposition ?",
-    answers: [
-      "Cependant",
-      "Parce que",
-      "Ainsi",
-      "Donc"
-    ],
-    correct: 0,
-    explanation: "« Cependant » est un connecteur d'opposition ou de contraste."
-  },
-  {
-    question: "Convaincre un lecteur consiste principalement à :",
-    answers: [
-      "Utiliser uniquement des émotions",
-      "S'appuyer sur des arguments et un raisonnement",
-      "Raconter une aventure",
-      "Décrire un personnage"
-    ],
-    correct: 1,
-    explanation: "Convaincre fait principalement appel à la raison, aux arguments et au raisonnement."
-  },
-  {
-    question: "Persuader cherche davantage à agir sur :",
-    answers: [
-      "Les émotions et les sentiments",
-      "Les dates historiques",
-      "Les calculs mathématiques",
-      "La ponctuation"
-    ],
-    correct: 0,
-    explanation: "La persuasion cherche notamment à influencer les sentiments et les émotions du destinataire."
-  },
-  {
-    question: "Dans une argumentation, quel élément permet généralement de terminer le raisonnement ?",
-    answers: [
-      "La conclusion",
-      "Le titre",
-      "Le personnage",
-      "Le décor"
-    ],
-    correct: 0,
-    explanation: "La conclusion permet de faire le bilan du raisonnement et de rappeler ou renforcer la thèse."
-  }
-],
-"Le résumé de texte": [
-  {
-    question: "Quel est l'objectif principal d'un résumé ?",
-    answers: [
-      "Copier le texte original",
-      "Réduire le texte en conservant ses idées essentielles",
-      "Ajouter de nouvelles informations",
-      "Changer complètement le sujet"
-    ],
-    correct: 1,
-    explanation: "Un résumé restitue les idées essentielles d'un texte de manière plus courte et fidèle."
-  },
-  {
-    question: "Dans un résumé, faut-il conserver tous les exemples du texte original ?",
-    answers: [
-      "Oui, toujours",
-      "Non, on conserve surtout les idées essentielles",
-      "Oui, mais uniquement les plus longs",
-      "Seulement les exemples personnels"
-    ],
-    correct: 1,
-    explanation: "Les exemples secondaires peuvent généralement être supprimés ou regroupés afin de respecter la concision."
-  },
-  {
-    question: "Un bon résumé doit respecter principalement :",
-    answers: [
-      "Les idées essentielles du texte",
-      "Les opinions personnelles du résumé",
-      "Un nouveau sujet",
-      "Toutes les répétitions du texte"
-    ],
-    correct: 0,
-    explanation: "Le résumé doit rester fidèle aux idées essentielles du texte de départ."
-  },
-  {
-    question: "Que faut-il éviter dans un résumé ?",
-    answers: [
-      "La reformulation",
-      "La fidélité aux idées",
-      "Les commentaires personnels",
-      "La concision"
-    ],
-    correct: 2,
-    explanation: "Le résumé doit restituer le contenu du texte sans ajouter de jugement personnel."
-  },
-  {
-    question: "Pourquoi faut-il reformuler dans un résumé ?",
-    answers: [
-      "Pour montrer qu'on a compris le texte",
-      "Pour changer son sens",
-      "Pour ajouter des arguments",
-      "Pour rendre le texte plus long"
-    ],
-    correct: 0,
-    explanation: "La reformulation permet de restituer fidèlement les idées avec ses propres mots."
-  },
-  {
-    question: "Quel élément doit être conservé lors du résumé d'un texte argumentatif ?",
-    answers: [
-      "Uniquement les exemples",
-      "La logique et les idées essentielles de l'auteur",
-      "Toutes les phrases",
-      "Les fautes de langue"
-    ],
-    correct: 1,
-    explanation: "Il faut préserver la logique du texte ainsi que ses idées principales."
-  },
-  {
-    question: "Un résumé doit-il normalement être plus court que le texte original ?",
-    answers: [
-      "Oui",
-      "Non",
-      "Seulement s'il est narratif",
-      "Seulement s'il contient des dialogues"
-    ],
-    correct: 0,
-    explanation: "Le résumé consiste précisément à réduire le texte en conservant l'essentiel."
-  },
-  {
-    question: "Quelle pratique est la plus adaptée pour commencer un résumé ?",
-    answers: [
-      "Identifier le thème et les idées principales",
-      "Copier la première phrase",
-      "Inventer un nouveau titre",
-      "Supprimer toutes les idées"
-    ],
-    correct: 0,
-    explanation: "Il faut d'abord comprendre le thème et repérer les idées essentielles avant de rédiger."
-  },
-  {
-    question: "Dans un résumé scolaire, le rédacteur doit généralement utiliser :",
-    answers: [
-      "Uniquement la première personne",
-      "Une formulation personnelle fidèle au texte",
-      "Des informations extérieures obligatoires",
-      "Des commentaires personnels"
-    ],
-    correct: 1,
-    explanation: "Le résumé est reformulé par le rédacteur tout en restant fidèle au contenu du texte."
-  },
-  {
-    question: "Quelle qualité est essentielle dans un bon résumé ?",
-    answers: [
-      "La longueur",
-      "La fidélité",
-      "L'exagération",
-      "L'invention"
-    ],
-    correct: 1,
-    explanation: "La fidélité au sens et aux idées essentielles du texte est fondamentale."
-  }
-],
-"La versification": [
-  {
-    question: "Comment appelle-t-on le nombre de syllabes d'un vers ?",
-    answers: [
-      "La strophe",
-      "La mesure du vers",
-      "Le rythme",
-      "La rime"
-    ],
-    correct: 1,
-    explanation: "Le nombre de syllabes constitue la mesure du vers. En poésie française, on parle notamment d'alexandrin pour un vers de douze syllabes."
-  },
-  {
-    question: "Combien de syllabes compte traditionnellement un alexandrin ?",
-    answers: [
-      "8",
-      "10",
-      "12",
-      "14"
-    ],
-    correct: 2,
-    explanation: "L'alexandrin classique compte douze syllabes."
-  },
-  {
-    question: "Comment appelle-t-on un ensemble de vers regroupés dans un poème ?",
-    answers: [
-      "Une strophe",
-      "Une phrase",
-      "Une proposition",
-      "Une périphrase"
-    ],
-    correct: 0,
-    explanation: "Une strophe est un ensemble organisé de vers formant une unité dans un poème."
-  },
-  {
-    question: "Comment appelle-t-on la répétition de sons à la fin de plusieurs vers ?",
-    answers: [
-      "La rime",
-      "La métaphore",
-      "L'ellipse",
-      "La comparaison"
-    ],
-    correct: 0,
-    explanation: "La rime correspond à la répétition de sons en fin de vers."
-  },
-  {
-    question: "Une strophe de quatre vers s'appelle :",
-    answers: [
-      "Un distique",
-      "Un tercet",
-      "Un quatrain",
-      "Un quintil"
-    ],
-    correct: 2,
-    explanation: "Une strophe composée de quatre vers est appelée un quatrain."
-  },
-  {
-    question: "Une strophe de trois vers s'appelle :",
-    answers: [
-      "Un tercet",
-      "Un quatrain",
-      "Un distique",
-      "Un sonnet"
-    ],
-    correct: 0,
-    explanation: "Une strophe de trois vers est appelée un tercet."
-  },
-  {
-    question: "Une strophe de deux vers s'appelle :",
-    answers: [
-      "Un tercet",
-      "Un distique",
-      "Un quatrain",
-      "Un alexandrin"
-    ],
-    correct: 1,
-    explanation: "Une strophe composée de deux vers est appelée un distique."
-  },
-  {
-    question: "Dans un poème, l'alternance régulière des sons et des accents contribue notamment à créer :",
-    answers: [
-      "Le rythme",
-      "Le personnage",
-      "Le décor",
-      "Le titre"
-    ],
-    correct: 0,
-    explanation: "Le rythme organise les sonorités et les mouvements du vers."
-  },
-  {
-    question: "Comment appelle-t-on un poème de quatorze vers organisé traditionnellement en deux quatrains et deux tercets ?",
-    answers: [
-      "Une fable",
-      "Un sonnet",
-      "Une épopée",
-      "Un distique"
-    ],
-    correct: 1,
-    explanation: "Le sonnet traditionnel comporte quatorze vers, généralement répartis en deux quatrains et deux tercets."
-  },
-  {
-    question: "Dans « La mer murmure doucement », la répétition du son [m] au début de plusieurs mots est une :",
-    answers: [
-      "Assonance",
-      "Allitération",
-      "Hyperbole",
-      "Antithèse"
-    ],
-    correct: 1,
-    explanation: "La répétition d'un même son consonantique est une allitération."
-  }
-]
