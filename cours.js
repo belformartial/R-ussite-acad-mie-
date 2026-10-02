@@ -2,2030 +2,1064 @@
 
 /*
  * ============================================================
- * RÉUSSITE ACADÉMIE — BIBLIOTHÈQUE DE COURS
+ * RÉUSSITE ACADÉMIE — COURS BEPC MATHÉMATIQUES
  * ============================================================
+ * Niveau : Troisième
+ * Matière : Mathématiques
+ * 13 chapitres
  *
  * Compatible avec :
  *   - programme.js
  *   - game.js
- *   - index.html actuels
+ *   - index.html
+ *   - style.css
  *
- * Structure attendue par game.js :
- *
- * BEPC :
- * RA_COURS.BEPC.matieres["Mathématiques"]["Équations et inéquations"]
- *
- * BAC :
- * RA_COURS.BAC.series["C"].matieres["Mathématiques"]["Dérivation"]
+ * Structure :
+ * RA_COURS.BEPC.matieres["Mathématiques"]["Nom du chapitre"]
  *
  * Créé par Belfort
  * ============================================================
  */
 
-(function () {
+window.RA_COURS = window.RA_COURS || {};
 
-  const RA = window.RA_COURS = window.RA_COURS || {};
+window.RA_COURS.BEPC = window.RA_COURS.BEPC || {};
+window.RA_COURS.BEPC.matieres =
+  window.RA_COURS.BEPC.matieres || {};
 
-  /* ==========================================================
-     OUTILS
-     ========================================================== */
-
-  function normalize(value) {
-    return String(value || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim();
-  }
-
-  function has(text, ...words) {
-    const value = normalize(text);
-
-    return words.some(word =>
-      value.includes(normalize(word))
-    );
-  }
+window.RA_COURS.BEPC.matieres["Mathématiques"] = {
 
   /* ==========================================================
-     BASE PÉDAGOGIQUE PAR MATIÈRE
+     1. CALCUL NUMÉRIQUE
      ========================================================== */
 
-  const BASE = {
-
-    "Mathématiques": {
-      intro:
-        "Les mathématiques permettent de modéliser des situations, de raisonner avec précision et de vérifier un résultat.",
-
-      notions: [
-        "Définitions et notations du chapitre",
-        "Propriétés et règles de calcul",
-        "Méthode de résolution",
-        "Vérification du résultat"
-      ],
-
-      method:
-        "Lire attentivement l'énoncé, identifier les données et la question, choisir la propriété ou la formule adaptée, effectuer les calculs proprement puis vérifier la cohérence du résultat."
-    },
-
-    "Français": {
-      intro:
-        "Ce chapitre développe la maîtrise de la langue et les méthodes nécessaires pour comprendre, analyser et produire un texte.",
-
-      notions: [
-        "Vocabulaire essentiel",
-        "Règles de langue ou notions littéraires",
-        "Méthode d'analyse",
-        "Organisation d'une réponse"
-      ],
-
-      method:
-        "Lire attentivement le texte ou le sujet, relever les éléments importants, organiser les idées et justifier les réponses par des éléments précis."
-    },
-
-    "Physique-chimie": {
-      intro:
-        "La physique-chimie étudie la matière, les mouvements, les interactions et les transformations à partir de grandeurs mesurables et de lois.",
-
-      notions: [
-        "Grandeurs physiques",
-        "Unités",
-        "Lois et relations",
-        "Méthode de résolution"
-      ],
-
-      method:
-        "Lister les données avec leurs unités, identifier la grandeur recherchée, choisir la relation adaptée, calculer puis vérifier l'unité du résultat."
-    },
-
-    "Physique": {
-      intro:
-        "La physique permet de décrire quantitativement les mouvements, les forces, l'énergie, l'électricité et les phénomènes ondulatoires.",
-
-      notions: [
-        "Grandeurs physiques",
-        "Lois et relations",
-        "Unités SI",
-        "Interprétation du résultat"
-      ],
-
-      method:
-        "Faire un schéma si nécessaire, relever les données, choisir la loi pertinente, effectuer le calcul avec les unités SI et contrôler le résultat."
-    },
-
-    "Chimie": {
-      intro:
-        "La chimie étudie la constitution de la matière et ses transformations à l'aide de modèles, d'équations et de grandeurs mesurables.",
-
-      notions: [
-        "Espèces chimiques",
-        "Quantités et unités",
-        "Équations chimiques",
-        "Transformations de la matière"
-      ],
-
-      method:
-        "Identifier les espèces chimiques, écrire ou exploiter l'équation, vérifier les coefficients, utiliser les unités adaptées puis interpréter le résultat."
-    },
-
-    "SVT": {
-      intro:
-        "Les sciences de la vie et de la Terre expliquent le fonctionnement des êtres vivants, leur transmission génétique, leur santé et leur environnement.",
-
-      notions: [
-        "Vocabulaire scientifique",
-        "Mécanismes biologiques",
-        "Schémas et observations",
-        "Relations de cause à effet"
-      ],
-
-      method:
-        "Identifier le phénomène étudié, partir des observations, mobiliser les connaissances, établir les liens de cause à effet et conclure clairement."
-    },
-
-    "Histoire": {
-      intro:
-        "L'histoire étudie les sociétés et les événements dans le temps en confrontant des dates, des acteurs, des faits et des sources.",
-
-      notions: [
-        "Repères chronologiques",
-        "Acteurs et événements",
-        "Causes et conséquences",
-        "Vocabulaire historique"
-      ],
-
-      method:
-        "Situer l'événement dans le temps et l'espace, identifier les acteurs, expliquer les causes et les conséquences puis organiser la réponse."
-    },
-
-    "Géographie": {
-      intro:
-        "La géographie étudie les territoires, les populations, les ressources et les activités humaines ainsi que leurs relations avec l'espace.",
-
-      notions: [
-        "Territoires et populations",
-        "Ressources et activités",
-        "Échelles géographiques",
-        "Cartes et documents"
-      ],
-
-      method:
-        "Identifier le territoire et l'échelle, lire les données du document, relever les tendances principales, expliquer les relations spatiales et conclure."
-    },
-
-    "Histoire-géographie": {
-      intro:
-        "L'histoire-géographie combine l'analyse du temps et celle des territoires afin de comprendre les sociétés et les grands enjeux contemporains.",
-
-      notions: [
-        "Repères historiques",
-        "Territoires et populations",
-        "Documents",
-        "Causes et conséquences"
-      ],
-
-      method:
-        "Identifier le thème, situer les faits ou territoires, exploiter les documents, organiser les informations et répondre avec des exemples précis."
-    },
-
-    "Anglais": {
-      intro:
-        "L'objectif est de comprendre et de produire un anglais correct dans des situations scolaires et de communication courante.",
-
-      notions: [
-        "Vocabulaire du thème",
-        "Structures grammaticales",
-        "Temps verbaux",
-        "Compréhension et expression"
-      ],
-
-      method:
-        "Repérer les mots-clés, identifier le temps et la structure de la phrase puis construire une réponse simple, correcte et cohérente."
-    },
-
-    "Éducation civique": {
-      intro:
-        "L'éducation civique aide à comprendre les droits, les devoirs, les institutions et les comportements nécessaires à la vie collective.",
-
-      notions: [
-        "Droits et devoirs",
-        "Responsabilités",
-        "Institutions",
-        "Valeurs civiques"
-      ],
-
-      method:
-        "Définir les notions, distinguer droits et devoirs, donner un exemple concret et expliquer pourquoi le comportement étudié est important pour la collectivité."
-    },
-
-    "Éducation Civique et Morale": {
-      intro:
-        "L'éducation civique et morale permet de comprendre les règles de la vie collective, les valeurs civiques et les responsabilités du citoyen.",
-
-      notions: [
-        "Citoyenneté",
-        "Droits et devoirs",
-        "Institutions",
-        "Valeurs et responsabilités"
-      ],
-
-      method:
-        "Définir la notion étudiée, identifier les responsabilités concernées et illustrer par une situation concrète."
-    },
-
-    "Philosophie": {
-      intro:
-        "La philosophie apprend à construire une réflexion argumentée sur une question en distinguant les notions, les problèmes et les arguments.",
-
-      notions: [
-        "Définition des notions",
-        "Problématique",
-        "Arguments",
-        "Exemples et objections"
-      ],
-
-      method:
-        "Définir les termes du sujet, faire apparaître le problème, examiner plusieurs positions, argumenter avec des exemples puis construire une conclusion."
-    },
-
-    "Sciences Économiques et Sociales": {
-      intro:
-        "Les sciences économiques et sociales analysent les mécanismes de production, d'échange, de consommation et les transformations de la société.",
-
-      notions: [
-        "Agents économiques",
-        "Mécanismes économiques",
-        "Indicateurs",
-        "Relations de cause à effet"
-      ],
-
-      method:
-        "Définir les termes, identifier les acteurs, exploiter les données et expliquer les mécanismes avec un raisonnement structuré."
-    },
-
-    "Économie": {
-      intro:
-        "L'économie étudie la manière dont les ressources sont produites, réparties, échangées et utilisées pour satisfaire les besoins.",
-
-      notions: [
-        "Agents économiques",
-        "Production",
-        "Échanges",
-        "Marchés et indicateurs"
-      ],
-
-      method:
-        "Définir les notions, identifier les agents concernés, expliquer le mécanisme puis illustrer avec un exemple."
-    }
-
-  };
-
-  /* ==========================================================
-     COURS SPÉCIFIQUES
-     ========================================================== */
-
-  const SPECIALS = [
-
-    /* --------------------------------------------------------
-       MATHÉMATIQUES
-       -------------------------------------------------------- */
-
-    {
-      test: c =>
-        has(c, "Équations et inéquations", "Calcul littéral et équations"),
-
-      title: "Équations et inéquations",
-
-      notions: [
-        "Inconnue et solution",
-        "Égalité et équivalence",
-        "Équation du premier degré",
-        "Inéquation et intervalle"
-      ],
-
-      parts: [
-
-        [
-          "1. Définition",
-          "Une équation est une égalité contenant une inconnue. Résoudre une équation consiste à déterminer la valeur ou les valeurs de l'inconnue qui rendent l'égalité vraie."
-        ],
-
-        [
-          "2. Règle fondamentale",
-          "Pour conserver une égalité, on effectue la même opération sur les deux membres. Le but est généralement d'isoler l'inconnue."
-        ],
-
-        [
-          "3. Exemple",
-          "Résolvons : 2x + 4 = 16.\n\nOn soustrait 4 :\n2x = 12.\n\nOn divise par 2 :\nx = 6.\n\nVérification : 2 × 6 + 4 = 16."
-        ],
-
-        [
-          "4. Inéquations",
-          "Une inéquation compare deux expressions avec les signes <, >, ≤ ou ≥. Lorsqu'on multiplie ou divise une inéquation par un nombre négatif, le sens du signe s'inverse."
-        ],
-
-        [
-          "5. Conseil examen",
-          "Écris chaque étape. Une réponse sans justification peut être difficile à vérifier. Termine par une vérification lorsque cela est possible."
-        ]
-
-      ],
-
-      qcm: [
-
-        {
-          question: "Résous : 2x + 4 = 16.",
-
-          answers: [
-            "4",
-            "6",
-            "8",
-            "10"
-          ],
-
-          correct: 1,
-
-          explanation:
-            "2x = 12, donc x = 6."
-        },
-
-        {
-          question:
-            "Que se passe-t-il lorsqu'on multiplie une inéquation par un nombre négatif ?",
-
-          answers: [
-            "Le sens du signe s'inverse",
-            "Le signe disparaît",
-            "Rien ne change",
-            "L'inconnue disparaît"
-          ],
-
-          correct: 0,
-
-          explanation:
-            "Multiplier ou diviser une inéquation par un nombre négatif inverse le sens de l'inégalité."
-        }
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Pythagore"),
-
-      title: "Théorème de Pythagore",
-
-      notions: [
-        "Triangle rectangle",
-        "Hypoténuse",
-        "Relation de Pythagore",
-        "Réciproque"
-      ],
-
-      parts: [
-
-        [
-          "1. Théorème",
-          "Dans un triangle rectangle, le carré de la longueur de l'hypoténuse est égal à la somme des carrés des longueurs des deux autres côtés."
-        ],
-
-        [
-          "2. Relation",
-          "Si c est l'hypoténuse et a et b les deux autres côtés, alors : c² = a² + b²."
-        ],
-
-        [
-          "3. Calcul d'une longueur",
-          "Pour calculer l'hypoténuse : c = √(a² + b²).\n\nPour calculer un côté de l'angle droit, on utilise une différence de carrés."
-        ],
-
-        [
-          "4. Réciproque",
-          "Si le carré du plus grand côté est égal à la somme des carrés des deux autres côtés, alors le triangle est rectangle."
-        ],
-
-        [
-          "5. Méthode",
-          "Identifier l'hypoténuse, écrire la relation, remplacer par les valeurs, calculer puis donner l'unité."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Thalès"),
-
-      title: "Théorème de Thalès",
-
-      notions: [
-        "Droites parallèles",
-        "Proportionnalité",
-        "Rapports de longueurs",
-        "Réciproque"
-      ],
-
-      parts: [
-
-        [
-          "1. Principe",
-          "Lorsque deux droites sécantes sont coupées par deux droites parallèles, les longueurs correspondantes sont proportionnelles."
-        ],
-
-        [
-          "2. Écrire les rapports",
-          "On écrit une égalité entre les rapports des longueurs correspondantes."
-        ],
-
-        [
-          "3. Produit en croix",
-          "Une fois les rapports écrits correctement, le produit en croix permet de calculer une longueur inconnue."
-        ],
-
-        [
-          "4. Réciproque",
-          "Des rapports de longueurs égaux peuvent permettre de démontrer que deux droites sont parallèles lorsque les conditions géométriques sont réunies."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Trigonométrie"),
-
-      title: "Trigonométrie",
-
-      notions: [
-        "Sinus",
-        "Cosinus",
-        "Tangente",
-        "Triangle rectangle"
-      ],
-
-      parts: [
-
-        [
-          "1. Sinus",
-          "Dans un triangle rectangle : sin(angle) = côté opposé / hypoténuse."
-        ],
-
-        [
-          "2. Cosinus",
-          "Dans un triangle rectangle : cos(angle) = côté adjacent / hypoténuse."
-        ],
-
-        [
-          "3. Tangente",
-          "Dans un triangle rectangle : tan(angle) = côté opposé / côté adjacent."
-        ],
-
-        [
-          "4. Choisir la bonne formule",
-          "Repère l'angle connu et les deux côtés concernés. Choisis sinus, cosinus ou tangente selon les côtés connus et recherchés."
-        ],
-
-        [
-          "5. Calculatrice",
-          "Vérifie le mode de la calculatrice. Pour les exercices dont les angles sont donnés en degrés, utilise le mode degrés."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c =>
-        has(
-          c,
-          "Dérivation",
-          "Dérivation et étude de fonctions",
-          "Fonctions et dérivation"
-        ),
-
-      title: "Dérivation et étude de fonctions",
-
-      notions: [
-        "Nombre dérivé",
-        "Fonction dérivée",
-        "Signe de la dérivée",
-        "Variations"
-      ],
-
-      parts: [
-
-        [
-          "1. Idée",
-          "La dérivée d'une fonction permet notamment d'étudier la manière dont cette fonction varie."
-        ],
-
-        [
-          "2. Règles de base",
-          "La dérivée d'une constante est 0. La dérivée de x est 1. La dérivée de x² est 2x. Plus généralement, la dérivée de x^n est n x^(n−1) pour les puissances usuelles."
-        ],
-
-        [
-          "3. Variations",
-          "Lorsque f'(x) est positive sur un intervalle, f est croissante sur cet intervalle. Lorsqu'elle est négative, f est décroissante."
-        ],
-
-        [
-          "4. Méthode",
-          "Déterminer f'(x), étudier son signe, puis dresser le tableau de variations."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Suites numériques"),
-
-      title: "Suites numériques",
-
-      notions: [
-        "Terme d'une suite",
-        "Suite explicite",
-        "Suite récurrente",
-        "Suite arithmétique et géométrique"
-      ],
-
-      parts: [
-
-        [
-          "1. Définition",
-          "Une suite associe à chaque entier naturel considéré un nombre appelé terme de la suite."
-        ],
-
-        [
-          "2. Suite explicite",
-          "Une formule explicite donne directement un terme en fonction de son rang."
-        ],
-
-        [
-          "3. Suite récurrente",
-          "Une relation de récurrence permet de calculer un terme à partir d'un ou plusieurs termes précédents."
-        ],
-
-        [
-          "4. Suites usuelles",
-          "Dans une suite arithmétique, on ajoute une même raison. Dans une suite géométrique, on multiplie par une même raison."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Probabilités"),
-
-      title: "Probabilités",
-
-      notions: [
-        "Expérience aléatoire",
-        "Événement",
-        "Probabilité",
-        "Événement contraire"
-      ],
-
-      parts: [
-
-        [
-          "1. Expérience aléatoire",
-          "Une expérience aléatoire possède plusieurs résultats possibles et son résultat exact ne peut pas être prévu avec certitude avant l'expérience."
-        ],
-
-        [
-          "2. Probabilité",
-          "Une probabilité est comprise entre 0 et 1. Une probabilité de 0 correspond à un événement impossible et une probabilité de 1 à un événement certain."
-        ],
-
-        [
-          "3. Événement contraire",
-          "Pour un événement A : P(non A) = 1 − P(A)."
-        ],
-
-        [
-          "4. Méthode",
-          "Définis l'univers, identifie l'événement étudié puis applique la formule adaptée."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Statistiques"),
-
-      title: "Statistiques",
-
-      notions: [
-        "Population",
-        "Caractère",
-        "Effectif",
-        "Fréquence",
-        "Moyenne"
-      ],
-
-      parts: [
-
-        [
-          "1. Vocabulaire",
-          "La population est l'ensemble étudié. Le caractère est la variable observée. L'effectif indique le nombre d'individus correspondant à une valeur."
-        ],
-
-        [
-          "2. Fréquence",
-          "La fréquence d'une valeur est son effectif divisé par l'effectif total."
-        ],
-
-        [
-          "3. Moyenne",
-          "La moyenne pondérée est obtenue en additionnant les produits valeur × effectif puis en divisant par l'effectif total."
-        ],
-
-        [
-          "4. Graphiques",
-          "Toujours lire le titre, les axes, les unités et la légende avant d'interpréter un graphique."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Limites et continuité", "Limites"),
-
-      title: "Limites et continuité",
-
-      notions: [
-        "Limite",
-        "Voisinage",
-        "Continuité",
-        "Comportement d'une fonction"
-      ],
-
-      parts: [
-
-        [
-          "1. Limite",
-          "La limite décrit le comportement d'une fonction lorsque la variable se rapproche d'une valeur donnée ou devient très grande en valeur absolue."
-        ],
-
-        [
-          "2. Continuité",
-          "Une fonction est continue en un point lorsque sa limite en ce point existe et correspond à sa valeur en ce point."
-        ],
-
-        [
-          "3. Méthode",
-          "Identifier la situation, simplifier si nécessaire puis appliquer les règles de calcul des limites."
-        ],
-
-        [
-          "4. Interprétation",
-          "Les limites peuvent notamment permettre d'étudier le comportement d'une courbe et d'identifier certaines asymptotes."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Fonction exponentielle"),
-
-      title: "Fonction exponentielle",
-
-      notions: [
-        "Fonction exponentielle",
-        "Propriétés",
-        "Dérivée",
-        "Croissance"
-      ],
-
-      parts: [
-
-        [
-          "1. Définition",
-          "La fonction exponentielle est définie sur l'ensemble des nombres réels et est strictement positive."
-        ],
-
-        [
-          "2. Propriété fondamentale",
-          "Pour tous réels a et b : exp(a + b) = exp(a) × exp(b)."
-        ],
-
-        [
-          "3. Dérivée",
-          "La dérivée de exp(x) est exp(x). Cette propriété permet notamment d'étudier ses variations."
-        ],
-
-        [
-          "4. Méthode",
-          "Utilise les propriétés de l'exponentielle pour transformer les expressions et résoudre les équations adaptées."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Fonction logarithme", "Logarithmes et exponentielles"),
-
-      title: "Fonction logarithme",
-
-      notions: [
-        "Domaine de définition",
-        "Logarithme népérien",
-        "Propriétés",
-        "Équations"
-      ],
-
-      parts: [
-
-        [
-          "1. Définition",
-          "Le logarithme népérien ln(x) est défini uniquement pour x > 0."
-        ],
-
-        [
-          "2. Propriété",
-          "Pour a et b positifs : ln(ab) = ln(a) + ln(b)."
-        ],
-
-        [
-          "3. Quotient",
-          "Pour a et b positifs : ln(a/b) = ln(a) − ln(b)."
-        ],
-
-        [
-          "4. Vigilance",
-          "Avant toute transformation contenant un logarithme, vérifie que son argument est strictement positif."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Nombres complexes"),
-
-      title: "Nombres complexes",
-
-      notions: [
-        "Unité imaginaire",
-        "Forme algébrique",
-        "Conjugué",
-        "Module"
-      ],
-
-      parts: [
-
-        [
-          "1. Définition",
-          "Un nombre complexe s'écrit z = a + ib, où a et b sont réels et i² = −1."
-        ],
-
-        [
-          "2. Calcul",
-          "Les opérations se font en regroupant les parties réelles et imaginaires et en utilisant i² = −1."
-        ],
-
-        [
-          "3. Conjugué",
-          "Le conjugué de a + ib est a − ib."
-        ],
-
-        [
-          "4. Méthode",
-          "Effectue les calculs étape par étape et sépare clairement les parties réelle et imaginaire."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Calcul intégral", "Primitives et intégrales"),
-
-      title: "Primitives et intégrales",
-
-      notions: [
-        "Primitive",
-        "Intégrale",
-        "Aire algébrique",
-        "Bornes"
-      ],
-
-      parts: [
-
-        [
-          "1. Primitive",
-          "Une fonction F est une primitive de f si F'(x) = f(x)."
-        ],
-
-        [
-          "2. Intégrale",
-          "Lorsqu'une primitive est connue, l'intégrale sur un intervalle peut être calculée à partir de ses valeurs aux bornes."
-        ],
-
-        [
-          "3. Formule",
-          "∫ de a à b f(x) dx = F(b) − F(a)."
-        ],
-
-        [
-          "4. Méthode",
-          "Cherche une primitive, évalue-la aux deux bornes puis calcule la différence."
-        ]
-
-      ]
-
-    },
-
-    /* --------------------------------------------------------
-       PHYSIQUE
-       -------------------------------------------------------- */
-
-    {
-      test: c => has(c, "Masse et poids"),
-
-      title: "Masse et poids",
-
-      notions: [
-        "Masse",
-        "Poids",
-        "Gravité",
-        "Newton"
-      ],
-
-      parts: [
-
-        [
-          "1. Masse",
-          "La masse mesure la quantité de matière d'un objet. Son unité SI est le kilogramme."
-        ],
-
-        [
-          "2. Poids",
-          "Le poids est une force exercée notamment par la gravité. Il se mesure en newtons."
-        ],
-
-        [
-          "3. Relation",
-          "Près de la surface terrestre : P = m × g."
-        ],
-
-        [
-          "4. Méthode",
-          "Convertis les unités si nécessaire, applique P = mg et vérifie que le résultat est exprimé en newtons."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c =>
-        has(
-          c,
-          "Vitesse et mouvement",
-          "Mouvement et vitesse",
-          "Cinématique"
-        ),
-
-      title: "Mouvement et vitesse",
-
-      notions: [
-        "Référentiel",
-        "Trajectoire",
-        "Distance",
-        "Vitesse"
-      ],
-
-      parts: [
-
-        [
-          "1. Mouvement",
-          "Un objet est en mouvement lorsque sa position change au cours du temps par rapport à un référentiel."
-        ],
-
-        [
-          "2. Vitesse moyenne",
-          "La vitesse moyenne se calcule par v = d / t."
-        ],
-
-        [
-          "3. Unités",
-          "Dans le système international, la distance est en mètres, le temps en secondes et la vitesse en mètres par seconde."
-        ],
-
-        [
-          "4. Méthode",
-          "Convertis les unités dans un système cohérent, applique la relation puis vérifie le résultat."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Loi d'Ohm"),
-
-      title: "Loi d'Ohm",
-
-      notions: [
-        "Tension",
-        "Intensité",
-        "Résistance",
-        "Relation U = RI"
-      ],
-
-      parts: [
-
-        [
-          "1. Relation",
-          "Pour un conducteur ohmique : U = R × I."
-        ],
-
-        [
-          "2. Grandeurs",
-          "U est la tension en volts, R la résistance en ohms et I l'intensité en ampères."
-        ],
-
-        [
-          "3. Formules",
-          "U = RI, I = U/R et R = U/I lorsque les unités sont cohérentes."
-        ],
-
-        [
-          "4. Conseil",
-          "Écris toujours la relation littérale avant de remplacer les valeurs numériques."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Intensité et tension", "Électricité"),
-
-      title: "Électricité : intensité et tension",
-
-      notions: [
-        "Courant électrique",
-        "Intensité",
-        "Tension",
-        "Ampèremètre et voltmètre"
-      ],
-
-      parts: [
-
-        [
-          "1. Intensité",
-          "L'intensité du courant se mesure en ampères avec un ampèremètre branché en série."
-        ],
-
-        [
-          "2. Tension",
-          "La tension se mesure en volts avec un voltmètre branché en dérivation aux bornes du dipôle."
-        ],
-
-        [
-          "3. Circuit en série",
-          "Dans un circuit en série, l'intensité est la même dans les différents dipôles."
-        ],
-
-        [
-          "4. Circuit en dérivation",
-          "Dans un montage en dérivation, la tension est la même aux bornes des branches reliées aux mêmes nœuds."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Puissance et énergie électrique"),
-
-      title: "Puissance et énergie électrique",
-
-      notions: [
-        "Puissance",
-        "Énergie",
-        "Watt",
-        "Kilowattheure"
-      ],
-
-      parts: [
-
-        [
-          "1. Puissance",
-          "La puissance indique le rythme auquel l'énergie est transférée. Dans un cas électrique simple : P = U × I."
-        ],
-
-        [
-          "2. Énergie",
-          "L'énergie consommée dépend de la puissance et de la durée : E = P × t."
-        ],
-
-        [
-          "3. Unités",
-          "La puissance s'exprime en watts. L'énergie peut être exprimée en joules ou en kilowattheures."
-        ],
-
-        [
-          "4. Méthode",
-          "Vérifie les unités du temps avant d'effectuer le calcul."
-        ]
-
-      ]
-
-    },
-
-    /* --------------------------------------------------------
-       CHIMIE
-       -------------------------------------------------------- */
-
-    {
-      test: c =>
-        has(
-          c,
-          "Atomes et ions",
-          "Structure de la matière",
-          "Quantité de matière"
-        ),
-
-      title: "Atomes, ions et quantité de matière",
-
-      notions: [
-        "Noyau",
-        "Protons et neutrons",
-        "Électrons",
-        "Ions",
-        "Mole"
-      ],
-
-      parts: [
-
-        [
-          "1. Atome",
-          "Un atome possède un noyau constitué de protons et de neutrons, entouré d'électrons."
-        ],
-
-        [
-          "2. Atome neutre",
-          "Un atome électriquement neutre possède autant d'électrons que de protons."
-        ],
-
-        [
-          "3. Ions",
-          "Un ion se forme lorsqu'un atome ou un groupe d'atomes gagne ou perd des électrons."
-        ],
-
-        [
-          "4. Quantité de matière",
-          "La quantité de matière se mesure en mole. Pour relier une masse m à une masse molaire M, on utilise notamment n = m/M."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Acides et bases"),
-
-      title: "Acides et bases",
-
-      notions: [
-        "Solution acide",
-        "Solution basique",
-        "pH",
-        "Neutralité"
-      ],
-
-      parts: [
-
-        [
-          "1. pH",
-          "Le pH caractérise l'acidité ou la basicité d'une solution aqueuse."
-        ],
-
-        [
-          "2. Interprétation",
-          "À température usuelle, une solution neutre a un pH proche de 7, une solution acide un pH inférieur à 7 et une solution basique un pH supérieur à 7."
-        ],
-
-        [
-          "3. Mesure",
-          "Le pH peut être estimé à l'aide d'un indicateur coloré ou mesuré plus précisément avec un pH-mètre."
-        ],
-
-        [
-          "4. Conseil",
-          "Toujours distinguer la valeur du pH et la concentration d'une espèce chimique : elles ne sont pas synonymes."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Radioactivité"),
-
-      title: "Radioactivité",
-
-      notions: [
-        "Noyau instable",
-        "Désintégration",
-        "Rayonnement",
-        "Demi-vie"
-      ],
-
-      parts: [
-
-        [
-          "1. Principe",
-          "Certains noyaux atomiques sont instables et peuvent se transformer spontanément en émettant des rayonnements."
-        ],
-
-        [
-          "2. Désintégration",
-          "La désintégration radioactive est aléatoire à l'échelle d'un noyau, mais son comportement statistique est prévisible pour un grand nombre de noyaux."
-        ],
-
-        [
-          "3. Demi-vie",
-          "La demi-vie est la durée nécessaire pour que la moitié des noyaux radioactifs initiaux se soient désintégrés en moyenne."
-        ],
-
-        [
-          "4. Applications",
-          "La radioactivité possède des applications scientifiques et médicales encadrées par des règles de radioprotection."
-        ]
-
-      ]
-
-    },
-
-    /* --------------------------------------------------------
-       SVT
-       -------------------------------------------------------- */
-
-    {
-      test: c => has(c, "ADN et information génétique", "Génétique et hérédité", "Hérédité"),
-
-      title: "ADN et information génétique",
-
-      notions: [
-        "ADN",
-        "Chromosome",
-        "Gène",
-        "Allèle"
-      ],
-
-      parts: [
-
-        [
-          "1. ADN",
-          "L'ADN est une molécule qui porte une grande partie de l'information génétique."
-        ],
-
-        [
-          "2. Chromosomes",
-          "L'ADN est organisé notamment sous forme de chromosomes dans les cellules."
-        ],
-
-        [
-          "3. Gènes",
-          "Un gène correspond à une région d'ADN associée à une information biologique."
-        ],
-
-        [
-          "4. Allèles",
-          "Des versions différentes d'un même gène sont appelées allèles."
-        ],
-
-        [
-          "5. À retenir",
-          "Il faut distinguer correctement ADN, chromosome, gène et allèle."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Immunité", "Immunité et santé"),
-
-      title: "Immunité et santé",
-
-      notions: [
-        "Agents pathogènes",
-        "Réponse immunitaire",
-        "Anticorps",
-        "Mémoire immunitaire"
-      ],
-
-      parts: [
-
-        [
-          "1. Défense de l'organisme",
-          "Le système immunitaire reconnaît et combat de nombreux agents ou éléments étrangers à l'organisme."
-        ],
-
-        [
-          "2. Réponse immunitaire",
-          "Certaines réponses sont rapides et générales tandis que d'autres sont plus spécifiques."
-        ],
-
-        [
-          "3. Anticorps",
-          "Certains lymphocytes participent à la production d'anticorps capables de reconnaître des éléments spécifiques."
-        ],
-
-        [
-          "4. Mémoire immunitaire",
-          "Après certaines rencontres avec un antigène, l'organisme peut conserver une mémoire permettant une réponse plus rapide lors d'une nouvelle exposition."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Régulation de la glycémie"),
-
-      title: "Régulation de la glycémie",
-
-      notions: [
-        "Glycémie",
-        "Insuline",
-        "Glucagon",
-        "Pancréas"
-      ],
-
-      parts: [
-
-        [
-          "1. Glycémie",
-          "La glycémie désigne la concentration de glucose dans le sang."
-        ],
-
-        [
-          "2. Insuline",
-          "Après une augmentation de la glycémie, l'insuline favorise notamment l'utilisation et le stockage du glucose, ce qui contribue à faire diminuer la glycémie."
-        ],
-
-        [
-          "3. Glucagon",
-          "Lorsque la glycémie diminue, le glucagon participe à la mobilisation des réserves de glucose, notamment au niveau du foie."
-        ],
-
-        [
-          "4. Bilan",
-          "L'insuline et le glucagon ont des effets opposés et participent ensemble à la régulation de la glycémie."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Reproduction humaine"),
-
-      title: "Reproduction humaine",
-
-      notions: [
-        "Gamètes",
-        "Appareil reproducteur",
-        "Fécondation",
-        "Cycle reproducteur"
-      ],
-
-      parts: [
-
-        [
-          "1. Gamètes",
-          "Les gamètes sont les cellules reproductrices."
-        ],
-
-        [
-          "2. Fécondation",
-          "La fécondation correspond à la fusion de deux gamètes et conduit à la formation d'une cellule-œuf."
-        ],
-
-        [
-          "3. Fonction reproductive",
-          "La reproduction humaine implique des organes et des mécanismes hormonaux coordonnés."
-        ],
-
-        [
-          "4. Santé reproductive",
-          "La connaissance du fonctionnement du corps et la prévention font partie de l'éducation à la santé."
-        ]
-
-      ]
-
-    },
-
-    /* --------------------------------------------------------
-       PHILOSOPHIE
-       -------------------------------------------------------- */
-
-    {
-      test: c => has(c, "Conscience"),
-
-      title: "La conscience",
-
-      notions: [
-        "Conscience de soi",
-        "Perception",
-        "Réflexion",
-        "Responsabilité"
-      ],
-
-      parts: [
-
-        [
-          "1. Définition",
-          "La conscience peut désigner la capacité à avoir une expérience de soi, du monde et de ses propres pensées."
-        ],
-
-        [
-          "2. Question philosophique",
-          "Être conscient de soi signifie-t-il nécessairement se connaître parfaitement ? Cette question permet d'examiner les possibilités et les limites de la conscience."
-        ],
-
-        [
-          "3. Argumenter",
-          "Une dissertation philosophique ne consiste pas seulement à donner une opinion. Il faut définir les notions, poser un problème et construire une argumentation."
-        ],
-
-        [
-          "4. Méthode",
-          "Présente une idée, explique-la, donne un exemple puis examine éventuellement une objection."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Liberté"),
-
-      title: "La liberté",
-
-      notions: [
-        "Libre arbitre",
-        "Contraintes",
-        "Autonomie",
-        "Responsabilité"
-      ],
-
-      parts: [
-
-        [
-          "1. Définition",
-          "Être libre peut signifier pouvoir choisir, agir sans contrainte ou être autonome dans ses décisions."
-        ],
-
-        [
-          "2. Liberté et contraintes",
-          "Une réflexion sur la liberté doit distinguer les contraintes extérieures, les habitudes, les règles et les déterminations possibles."
-        ],
-
-        [
-          "3. Responsabilité",
-          "La responsabilité suppose généralement qu'une personne puisse être considérée comme l'auteur de ses actes dans certaines conditions."
-        ],
-
-        [
-          "4. Méthode",
-          "Présente plusieurs conceptions de la liberté et examine leurs conséquences."
-        ]
-
-      ]
-
-    },
-
-    {
-      test: c => has(c, "Vérité"),
-
-      title: "La vérité",
-
-      notions: [
-        "Vrai et faux",
-        "Opinion",
-        "Preuve",
-        "Connaissance"
-      ],
-
-      parts: [
-
-        [
-          "1. Vérité",
-          "La vérité concerne l'accord entre une proposition et ce qu'elle affirme comme réel, selon le cadre de connaissance considéré."
-        ],
-
-        [
-          "2. Opinion",
-          "Une opinion peut être affirmée sans justification suffisante. Une connaissance cherche des raisons ou des méthodes permettant de la justifier."
-        ],
-
-        [
-          "3. Preuve",
-          "La manière de justifier une affirmation dépend du domaine : démonstration en mathématiques, observation et expérimentation dans les sciences, argumentation en philosophie."
-        ],
-
-        [
-          "4. À retenir",
-          "Dans une dissertation, distingue toujours l'affirmation, l'argument et l'exemple."
-        ]
-
-      ]
-
-    }
-
-  ];
-
-  /* ==========================================================
-     COURS GÉNÉRIQUE POUR TOUS LES AUTRES CHAPITRES
-     ========================================================== */
-
-  function genericLesson(subject, chapter) {
-
-    const base =
-      BASE[subject] ||
-      BASE["Français"];
-
-    let parts = [
-
-      [
-        "1. Comprendre le chapitre",
-
-        `${base.intro}
-
-Dans ce chapitre, l'objectif est de comprendre les notions liées à « ${chapter} » et de savoir les utiliser dans une situation d'examen.`
-      ],
-
-      [
-        "2. Notions essentielles",
-
-        `${base.notions.join(". ")}.`
-      ],
-
-      [
-        "3. Méthode de travail",
-
-        base.method
-      ],
-
-      [
-        "4. Application",
-
-        `Pour réviser « ${chapter} », commence par définir les termes importants, puis étudie les propriétés, mécanismes ou règles du chapitre. Termine par un exercice d'application et vérifie chaque étape de ton raisonnement.`
-      ],
-
-      [
-        "5. Préparation à l'examen",
-
-        "Lis précisément la consigne, réponds avec les notions du cours, justifie les étapes importantes et relis ta réponse avant de la valider."
-      ]
-
-    ];
-
-    let notions = [
-      ...base.notions
-    ];
-
-    /* DISSERTATION / ARGUMENTATION */
-
-    if (
-      has(
-        chapter,
-        "dissertation",
-        "argumentation",
-        "rédaction",
-        "essay"
-      )
-    ) {
-
-      notions = [
-        "Compréhension du sujet",
-        "Problématique ou idée directrice",
-        "Arguments",
-        "Exemples",
-        "Organisation du devoir"
-      ];
-
-      parts = [
-
-        [
-          "1. Comprendre le sujet",
-          "Repère les mots importants du sujet et définis les notions principales."
-        ],
-
-        [
-          "2. Construire la réflexion",
-          "Cherche les idées principales, les arguments, les exemples et les éventuelles objections."
-        ],
-
-        [
-          "3. Organiser le devoir",
-          "Construis une introduction claire, un développement organisé et une conclusion qui répond réellement au sujet."
-        ],
-
-        [
-          "4. Rédiger",
-          "Utilise des phrases complètes, des connecteurs logiques et des exemples pertinents."
-        ],
-
-        [
-          "5. Relire",
-          "Vérifie la cohérence, les accords, la ponctuation et le respect du sujet."
-        ]
-
-      ];
-    }
-
-    /* GRAMMAIRE */
-
-    else if (
-      has(
-        chapter,
-        "grammaire",
-        "propositions subordonnées",
-        "conjugaison",
-        "orthographe"
-      )
-    ) {
-
-      parts = [
-
-        [
-          "1. Identifier",
-          `Commence par repérer les éléments grammaticaux étudiés dans le chapitre « ${chapter} » et leur rôle dans la phrase.`
-        ],
-
-        [
-          "2. Comprendre la règle",
-          "Une règle de langue doit être comprise puis appliquée à plusieurs exemples."
-        ],
-
-        [
-          "3. Analyser",
-          "Observe la relation entre les mots, les groupes et les propositions. Utilise les indices grammaticaux pour justifier ton analyse."
-        ],
-
-        [
-          "4. Appliquer",
-          "Transforme ou complète plusieurs phrases en expliquant la règle utilisée."
-        ],
-
-        [
-          "5. Réviser",
-          "Apprends les règles essentielles et entraîne-toi avec des phrases différentes de celles du cours."
-        ]
-
-      ];
-    }
-
-    /* ANGLAIS */
-
-    else if (
-      has(
-        chapter,
-        "reported speech",
-        "passive voice",
-        "conditionals",
-        "present simple",
-        "past simple",
-        "future forms"
-      )
-    ) {
-
-      parts = [
-
-        [
-          "1. Identifier la structure",
-          `Le chapitre « ${chapter} » demande de reconnaître la structure grammaticale utilisée et le contexte dans lequel elle s'emploie.`
-        ],
-
-        [
-          "2. Règle essentielle",
-          "Repère le sujet, le verbe, le temps et les compléments. Vérifie la forme verbale."
-        ],
-
-        [
-          "3. Exemple",
-          "Lis plusieurs phrases modèles puis transforme une phrase en respectant la règle étudiée."
-        ],
-
-        [
-          "4. Vocabulaire",
-          "Mémorise les mots et expressions utiles au thème afin de comprendre les textes et construire tes propres phrases."
-        ],
-
-        [
-          "5. Expression",
-          "Écris quelques phrases personnelles en utilisant correctement la structure étudiée."
-        ]
-
-      ];
-    }
-
-    return {
-
-      titre: chapter,
-
-      objectifs: [
-
-        `Comprendre les notions essentielles de « ${chapter} ».`,
-
-        "Maîtriser le vocabulaire et les règles du chapitre.",
-
-        "Savoir appliquer la méthode dans un exercice.",
-
-        "Être capable de justifier une réponse à l'examen."
-
-      ],
-
-      notions,
-
-      lecon: parts,
-
-      resume:
-        `À retenir : pour réussir le chapitre « ${chapter} », il faut connaître les définitions essentielles, comprendre la méthode et savoir l'appliquer dans des exercices. Une réponse d'examen doit être claire, justifiée et vérifiée.`,
-
-      qcm: [
-
-        {
-          question:
-            `Quel est le meilleur objectif pour réviser « ${chapter} » ?`,
-
-          answers: [
-            "Comprendre puis savoir appliquer le cours",
-            "Mémoriser sans comprendre",
-            "Éviter les exercices",
-            "Répondre au hasard"
-          ],
-
-          correct: 0,
-
-          explanation:
-            "Une bonne révision associe compréhension, mémorisation des notions essentielles et entraînement."
-        },
-
-        {
-          question:
-            "Que faut-il faire avant de commencer un exercice ?",
-
-          answers: [
-            "Lire la consigne et identifier les données",
-            "Choisir une réponse au hasard",
-            "Ignorer les unités",
-            "Passer directement à la conclusion"
-          ],
-
-          correct: 0,
-
-          explanation:
-            "La lecture de la consigne et l'identification des données permettent de choisir une méthode adaptée."
-        }
-
-      ]
-
-    };
-
-  }
-
-  /* ==========================================================
-     TRANSFORMER UN COURS SPÉCIFIQUE EN OBJET COMPLET
-     ========================================================== */
-
-  function makeLesson(subject, chapter) {
-
-    const found = SPECIALS.find(
-      item => item.test(normalize(chapter), normalize(subject))
-    );
-
-    const generic = genericLesson(
-      subject,
-      chapter
-    );
-
-    if (!found) {
-
-      return generic;
-
-    }
-
-    return {
-
-      titre:
-        found.title || chapter,
-
-      objectifs: [
-
-        `Comprendre « ${found.title || chapter} ».`,
-
-        "Connaître les définitions et propriétés essentielles.",
-
-        "Savoir appliquer la méthode dans un exercice.",
-
-        "Justifier et vérifier son résultat."
-
-      ],
-
-      notions:
-        found.notions || generic.notions,
-
-      lecon:
-        found.parts || generic.lecon,
-
-      resume:
-        `À retenir : ${(
-          found.notions ||
-          []
-        ).join(", ")}. Il faut connaître les propriétés, savoir choisir la méthode adaptée et vérifier le résultat.`,
-
-      qcm:
-        found.qcm || generic.qcm
-
-    };
-
-  }
-
-  /* ==========================================================
-     PROXY POUR LES MATIÈRES
-     ========================================================== */
-
-  function createSubjectProxy(subject) {
-
-    const target = {};
-
-    return new Proxy(target, {
-
-      get(obj, chapter) {
-
-        if (typeof chapter !== "string") {
-
-          return obj[chapter];
-
-        }
-
-        if (!obj[chapter]) {
-
-          obj[chapter] =
-            makeLesson(
-              subject,
-              chapter
-            );
-
-        }
-
-        return obj[chapter];
-
+  "Calcul numérique": {
+
+    titre: "Calcul numérique",
+
+    objectifs: [
+      "Maîtriser les opérations sur les nombres.",
+      "Respecter les priorités de calcul.",
+      "Utiliser correctement les fractions et les nombres relatifs.",
+      "Savoir effectuer un calcul numérique proprement."
+    ],
+
+    notions: [
+      "Nombres relatifs",
+      "Fractions",
+      "Puissances",
+      "Priorités opératoires",
+      "Calculs avec parenthèses"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Les nombres relatifs",
+        texte:
+          "Un nombre relatif peut être positif ou négatif. " +
+          "Les nombres positifs sont supérieurs ou égaux à zéro et les nombres négatifs sont inférieurs ou égaux à zéro. " +
+          "Pour comparer deux nombres relatifs, on peut les placer sur une droite graduée.\n\n" +
+          "Exemple : -5 < -2 car -5 est situé à gauche de -2 sur la droite graduée."
       },
 
-      set(obj, chapter, value) {
-
-        obj[chapter] =
-          value;
-
-        return true;
-
-      }
-
-    });
-
-  }
-
-  /* ==========================================================
-     PROXY POUR LES MATIÈRES
-     ========================================================== */
-
-  function createMatieresProxy() {
-
-    const target = {};
-
-    return new Proxy(target, {
-
-      get(obj, subject) {
-
-        if (typeof subject !== "string") {
-
-          return obj[subject];
-
-        }
-
-        if (!obj[subject]) {
-
-          obj[subject] =
-            createSubjectProxy(
-              subject
-            );
-
-        }
-
-        return obj[subject];
-
+      {
+        titre: "2. Addition et soustraction",
+        texte:
+          "Pour additionner deux nombres de même signe, on additionne leurs distances à zéro et on conserve le signe commun.\n\n" +
+          "Exemple : (-4) + (-7) = -11.\n\n" +
+          "Pour deux nombres de signes différents, on soustrait les distances à zéro et on conserve le signe du nombre ayant la plus grande distance à zéro.\n\n" +
+          "Exemple : (-8) + 3 = -5."
       },
 
-      set(obj, subject, value) {
-
-        obj[subject] =
-          value;
-
-        return true;
-
-      }
-
-    });
-
-  }
-
-  /* ==========================================================
-     PROXY POUR LES SÉRIES DU BAC
-     ========================================================== */
-
-  function createSeriesProxy() {
-
-    const target = {};
-
-    return new Proxy(target, {
-
-      get(obj, series) {
-
-        if (typeof series !== "string") {
-
-          return obj[series];
-
-        }
-
-        if (!obj[series]) {
-
-          obj[series] = {
-
-            matieres:
-              createMatieresProxy()
-
-          };
-
-        }
-
-        return obj[series];
-
+      {
+        titre: "3. Multiplication et division",
+        texte:
+          "Pour multiplier ou diviser des nombres relatifs, on applique la règle des signes.\n\n" +
+          "Même signe : résultat positif.\n" +
+          "Signes différents : résultat négatif.\n\n" +
+          "Exemples :\n" +
+          "(-4) × (-3) = 12.\n" +
+          "(-20) ÷ 5 = -4."
       },
 
-      set(obj, series, value) {
+      {
+        titre: "4. Fractions",
+        texte:
+          "Pour additionner ou soustraire deux fractions, il faut les réduire au même dénominateur.\n\n" +
+          "Pour multiplier deux fractions, on multiplie les numérateurs entre eux et les dénominateurs entre eux.\n\n" +
+          "Pour diviser par une fraction non nulle, on multiplie par son inverse.\n\n" +
+          "Exemple : 2/3 × 5/4 = 10/12 = 5/6."
+      },
 
-        obj[series] =
-          value;
+      {
+        titre: "5. Priorités opératoires",
+        texte:
+          "Dans une expression numérique, on effectue les calculs dans l'ordre suivant :\n\n" +
+          "1. Parenthèses.\n" +
+          "2. Puissances.\n" +
+          "3. Multiplications et divisions.\n" +
+          "4. Additions et soustractions.\n\n" +
+          "Exemple : 3 + 2 × 5 = 3 + 10 = 13.\n\n" +
+          "Il ne faut donc pas effectuer les opérations simplement de gauche à droite."
+      },
 
-        return true;
-
+      {
+        titre: "6. Méthode pour réussir un calcul",
+        texte:
+          "Recopie l'expression correctement, respecte les priorités opératoires, détaille les étapes et simplifie le résultat final.\n\n" +
+          "Pour un calcul avec fractions, vérifie toujours les signes et cherche à simplifier la fraction."
       }
 
-    });
+    ],
 
+    resume:
+      "Un calcul numérique correct dépend principalement du respect des signes, des règles sur les fractions et des priorités opératoires."
+  },
+
+
+  /* ==========================================================
+     2. CALCUL LITTÉRAL
+     ========================================================== */
+
+  "Calcul littéral": {
+
+    titre: "Calcul littéral",
+
+    objectifs: [
+      "Comprendre la notion d'expression littérale.",
+      "Réduire une expression.",
+      "Calculer la valeur d'une expression pour une valeur donnée.",
+      "Utiliser correctement les parenthèses."
+    ],
+
+    notions: [
+      "Expression littérale",
+      "Terme",
+      "Coefficient",
+      "Réduction",
+      "Valeur numérique"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Qu'est-ce qu'une expression littérale ?",
+        texte:
+          "Une expression littérale est une expression mathématique contenant une ou plusieurs lettres représentant des nombres.\n\n" +
+          "Exemple : 3x + 5, 2a - 7 ou 4x² + 3x."
+      },
+
+      {
+        titre: "2. Réduire une expression",
+        texte:
+          "Réduire une expression consiste à regrouper les termes de même nature.\n\n" +
+          "Exemple :\n" +
+          "3x + 5x = 8x.\n\n" +
+          "De même :\n" +
+          "7a - 2a = 5a.\n\n" +
+          "On ne peut pas additionner directement des termes qui ne sont pas semblables."
+      },
+
+      {
+        titre: "3. Développer une expression simple",
+        texte:
+          "La distributivité permet de supprimer des parenthèses.\n\n" +
+          "a(b + c) = ab + ac.\n\n" +
+          "Exemple :\n" +
+          "3(x + 4) = 3x + 12."
+      },
+
+      {
+        titre: "4. Calculer une valeur numérique",
+        texte:
+          "Pour calculer la valeur d'une expression littérale, on remplace les lettres par les nombres donnés puis on effectue le calcul en respectant les priorités opératoires.\n\n" +
+          "Exemple : si x = 2, alors 3x + 5 = 3 × 2 + 5 = 11."
+      },
+
+      {
+        titre: "5. Attention aux signes",
+        texte:
+          "Lorsque l'on remplace une lettre par un nombre négatif, il est préférable d'utiliser des parenthèses.\n\n" +
+          "Exemple : pour x = -2, l'expression x² devient (-2)² = 4."
+      }
+
+    ],
+
+    resume:
+      "Le calcul littéral utilise des lettres pour représenter des nombres. Il faut savoir réduire, développer et calculer la valeur d'une expression."
+  },
+
+
+  /* ==========================================================
+     3. DÉVELOPPEMENT ET FACTORISATION
+     ========================================================== */
+
+  "Développement et factorisation": {
+
+    titre: "Développement et factorisation",
+
+    objectifs: [
+      "Maîtriser la distributivité.",
+      "Développer une expression.",
+      "Factoriser une expression.",
+      "Reconnaître les identités remarquables simples."
+    ],
+
+    notions: [
+      "Distributivité simple",
+      "Double distributivité",
+      "Factorisation",
+      "Facteur commun",
+      "Identités remarquables"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Développer avec la distributivité",
+        texte:
+          "Développer consiste à transformer un produit en somme ou différence.\n\n" +
+          "La règle fondamentale est :\n" +
+          "a(b + c) = ab + ac.\n\n" +
+          "Exemple :\n" +
+          "5(x + 2) = 5x + 10."
+      },
+
+      {
+        titre: "2. Double distributivité",
+        texte:
+          "Pour développer un produit de deux parenthèses, chaque terme de la première parenthèse doit être multiplié par chaque terme de la deuxième.\n\n" +
+          "Exemple :\n" +
+          "(x + 2)(x + 3)\n" +
+          "= x² + 3x + 2x + 6\n" +
+          "= x² + 5x + 6."
+      },
+
+      {
+        titre: "3. Factoriser avec un facteur commun",
+        texte:
+          "Factoriser consiste à transformer une somme ou une différence en produit.\n\n" +
+          "Exemple :\n" +
+          "6x + 12 = 6(x + 2).\n\n" +
+          "Le nombre 6 est le facteur commun."
+      },
+
+      {
+        titre: "4. Carré d'une somme",
+        texte:
+          "L'identité remarquable suivante est importante :\n\n" +
+          "(a + b)² = a² + 2ab + b².\n\n" +
+          "Exemple :\n" +
+          "(x + 3)² = x² + 6x + 9."
+      },
+
+      {
+        titre: "5. Carré d'une différence",
+        texte:
+          "(a - b)² = a² - 2ab + b².\n\n" +
+          "Exemple :\n" +
+          "(x - 4)² = x² - 8x + 16."
+      },
+
+      {
+        titre: "6. Différence de deux carrés",
+        texte:
+          "Une autre identité remarquable est :\n\n" +
+          "a² - b² = (a - b)(a + b).\n\n" +
+          "Exemple :\n" +
+          "x² - 25 = (x - 5)(x + 5)."
+      }
+
+    ],
+
+    resume:
+      "Développer transforme un produit en somme. Factoriser transforme une somme en produit. Les identités remarquables permettent de réaliser rapidement certaines transformations."
+  },
+
+
+  /* ==========================================================
+     4. ÉQUATIONS ET INÉQUATIONS
+     ========================================================== */
+
+  "Équations et inéquations": {
+
+    titre: "Équations et inéquations",
+
+    objectifs: [
+      "Comprendre la notion d'équation.",
+      "Résoudre une équation du premier degré.",
+      "Résoudre une inéquation simple.",
+      "Vérifier une solution."
+    ],
+
+    notions: [
+      "Inconnue",
+      "Solution",
+      "Équation",
+      "Inéquation",
+      "Équivalence"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Définition d'une équation",
+        texte:
+          "Une équation est une égalité contenant une inconnue, souvent représentée par x.\n\n" +
+          "Exemple :\n" +
+          "3x + 2 = 11.\n\n" +
+          "Résoudre cette équation consiste à trouver la valeur de x qui rend l'égalité vraie."
+      },
+
+      {
+        titre: "2. Principe d'équivalence",
+        texte:
+          "On peut ajouter, soustraire, multiplier ou diviser les deux membres d'une équation par un même nombre non nul sans changer ses solutions.\n\n" +
+          "Le but est d'isoler l'inconnue."
+      },
+
+      {
+        titre: "3. Résoudre une équation",
+        texte:
+          "Exemple :\n" +
+          "3x + 2 = 11.\n\n" +
+          "On soustrait 2 aux deux membres :\n" +
+          "3x = 9.\n\n" +
+          "On divise par 3 :\n" +
+          "x = 3.\n\n" +
+          "La solution est donc x = 3."
+      },
+
+      {
+        titre: "4. Vérifier une solution",
+        texte:
+          "Pour vérifier une solution, on remplace l'inconnue par la valeur obtenue dans l'équation de départ.\n\n" +
+          "Pour x = 3 :\n" +
+          "3 × 3 + 2 = 11.\n\n" +
+          "L'égalité est vraie : la solution est correcte."
+      },
+
+      {
+        titre: "5. Comprendre une inéquation",
+        texte:
+          "Une inéquation utilise les signes <, >, inférieur ou égal, ou supérieur ou égal.\n\n" +
+          "Exemple :\n" +
+          "2x + 1 < 7.\n\n" +
+          "On obtient :\n" +
+          "2x < 6,\n" +
+          "donc x < 3."
+      },
+
+      {
+        titre: "6. Attention au changement de signe",
+        texte:
+          "Lorsqu'on multiplie ou divise une inéquation par un nombre négatif, le sens de l'inégalité change.\n\n" +
+          "Exemple :\n" +
+          "-2x < 6.\n\n" +
+          "En divisant par -2, on obtient :\n" +
+          "x > -3."
+      }
+
+    ],
+
+    resume:
+      "Pour résoudre une équation, on isole l'inconnue en conservant l'équivalence. Pour une inéquation, le sens du signe change lorsqu'on multiplie ou divise par un nombre négatif."
+  },
+
+
+  /* ==========================================================
+     5. SYSTÈMES D'ÉQUATIONS
+     ========================================================== */
+
+  "Systèmes d'équations": {
+
+    titre: "Systèmes d'équations",
+
+    objectifs: [
+      "Comprendre un système de deux équations.",
+      "Résoudre un système par substitution.",
+      "Résoudre un système par combinaison.",
+      "Vérifier une solution."
+    ],
+
+    notions: [
+      "Système",
+      "Inconnues",
+      "Substitution",
+      "Combinaison",
+      "Couple solution"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Définition d'un système",
+        texte:
+          "Un système de deux équations à deux inconnues cherche deux nombres x et y qui vérifient simultanément les deux équations.\n\n" +
+          "Exemple :\n" +
+          "x + y = 10\n" +
+          "x - y = 2."
+      },
+
+      {
+        titre: "2. Méthode par substitution",
+        texte:
+          "On exprime une inconnue en fonction de l'autre dans une équation, puis on remplace cette expression dans la deuxième équation.\n\n" +
+          "Exemple :\n" +
+          "x + y = 10 donne x = 10 - y.\n\n" +
+          "On remplace ensuite x dans la deuxième équation."
+      },
+
+      {
+        titre: "3. Méthode par combinaison",
+        texte:
+          "La méthode par combinaison consiste à multiplier éventuellement une ou plusieurs équations afin d'obtenir des coefficients opposés pour une inconnue.\n\n" +
+          "On additionne ensuite les équations afin d'éliminer cette inconnue."
+      },
+
+      {
+        titre: "4. Exemple complet",
+        texte:
+          "Considérons :\n" +
+          "x + y = 10\n" +
+          "x - y = 2.\n\n" +
+          "En additionnant les deux équations :\n" +
+          "2x = 12.\n\n" +
+          "Donc x = 6.\n\n" +
+          "Puis 6 + y = 10, donc y = 4.\n\n" +
+          "La solution est (6 ; 4)."
+      },
+
+      {
+        titre: "5. Vérification",
+        texte:
+          "On remplace x et y par les valeurs obtenues dans chacune des équations de départ.\n\n" +
+          "6 + 4 = 10.\n" +
+          "6 - 4 = 2.\n\n" +
+          "Les deux égalités sont vraies."
+      }
+
+    ],
+
+    resume:
+      "Un système doit être résolu en trouvant un couple (x ; y) qui vérifie toutes les équations simultanément."
+  },
+
+
+  /* ==========================================================
+     6. FONCTIONS LINÉAIRES ET AFFINES
+     ========================================================== */
+
+  "Fonctions linéaires et affines": {
+
+    titre: "Fonctions linéaires et affines",
+
+    objectifs: [
+      "Reconnaître une fonction linéaire.",
+      "Reconnaître une fonction affine.",
+      "Calculer une image.",
+      "Déterminer un antécédent simple.",
+      "Lire une représentation graphique."
+    ],
+
+    notions: [
+      "Fonction",
+      "Image",
+      "Antécédent",
+      "Fonction linéaire",
+      "Fonction affine",
+      "Coefficient directeur"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Notion de fonction",
+        texte:
+          "Une fonction associe à un nombre x un unique nombre appelé son image.\n\n" +
+          "On peut noter y = f(x).\n\n" +
+          "Exemple : f(x) = 2x + 1.\n\n" +
+          "Pour x = 3 : f(3) = 2 × 3 + 1 = 7."
+      },
+
+      {
+        titre: "2. Fonction linéaire",
+        texte:
+          "Une fonction linéaire est de la forme f(x) = ax, où a est un nombre appelé coefficient.\n\n" +
+          "Sa représentation graphique est une droite qui passe par l'origine du repère."
+      },
+
+      {
+        titre: "3. Fonction affine",
+        texte:
+          "Une fonction affine est de la forme f(x) = ax + b.\n\n" +
+          "a est le coefficient directeur et b est l'ordonnée à l'origine.\n\n" +
+          "Sa représentation graphique est une droite."
+      },
+
+      {
+        titre: "4. Calculer une image",
+        texte:
+          "Pour calculer l'image d'un nombre, on remplace x par ce nombre.\n\n" +
+          "Exemple :\n" +
+          "f(x) = 3x - 2.\n\n" +
+          "f(4) = 3 × 4 - 2 = 10."
+      },
+
+      {
+        titre: "5. Trouver un antécédent",
+        texte:
+          "Pour trouver l'antécédent d'un nombre, on résout l'équation f(x) = nombre.\n\n" +
+          "Exemple :\n" +
+          "f(x) = 2x + 1.\n\n" +
+          "Pour trouver l'antécédent de 7 :\n" +
+          "2x + 1 = 7,\n" +
+          "2x = 6,\n" +
+          "x = 3."
+      }
+
+    ],
+
+    resume:
+      "Une fonction linéaire est de la forme ax. Une fonction affine est de la forme ax + b. Il faut savoir calculer images et antécédents et interpréter une droite."
+  },
+
+
+  /* ==========================================================
+     7. THÉORÈME DE PYTHAGORE
+     ========================================================== */
+
+  "Théorème de Pythagore": {
+
+    titre: "Théorème de Pythagore",
+
+    objectifs: [
+      "Identifier l'hypoténuse d'un triangle rectangle.",
+      "Utiliser le théorème de Pythagore.",
+      "Calculer une longueur.",
+      "Utiliser la réciproque du théorème."
+    ],
+
+    notions: [
+      "Triangle rectangle",
+      "Hypoténuse",
+      "Théorème de Pythagore",
+      "Réciproque"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Identifier l'hypoténuse",
+        texte:
+          "Dans un triangle rectangle, l'hypoténuse est le côté opposé à l'angle droit. C'est également le côté le plus long du triangle."
+      },
+
+      {
+        titre: "2. Énoncé du théorème",
+        texte:
+          "Dans un triangle rectangle, le carré de la longueur de l'hypoténuse est égal à la somme des carrés des longueurs des deux autres côtés.\n\n" +
+          "Si ABC est rectangle en A :\n" +
+          "BC² = AB² + AC²."
+      },
+
+      {
+        titre: "3. Calculer l'hypoténuse",
+        texte:
+          "Si les deux côtés de l'angle droit mesurent 3 cm et 4 cm :\n\n" +
+          "BC² = 3² + 4²\n" +
+          "BC² = 9 + 16\n" +
+          "BC² = 25\n\n" +
+          "Donc BC = 5 cm."
+      },
+
+      {
+        titre: "4. Calculer un côté de l'angle droit",
+        texte:
+          "Si l'hypoténuse mesure 10 cm et un côté mesure 6 cm :\n\n" +
+          "x² = 10² - 6²\n" +
+          "x² = 100 - 36\n" +
+          "x² = 64\n\n" +
+          "Donc x = 8 cm."
+      },
+
+      {
+        titre: "5. Réciproque du théorème",
+        texte:
+          "La réciproque permet de démontrer qu'un triangle est rectangle.\n\n" +
+          "Si, pour le plus grand côté c, on a :\n" +
+          "c² = a² + b²,\n\n" +
+          "alors le triangle est rectangle."
+      }
+
+    ],
+
+    resume:
+      "Dans un triangle rectangle, hypoténuse² = côté² + côté². La réciproque permet de démontrer qu'un triangle est rectangle."
+  },
+
+
+  /* ==========================================================
+     8. THÉORÈME DE THALÈS
+     ========================================================== */
+
+  "Théorème de Thalès": {
+
+    titre: "Théorème de Thalès",
+
+    objectifs: [
+      "Reconnaître une configuration de Thalès.",
+      "Écrire les rapports correspondants.",
+      "Calculer une longueur.",
+      "Utiliser la réciproque de Thalès."
+    ],
+
+    notions: [
+      "Triangles",
+      "Droites parallèles",
+      "Proportionnalité",
+      "Rapports de longueurs",
+      "Réciproque"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Configuration de Thalès",
+        texte:
+          "Le théorème de Thalès s'utilise notamment lorsque deux droites sont coupées par des droites sécantes et qu'une paire de droites est parallèle."
+      },
+
+      {
+        titre: "2. Énoncé du théorème",
+        texte:
+          "Lorsque deux triangles sont formés par des droites sécantes et une droite parallèle, les longueurs correspondantes sont proportionnelles.\n\n" +
+          "On peut écrire une égalité de rapports entre les côtés correspondants."
+      },
+
+      {
+        titre: "3. Calculer une longueur",
+        texte:
+          "Pour calculer une longueur inconnue, on écrit d'abord correctement les rapports de longueurs correspondantes, puis on utilise le produit en croix."
+      },
+
+      {
+        titre: "4. Produit en croix",
+        texte:
+          "Si a/b = c/x, alors a × x = b × c.\n\n" +
+          "On peut ensuite isoler x.\n\n" +
+          "Il faut toujours vérifier que les longueurs placées dans les rapports correspondent bien aux mêmes directions."
+      },
+
+      {
+        titre: "5. Réciproque de Thalès",
+        texte:
+          "La réciproque du théorème de Thalès permet de démontrer que deux droites sont parallèles lorsque les rapports de longueurs correspondantes sont égaux."
+      }
+
+    ],
+
+    resume:
+      "Le théorème de Thalès permet d'établir des rapports de proportionnalité dans une configuration comportant des droites parallèles."
+  },
+
+
+  /* ==========================================================
+     9. TRIGONOMÉTRIE
+     ========================================================== */
+
+  "Trigonométrie": {
+
+    titre: "Trigonométrie dans le triangle rectangle",
+
+    objectifs: [
+      "Identifier les côtés par rapport à un angle.",
+      "Utiliser sinus, cosinus et tangente.",
+      "Calculer une longueur.",
+      "Déterminer un angle."
+    ],
+
+    notions: [
+      "Sinus",
+      "Cosinus",
+      "Tangente",
+      "Côté opposé",
+      "Côté adjacent",
+      "Hypoténuse"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Les côtés d'un triangle rectangle",
+        texte:
+          "Par rapport à un angle aigu, on distingue trois côtés : l'hypoténuse, le côté opposé à l'angle et le côté adjacent à l'angle."
+      },
+
+      {
+        titre: "2. Le cosinus",
+        texte:
+          "Dans un triangle rectangle :\n\n" +
+          "cos(angle) = côté adjacent / hypoténuse.\n\n" +
+          "Le cosinus permet notamment de calculer une longueur lorsqu'on connaît un angle et l'hypoténuse."
+      },
+
+      {
+        titre: "3. Le sinus",
+        texte:
+          "Dans un triangle rectangle :\n\n" +
+          "sin(angle) = côté opposé / hypoténuse.\n\n" +
+          "Il permet de relier un angle, le côté opposé et l'hypoténuse."
+      },
+
+      {
+        titre: "4. La tangente",
+        texte:
+          "Dans un triangle rectangle :\n\n" +
+          "tan(angle) = côté opposé / côté adjacent.\n\n" +
+          "Elle est particulièrement utile lorsque l'on connaît les deux côtés qui ne sont pas l'hypoténuse."
+      },
+
+      {
+        titre: "5. Calculer un angle",
+        texte:
+          "Lorsque le rapport trigonométrique est connu, on utilise la fonction réciproque correspondante sur la calculatrice : arccos, arcsin ou arctan.\n\n" +
+          "Il faut vérifier que la calculatrice est réglée en degrés lorsque l'exercice travaille en degrés."
+      }
+
+    ],
+
+    resume:
+      "Dans un triangle rectangle : sin = opposé/hypoténuse, cos = adjacent/hypoténuse et tan = opposé/adjacent."
+  },
+
+
+  /* ==========================================================
+     10. RACINES CARRÉES
+     ========================================================== */
+
+  "Racines carrées": {
+
+    titre: "Racines carrées",
+
+    objectifs: [
+      "Comprendre la racine carrée.",
+      "Calculer des racines carrées simples.",
+      "Simplifier certaines racines.",
+      "Effectuer des calculs avec des racines."
+    ],
+
+    notions: [
+      "Carré d'un nombre",
+      "Racine carrée",
+      "Produit",
+      "Quotient",
+      "Simplification"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Définition",
+        texte:
+          "Pour un nombre positif a, la racine carrée de a est le nombre positif dont le carré vaut a.\n\n" +
+          "Par exemple : √25 = 5 car 5² = 25."
+      },
+
+      {
+        titre: "2. Racines carrées usuelles",
+        texte:
+          "Il est utile de connaître les carrés parfaits :\n\n" +
+          "1² = 1\n" +
+          "2² = 4\n" +
+          "3² = 9\n" +
+          "4² = 16\n" +
+          "5² = 25\n" +
+          "6² = 36\n" +
+          "7² = 49\n" +
+          "8² = 64\n" +
+          "9² = 81\n" +
+          "10² = 100."
+      },
+
+      {
+        titre: "3. Produit de racines",
+        texte:
+          "Pour des nombres positifs :\n\n" +
+          "√a × √b = √(ab).\n\n" +
+          "Exemple :\n" +
+          "√2 × √8 = √16 = 4."
+      },
+
+      {
+        titre: "4. Simplifier une racine",
+        texte:
+          "On peut rechercher un carré parfait comme facteur du nombre sous la racine.\n\n" +
+          "Exemple :\n" +
+          "√12 = √(4 × 3) = √4 × √3 = 2√3."
+      },
+
+      {
+        titre: "5. Attention aux erreurs",
+        texte:
+          "La racine carrée d'un nombre positif est toujours positive.\n\n" +
+          "Par exemple, √25 = 5 et non -5.\n\n" +
+          "En revanche, l'équation x² = 25 possède deux solutions : x = 5 et x = -5."
+      }
+
+    ],
+
+    resume:
+      "La racine carrée de a est le nombre positif dont le carré vaut a. Pour simplifier une racine, on recherche notamment des facteurs qui sont des carrés parfaits."
+  },
+
+
+  /* ==========================================================
+     11. VECTEURS ET TRANSLATIONS
+     ========================================================== */
+
+  "Vecteurs et translations": {
+
+    titre: "Vecteurs et translations",
+
+    objectifs: [
+      "Comprendre la notion de vecteur.",
+      "Identifier direction, sens et longueur.",
+      "Utiliser les coordonnées d'un vecteur.",
+      "Comprendre une translation."
+    ],
+
+    notions: [
+      "Vecteur",
+      "Direction",
+      "Sens",
+      "Norme",
+      "Coordonnées",
+      "Translation"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Définition d'un vecteur",
+        texte:
+          "Un vecteur est caractérisé par une direction, un sens et une longueur appelée norme.\n\n" +
+          "Le vecteur AB représente le déplacement qui permet d'aller du point A au point B."
+      },
+
+      {
+        titre: "2. Coordonnées d'un vecteur",
+        texte:
+          "Dans un repère, si A(xA ; yA) et B(xB ; yB), alors :\n\n" +
+          "AB = (xB - xA ; yB - yA).\n\n" +
+          "On soustrait donc les coordonnées du point de départ de celles du point d'arrivée."
+      },
+
+      {
+        titre: "3. Égalité de vecteurs",
+        texte:
+          "Deux vecteurs sont égaux lorsqu'ils ont la même direction, le même sens et la même longueur.\n\n" +
+          "Des vecteurs égaux correspondent à des déplacements identiques."
+      },
+
+      {
+        titre: "4. Translation",
+        texte:
+          "Une translation déplace tous les points d'une figure selon le même vecteur.\n\n" +
+          "La forme, les longueurs et les angles de la figure sont conservés."
+      },
+
+      {
+        titre: "5. Calcul avec les vecteurs",
+        texte:
+          "Pour additionner deux vecteurs, on additionne leurs coordonnées composante par composante.\n\n" +
+          "Exemple :\n" +
+          "(2 ; 3) + (4 ; -1) = (6 ; 2)."
+      }
+
+    ],
+
+    resume:
+      "Un vecteur décrit un déplacement par sa direction, son sens et sa longueur. Une translation déplace une figure selon un même vecteur."
+  },
+
+
+  /* ==========================================================
+     12. STATISTIQUES ET PROBABILITÉS
+     ========================================================== */
+
+  "Statistiques et probabilités": {
+
+    titre: "Statistiques et probabilités",
+
+    objectifs: [
+      "Calculer une fréquence.",
+      "Calculer une moyenne.",
+      "Lire un tableau statistique.",
+      "Comprendre une expérience aléatoire.",
+      "Calculer une probabilité simple."
+    ],
+
+    notions: [
+      "Population",
+      "Effectif",
+      "Fréquence",
+      "Moyenne",
+      "Événement",
+      "Probabilité"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Vocabulaire statistique",
+        texte:
+          "La population est l'ensemble des individus étudiés.\n\n" +
+          "Le caractère est la propriété observée.\n\n" +
+          "L'effectif d'une valeur est le nombre de fois où cette valeur apparaît."
+      },
+
+      {
+        titre: "2. Fréquence",
+        texte:
+          "La fréquence d'une valeur se calcule par :\n\n" +
+          "fréquence = effectif / effectif total.\n\n" +
+          "Pour obtenir un pourcentage, on multiplie la fréquence par 100."
+      },
+
+      {
+        titre: "3. Moyenne",
+        texte:
+          "Lorsque les valeurs ont des effectifs différents, on calcule une moyenne pondérée.\n\n" +
+          "Moyenne = somme des produits (valeur × effectif) / effectif total."
+      },
+
+      {
+        titre: "4. Expérience aléatoire",
+        texte:
+          "Une expérience aléatoire possède plusieurs résultats possibles et on ne peut pas prévoir avec certitude le résultat avant l'expérience.\n\n" +
+          "Exemple : lancer une pièce ou un dé."
+      },
+
+      {
+        titre: "5. Probabilité",
+        texte:
+          "Une probabilité est comprise entre 0 et 1.\n\n" +
+          "0 correspond à un événement impossible.\n" +
+          "1 correspond à un événement certain.\n\n" +
+          "Dans une situation équiprobable :\n" +
+          "P(A) = nombre de cas favorables / nombre de cas possibles."
+      },
+
+      {
+        titre: "6. Événement contraire",
+        texte:
+          "Si A est un événement, son événement contraire est noté non-A.\n\n" +
+          "On a :\n" +
+          "P(non-A) = 1 - P(A)."
+      }
+
+    ],
+
+    resume:
+      "Les statistiques permettent d'organiser et d'analyser des données. Les probabilités mesurent la possibilité qu'un événement se réalise."
+  },
+
+
+  /* ==========================================================
+     13. GÉOMÉTRIE DANS L'ESPACE
+     ========================================================== */
+
+  "Géométrie dans l'espace": {
+
+    titre: "Géométrie dans l'espace",
+
+    objectifs: [
+      "Reconnaître les principaux solides.",
+      "Calculer des longueurs dans l'espace.",
+      "Calculer une aire.",
+      "Calculer un volume.",
+      "Utiliser les formules adaptées."
+    ],
+
+    notions: [
+      "Cube",
+      "Pavé droit",
+      "Prisme",
+      "Cylindre",
+      "Pyramide",
+      "Volume",
+      "Aire"
+    ],
+
+    lecon: [
+
+      {
+        titre: "1. Le pavé droit",
+        texte:
+          "Un pavé droit possède trois dimensions : longueur, largeur et hauteur.\n\n" +
+          "Son volume est :\n" +
+          "V = longueur × largeur × hauteur."
+      },
+
+      {
+        titre: "2. Le cube",
+        texte:
+          "Un cube possède six faces carrées identiques.\n\n" +
+          "Si son côté mesure a :\n" +
+          "Aire d'une face = a².\n\n" +
+          "Volume = a³."
+      },
+
+      {
+        titre: "3. Le prisme",
+        texte:
+          "Le volume d'un prisme droit est obtenu en multipliant l'aire de sa base par sa hauteur.\n\n" +
+          "V = aire de la base × hauteur."
+      },
+
+      {
+        titre: "4. Le cylindre",
+        texte:
+          "Pour un cylindre de rayon r et de hauteur h :\n\n" +
+          "Volume = π × r² × h.\n\n" +
+          "Il faut utiliser les mêmes unités pour toutes les longueurs."
+      },
+
+      {
+        titre: "5. La pyramide",
+        texte:
+          "Le volume d'une pyramide est :\n\n" +
+          "V = (aire de la base × hauteur) / 3."
+      },
+
+      {
+        titre: "6. Les unités de volume",
+        texte:
+          "Les volumes s'expriment en unités cubes : cm³, m³, dm³, etc.\n\n" +
+          "Il faut être attentif aux conversions car une conversion de longueur n'est pas identique à une conversion de volume."
+      },
+
+      {
+        titre: "7. Méthode pour résoudre un problème",
+        texte:
+          "Commence par identifier le solide et les dimensions données. Choisis la formule correspondant à la grandeur recherchée. Remplace les lettres par les valeurs numériques, effectue le calcul puis indique clairement l'unité du résultat."
+      }
+
+    ],
+
+    resume:
+      "En géométrie dans l'espace, il faut reconnaître le solide, identifier ses dimensions et appliquer la formule adaptée pour calculer une aire ou un volume."
   }
 
-  /* ==========================================================
-     INITIALISATION BEPC
-     ========================================================== */
+};
 
-  RA.BEPC =
-    RA.BEPC || {};
 
-  RA.BEPC.matieres =
-    createMatieresProxy();
+/* ============================================================
+   FIN DU COURS BEPC MATHÉMATIQUES
+   ============================================================ */
 
-  /* ==========================================================
-     INITIALISATION BAC
-     ========================================================== */
-
-  RA.BAC =
-    RA.BAC || {};
-
-  RA.BAC.series =
-    createSeriesProxy();
-
-  /* ==========================================================
-     PRÉREMPLISSAGE DU PROGRAMME OFFICIEL DU FICHIER
-     programme.js
-     ========================================================== */
-
-  if (window.RA_PROGRAMME) {
-
-    /* ---------- BEPC ---------- */
-
-    const bepc =
-      window.RA_PROGRAMME
-        .BEPC
-        ?.matieres || {};
-
-    Object.entries(
-      bepc
-    ).forEach(
-      ([subject, chapters]) => {
-
-        const store =
-          RA.BEPC
-            .matieres[subject];
-
-        chapters.forEach(
-          chapter => {
-
-            store[chapter] =
-              makeLesson(
-                subject,
-                chapter
-              );
-
-          }
-        );
-
-      }
-    );
-
-    /* ---------- BAC ---------- */
-
-    const series =
-      window.RA_PROGRAMME
-        .BAC
-        ?.series || {};
-
-    Object.entries(
-      series
-    ).forEach(
-      ([serie, data]) => {
-
-        const subjects =
-          data
-            ?.matieres || {};
-
-        Object.entries(
-          subjects
-        ).forEach(
-          ([subject, chapters]) => {
-
-            const store =
-              RA.BAC
-                .series[serie]
-                .matieres[subject];
-
-            chapters.forEach(
-              chapter => {
-
-                store[chapter] =
-                  makeLesson(
-                    subject,
-                    chapter
-                  );
-
-              }
-            );
-
-          }
-        );
-
-      }
-    );
-
-  }
-
-  /* ==========================================================
-     COMPATIBILITÉ AVEC LES NOMS DE MATIÈRES DU GAME.JS
-     ========================================================== */
-
-  /*
-   * game.js utilise parfois :
-   * "Physique-chimie"
-   * alors que programme.js utilise :
-   * "Physique-Chimie"
-   *
-   * On prépare donc les deux accès.
-   */
-
-  RA.BEPC.matieres["Physique-chimie"] =
-    RA.BEPC.matieres["Physique-chimie"];
-
-  RA.BEPC.matieres["Histoire"] =
-    RA.BEPC.matieres["Histoire"];
-
-  RA.BEPC.matieres["Géographie"] =
-    RA.BEPC.matieres["Géographie"];
-
-  RA.BEPC.matieres["Éducation civique"] =
-    RA.BEPC.matieres["Éducation civique"];
-
-  /*
-   * Fin de la bibliothèque.
-   */
-
-  window.RA_COURS =
-    RA;
-
-})();
+console.log(
+  "RÉUSSITE ACADÉMIE : cours BEPC Mathématiques chargé — 13 chapitres."
+);
